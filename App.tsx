@@ -5,11 +5,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ApolloProvider } from 'react-apollo-hooks';
 import ApolloClient from 'apollo-boost';
 import apolloClientOptions from './apollo';
-import ProjectScreen from './screens/Project';
-import HomeScreen from './screens/Home';
-import AddProjectScreen from './screens/AddProject';
-import ShowOffScreen from './screens/ShowOff';
-import MyProfileScreen from './screens/MyProfile';
+import ProjectScreen from './screens/Project/Project';
+import HomeScreen from './screens/Home/Home';
+import AddProjectScreen from './screens/AddProject/AddProject';
+import ShowOffScreen from './screens/ShowOff/ShowOff';
+import MyProfileScreen from './screens/MyProfile/MyProfile';
 
 const client = new ApolloClient({
   ...apolloClientOptions,
