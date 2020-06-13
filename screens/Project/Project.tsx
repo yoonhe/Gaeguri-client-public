@@ -1,11 +1,16 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Room from './Room/Room';
+import Main from './Main';
 
-function ProjectScreen() {
+const Project = createStackNavigator();
+
+function ProjectScreen(): React.ReactElement {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Project Screen</Text>
-    </View>
+    <Project.Navigator>
+      <Project.Screen name='Main' component={Main} />
+      <Project.Screen name='Room' component={Room} />
+    </Project.Navigator>
   );
 }
 
