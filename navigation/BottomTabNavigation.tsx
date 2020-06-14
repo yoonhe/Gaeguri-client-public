@@ -1,13 +1,12 @@
 import React from 'react';
-import ProjectScreen from '../screens/Project/Project';
-import HomeScreen from '../screens/Home/Home';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AddProjectScreen from '../screens/AddProject/AddProject';
 import ShowOffScreen from '../screens/ShowOff/ShowOff';
 import MyProfileScreen from '../screens/MyProfile/MyProfile';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import ProjectScreen from '../screens/Project/Project';
+import HomeScreen from '../screens/Home/Home';
 
-function BottomTabNavigation() {
-
+function BottomTabNavigation(): React.ReactElement {
   const Tab = createBottomTabNavigator();
 
   return (

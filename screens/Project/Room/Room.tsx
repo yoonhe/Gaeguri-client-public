@@ -1,17 +1,27 @@
 import React, { useCallback } from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, TextInput, Button } from 'react-native';
 
-function Room({ navigation }): React.ReactElement {
-  const goToMain = useCallback(() => {
-    navigation.navigate('Main');
+function Room({ navigation, route }): React.ReactElement {
+  const [value, onChangeText] = React.useState(route.params.title);
+
+  const goBack = useCallback(() => {
+    navigation.goBack();
   }, []);
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      title: value === '' ? 'No title' : value,
+    });
+  }, [navigation, value]);
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Room Screen</Text>
-      <Button
-        title='Go to Main'
-        onPress={goToMain}
+      <TextInput
+        style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+        onChangeText={onChangeText}
+        value={value}
       />
+      <Button title='Go back' onPress={goBack} />
     </View>
   );
 }

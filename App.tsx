@@ -5,7 +5,7 @@ import ApolloClient from 'apollo-boost';
 import apolloClientOptions from './apollo';
 import StatusBarComponent from './components/StatusBarComponent';
 import BottomTabNavigation from './navigation/BottomTabNavigation';
-import { NavigationContainer  } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 
 const client = new ApolloClient({
   ...apolloClientOptions,
@@ -13,11 +13,11 @@ const client = new ApolloClient({
 
 function App(): React.ReactElement {
   return (
-    <ApolloProvider client = {client}>
+    <ApolloProvider client={client}>
       <StatusBarComponent />
-        <NavigationContainer>
-          <BottomTabNavigation />
-        </NavigationContainer>
+      <NavigationContainer>
+        <BottomTabNavigation />
+      </NavigationContainer>
     </ApolloProvider>
   );
 }

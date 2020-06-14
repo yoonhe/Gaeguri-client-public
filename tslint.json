@@ -1,5 +1,10 @@
 {
-  "extends": ["tslint:recommended", "tslint-config-prettier", "tslint-react", "tslint-config-airbnb"],
+  "extends": [
+    "tslint:recommended",
+    "tslint-config-prettier",
+    "tslint-react",
+    "tslint-config-airbnb"
+  ],
   "linterOptions": {
     "exclude": ["config/**/*.js", "node_modules/**/*."]
   },
