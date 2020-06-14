@@ -2,7 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Main from './Main';
 import Room from './room/Room';
-import RoomHeaderButton from '../../components/project/RoomRightHeaderToggle';
+// import RoomHeaderButton from '../../components/project/RoomRightHeaderToggle';
 
 const Project = createStackNavigator();
 
@@ -18,15 +18,15 @@ function ProjectScreen({ navigation, route }): React.ReactElement {
   }
 
   return (
-    <Project.Navigator initialRouteName='Main'>
+    <Project.Navigator initialRouteName="Main">
       <Project.Screen
-        name='Main'
+        name="Main"
         component={Main}
         options={{
           title: '',
         }}
       />
-      <Project.Screen name='Room' component={Room} />
+      <Project.Screen name="Room" component={Room} />
     </Project.Navigator>
   );
 }
