@@ -1,10 +1,10 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import AddProjectScreen from '../screens/AddProject/AddProject';
-import ShowOffScreen from '../screens/ShowOff/ShowOff';
-import MyProfileScreen from '../screens/MyProfile/MyProfile';
-import ProjectScreen from '../screens/Project/Project';
-import HomeScreen from '../screens/Home/Home';
+import AddProjectScreen from '../screens/addproject/AddProject';
+import ShowOffScreen from '../screens/showoff/ShowOff';
+import MyProfileScreen from '../screens/myprofile/MyProfile';
+import ProjectScreen from '../screens/project/ProjectStack';
+import HomeScreen from '../screens/home/Home';
 
 function BottomTabNavigation(): React.ReactElement {
   const Tab = createBottomTabNavigator();
