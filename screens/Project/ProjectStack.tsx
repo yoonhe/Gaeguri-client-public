@@ -1,7 +1,8 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Main from './Main';
-import Room from './Room/Room';
+import Room from './room/Room';
+import RoomHeaderButton from '../../components/project/RoomRightHeaderToggle';
 
 const Project = createStackNavigator();
 
