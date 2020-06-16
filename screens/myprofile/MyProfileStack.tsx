@@ -1,9 +1,9 @@
 import React from 'react';
+import { Button } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import MyProfile from './MyProfile';
 import EditMyProfile from './EditMyProfile';
 import SelectPhoto from './SelectPhoto';
-import { Button } from 'react-native';
 
 const MyProfileStack = createStackNavigator();
 

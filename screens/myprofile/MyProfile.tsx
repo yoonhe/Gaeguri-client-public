@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, SafeAreaView, FlatList } from 'react-native';
-import { GlobalStyle } from '../../styles/common';
+import { View, Text, Image, StyleSheet, FlatList } from 'react-native';
+import { PageWrap } from '../../styles/common';
+
 const userData = [
   {
     title: '짧은 소개',
@@ -21,24 +22,22 @@ const Item = ({ title, data }) => (
 
 function MyProfile() {
   return (
-    <SafeAreaView>
-      <GlobalStyle>
-        <View style={{ flexDirection: 'row' }}>
-          <Image
-            style={styles.profileMedium}
-            source={require('../../assets/MyProfile/profile_medium.png')}
-          />
-          <Text>김코딩</Text>
-        </View>
-        <View>
-          <FlatList
-            data={userData}
-            renderItem={({ item }) => <Item title={item.title} data={item.data} />}
-            keyExtractor={item => item.title}
-          />
-        </View>
-      </GlobalStyle>
-    </SafeAreaView>
+    <PageWrap>
+      <View style={{ flexDirection: 'row' }}>
+        <Image
+          style={styles.profileMedium}
+          source={require('../../assets/MyProfile/profile_medium.png')}
+        />
+        <Text>김코딩</Text>
+      </View>
+      <View>
+        <FlatList
+          data={userData}
+          renderItem={({ item }) => <Item title={item.title} data={item.data} />}
+          keyExtractor={item => item.title}
+        />
+      </View>
+    </PageWrap>
   );
 }
 
