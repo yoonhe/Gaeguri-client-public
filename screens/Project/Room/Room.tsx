@@ -1,55 +1,121 @@
-import React, { useCallback } from 'react';
-import { View, TextInput, Button } from 'react-native';
-import { Ionicons, Octicons } from '@expo/vector-icons';
-import {
-  HeaderButtons,
-  HeaderButton,
-  Item,
-  HiddenItem,
-  OverflowMenu,
-} from 'react-navigation-header-buttons';
+import React, { useState, useCallback, useLayoutEffect } from 'react';
+import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
+import { HeaderRightOcticons } from '../../../styles/common';
+import { Button, StyleSheet, Text, TextInput, ScrollView, View, Image } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+
+const dummyData = [
+  {
+    id: 1,
+    name: '조재익',
+    message: '백엔드 구하시나요?',
+  },
+  {
+    id: 2,
+    name: '윤해은',
+    message: '아뇨 프론트 구해요',
+  },
+  {
+    id: 3,
+    name: '서나연',
+    message: '나가세요',
+  },
+];
+
+const meId: number = 1;
 
 function Room({ navigation, route }): React.ReactElement {
-  const [value, onChangeText] = React.useState(route.params.title);
-
-  const goBack = useCallback(() => {
-    navigation.goBack();
-  }, []);
-
-  const IoniconsHeaderButton = props => (
-    // the `props` here come from <Item ... />
-    // you may access them and pass something else to `HeaderButton` if you like
-    <HeaderButton {...props} IconComponent={Ionicons} iconSize={23} color='blue' />
-  );
+  const [routerTitle, setRouterTitle] = useState<string>(route.params.title);
+  const [text, setText] = useState<string>('');
 
   const onOpenDrawer = useCallback(() => {
     navigation.openDrawer();
   }, []);
 
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     navigation.setOptions({
-      title: value === '' ? 'No title' : value,
+      title: routerTitle === '' ? 'No title' : routerTitle,
       headerRight: () => (
-        <Octicons
-          style={{ marginHorizontal: 10 }}
-          name='three-bars'
-          size={24}
-          color='black'
-          onPress={onOpenDrawer}
-        />
+        <HeaderRightOcticons name='three-bars' size={24} color='black' onPress={onOpenDrawer} />
       ),
     });
-  }, [navigation, value]);
+  }, [navigation, routerTitle]);
+
+  const onChangeText = useCallback(
+    e => {
+      setText(e);
+    },
+    [text],
+  );
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <TextInput
-        style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-        onChangeText={onChangeText}
-        value={value}
-      />
+    <View style={styles.container}>
+      <ScrollView>
+        <Image
+          style={styles.profileMedium}
+          source={require('../../../assets/MyProfile/profile_medium.png')}
+        />
+        <TextInput
+          style={styles.textInput}
+          value={text}
+          multiline={true}
+          onChangeText={onChangeText}
+        />
+      </ScrollView>
+      <KeyboardAccessoryView alwaysVisible={true}>
+        <View style={styles.textInputView}>
+          <TextInput
+            style={styles.textInput}
+            value={text}
+            multiline={true}
+            onChangeText={onChangeText}
+          />
+          {text !== '' && (
+            <>
+              {/* <Button style={styles.textInputButton} title='Send' onPress={() => {}} /> */}
+              <Ionicons
+                name='ios-send'
+                size={24}
+                color='black'
+                onPress={() => console.log('hihi')}
+              />
+            </>
+          )}
+        </View>
+      </KeyboardAccessoryView>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  textInputView: {
+    padding: 8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+  },
+  textInput: {
+    flexGrow: 1,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: '#0B132B',
+    padding: 10,
+    fontSize: 16,
+    marginRight: 10,
+    textAlignVertical: 'top',
+  },
+  textInputButton: {
+    flexShrink: 1,
+  },
+  profileMedium: {
+    width: 67,
+    height: 67,
+    marginRight: 12,
+  },
+});
 
 export default Room;

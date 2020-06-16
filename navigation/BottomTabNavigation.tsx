@@ -10,7 +10,7 @@ function BottomTabNavigation(): React.ReactElement {
   const Tab = createBottomTabNavigator();
 
   return (
-    <Tab.Navigator>
+    <Tab.Navigator initialRouteName='홈'>
       <Tab.Screen name='홈' component={HomeScreen} />
       <Tab.Screen name='프로젝트' component={ProjectScreen} />
       <Tab.Screen name='만들기' component={AddProjectScreen} />
