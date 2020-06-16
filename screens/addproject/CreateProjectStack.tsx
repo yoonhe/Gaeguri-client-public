@@ -4,7 +4,7 @@ import CreateProject from './CreateProject';
 
 const CreateProjectStack = createStackNavigator();
 
-function AddProjectScreen({ navigation, route }) {
+function AddProjectScreen(): React.ReactElement {
   return (
     <CreateProjectStack.Navigator>
       <CreateProjectStack.Screen name="프로젝트 만들기" component={CreateProject} />

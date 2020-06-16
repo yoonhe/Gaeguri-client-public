@@ -1,10 +1,11 @@
 import styled from 'styled-components/native';
 
 export const BorderButtonStyle = styled.Text`
+  ${props => console.log('props.backgroundColor ? ', props.backgroundColor)}
   margin-top: 10px;
   padding: 15px;
-  color: #5dd7b9;
-  background: #fff;
+  color: ${props => (props.backgroundColor ? '#fff' : '#5dd7b9')};
+  background: ${props => (props.backgroundColor ? '#5dd7b9' : '#fff')};
   border: 1px solid #5dd7b9;
   border-radius: 5px;
   text-align: center;
