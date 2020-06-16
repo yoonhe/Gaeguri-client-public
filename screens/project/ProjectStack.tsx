@@ -2,19 +2,18 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Main from './Main';
 import Room from './room/Room';
-// import RoomHeaderButton from '../../components/project/RoomRightHeaderToggle';
 
 const Project = createStackNavigator();
 
 function ProjectScreen({ navigation, route }): React.ReactElement {
   const routeName: string = route.state ? route.state.routes[route.state.index].name : '';
 
-  const tabBarVisibleRouters: string[] = ['Main'];
+  const tabBarInVisibleRouters: string[] = ['Room'];
 
-  if (tabBarVisibleRouters.includes(routeName)) {
-    navigation.setOptions({ tabBarVisible: true });
-  } else {
+  if (tabBarInVisibleRouters.includes(routeName)) {
     navigation.setOptions({ tabBarVisible: false });
+  } else {
+    navigation.setOptions({ tabBarVisible: true });
   }
 
   return (
