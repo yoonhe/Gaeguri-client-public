@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components/native';
+import styled from 'styled-components/native';
 
 export const FormBox = styled.View`
   margin-bottom: 15px;
@@ -8,7 +8,7 @@ export const RowFormWrap = styled.View`
   align-items: flex-end;
 `;
 export const Form = styled.View`
-  flex: 1.3;
+  flex: 1.6;
 `;
 
 export const InputTitle = styled.Text`
@@ -19,12 +19,13 @@ export const InputTitle = styled.Text`
 export const InputText = styled.TextInput`
   padding: 15px;
   background: #fff;
+  color: #0b132b;
 `;
 
 export const InputCountWrap = styled.View`
   flex: 1;
   flex-direction: row;
-  margin-top: 10px;
+  margin: 10px 0 0 0;
   width: 100%;
 `;
 
@@ -32,14 +33,15 @@ export const InputCount = styled.TextInput`
   flex: 1;
   text-align: center;
   background: #fff;
-  height: 47px;
+  color: #0b132b;
 `;
 
 export const InputCountButton = styled.Text`
-  background: #dcdcdc;
+  background: #5dd7b9;
   height: 47px;
   line-height: 47px;
-  width: 47px;
+  width: 40px;
   text-align: center;
-  border-radius: 15px;
+  color: #fff;
+  overflow: hidden;
 `;

@@ -1,26 +1,11 @@
-import React, { useState, createRef } from 'react';
-import ReactNative, {
-  View,
-  Button,
-  Text,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { PageWrap } from '../../styles/common';
-import {
-  InputTitle,
-  FormBox,
-  InputText,
-  InputCountWrap,
-  InputCount,
-  Form,
-  RowFormWrap,
-  InputCountButton,
-} from '../../styles/form';
-import { TagList, TagItem } from '../../styles/tag';
+import React from 'react';
+import { KeyboardAvoidingView, Platform } from 'react-native';
+import CountInput from '../../components/CountInput';
 import { BorderButton } from '../../components/buttonComponent';
+import { PageWrap } from '../../styles/common';
+import { InputTitle, FormBox, InputText, Form, RowFormWrap } from '../../styles/form';
+import { TagList, TagItem } from '../../styles/tag';
+// import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 function CreateProject({ route }) {
   return (
@@ -39,11 +24,7 @@ function CreateProject({ route }) {
               <InputTitle>포지션 및 멤버수</InputTitle>
               <InputText placeholder="포지션" />
             </Form>
-            <InputCountWrap>
-              <InputCountButton test="left">-</InputCountButton>
-              <InputCount>0</InputCount>
-              <InputCountButton test="right">+</InputCountButton>
-            </InputCountWrap>
+            <CountInput />
           </RowFormWrap>
           <BorderButton text="포지션 추가" onPress={() => console.log('포지션 추가 버튼 클릭')} />
         </FormBox>
