@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import CreateProjectStack from '../screens/addproject/CreateProjectStack';
 import ShowOffScreen from '../screens/showoff/ShowOff';
-import MyProfileStack from '../screens/myprofile/MyProfileStack';
+import MyProfileStack from '../screens/myprofile/MyProfileStack'; //이름수정
 import ProjectStack from '../screens/project/ProjectStack';
 import HomeScreen from '../screens/home/Home';
 
