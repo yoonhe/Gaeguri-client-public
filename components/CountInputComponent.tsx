@@ -4,7 +4,7 @@ import { InputCountWrap, InputCount, InputCountButton } from '../styles/form';
 
 function CountInputComponent(): React.ReactElement {
   const [count, setCount] = useState('1');
-  let NumCount: number = Number();
+  let NumCount: number = Number(count);
 
   const countPlusMinusButtonHandler = useCallback(
     (mode: string): void => {
@@ -12,7 +12,7 @@ function CountInputComponent(): React.ReactElement {
     },
     [count],
   );
-
+  console.log('NumCount ? ', NumCount);
   return (
     <InputCountWrap>
       <TouchableOpacity
