@@ -1,11 +1,11 @@
 import React from 'react';
 import { TagItem } from '../styles/tag';
 
-type Props = {
+type TagListItemComponentProps = {
   tagName: string;
 };
 
-function TagListItemComponent({ tagName }: Props): React.Component {
+function TagListItemComponent({ tagName }: TagListItemComponentProps): React.Component {
   return <TagItem># {tagName}</TagItem>;
 }
 

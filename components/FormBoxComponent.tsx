@@ -1,7 +1,19 @@
 import React from 'react';
 import { InputTitleStyle, FormBoxStyle, InputTextStyle } from '../styles/form';
 
-function FormBox({ title, placeholder, blurOnSubmit, multiline }) {
+type FormBoxProps = {
+  title: string;
+  placeholder: string;
+  blurOnSubmit?: boolean;
+  multiline?: boolean;
+};
+
+function FormBox({
+  title,
+  placeholder,
+  blurOnSubmit,
+  multiline,
+}: FormBoxProps): React.ReactElement {
   return (
     <FormBoxStyle>
       <InputTitleStyle>{title}</InputTitleStyle>
