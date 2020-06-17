@@ -1,32 +1,60 @@
 import React, { useState, useCallback, useLayoutEffect } from 'react';
-import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
+import { GiftedChat, IMessage, Bubble } from 'react-native-gifted-chat';
+
 import { HeaderRightOcticons } from '../../../styles/common';
-import { Button, StyleSheet, Text, TextInput, ScrollView, View, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const dummyData = [
+const dummyData: IDummyData[] = [
   {
-    id: 1,
-    name: '조재익',
-    message: '백엔드 구하시나요?',
+    _id: 1,
+    text: '안녕하세요~',
+    createdAt: new Date(),
+    user: {
+      _id: 1,
+      name: '조재익',
+      avatar: 'https://placeimg.com/140/140/any',
+    },
   },
   {
-    id: 2,
-    name: '윤해은',
-    message: '아뇨 프론트 구해요',
+    _id: 2,
+    text: '반가워요!',
+    createdAt: new Date(),
+    user: {
+      _id: 2,
+      name: '서나연',
+      avatar: 'https://placeimg.com/140/140/any',
+    },
   },
   {
-    id: 3,
-    name: '서나연',
-    message: '나가세요',
+    _id: 3,
+    text: '어서오세요!',
+    createdAt: new Date(),
+    user: {
+      _id: 3,
+      name: '윤해은',
+      avatar: 'https://placeimg.com/140/140/any',
+    },
   },
 ];
 
-const meId: number = 1;
+interface IDummyData {
+  _id: number;
+  text: string;
+  createdAt: Date;
+  user: {
+    _id: number;
+    name: string;
+    avatar: string;
+  };
+}
 
 function Room({ navigation, route }): React.ReactElement {
   const [routerTitle, setRouterTitle] = useState<string>(route.params.title);
-  const [text, setText] = useState<string>('');
+  const [messages, setMessages] = React.useState<IMessage[]>(dummyData);
+
+  const onSend = (newMessages: IMessage[] = []) =>
+    setMessages(GiftedChat.append(messages, newMessages));
 
   const onOpenDrawer = useCallback(() => {
     navigation.openDrawer();
@@ -34,55 +62,48 @@ function Room({ navigation, route }): React.ReactElement {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: routerTitle === '' ? 'No title' : routerTitle,
+      title: routerTitle === '' ? 'React 프로젝트 하실 분!' : routerTitle,
       headerRight: () => (
         <HeaderRightOcticons name='three-bars' size={24} color='black' onPress={onOpenDrawer} />
       ),
     });
   }, [navigation, routerTitle]);
 
-  const onChangeText = useCallback(
-    e => {
-      setText(e);
-    },
-    [text],
-  );
+  const renderBubble = (props: any) => {
+    return (
+      <Bubble
+        {...props}
+        textStyle={{
+          right: {
+            color: 'black',
+          },
+          left: {
+            color: 'black',
+          },
+        }}
+        wrapperStyle={{
+          left: {
+            backgroundColor: '#FFFFFF',
+          },
+          right: {
+            backgroundColor: '#B5D4FF',
+          },
+        }}
+      />
+    );
+  };
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <Image
-          style={styles.profileMedium}
-          source={require('../../../assets/MyProfile/profile_medium.png')}
-        />
-        <TextInput
-          style={styles.textInput}
-          value={text}
-          multiline={true}
-          onChangeText={onChangeText}
-        />
-      </ScrollView>
-      <KeyboardAccessoryView alwaysVisible={true}>
-        <View style={styles.textInputView}>
-          <TextInput
-            style={styles.textInput}
-            value={text}
-            multiline={true}
-            onChangeText={onChangeText}
-          />
-          {text !== '' && (
-            <>
-              {/* <Button style={styles.textInputButton} title='Send' onPress={() => {}} /> */}
-              <Ionicons
-                name='ios-send'
-                size={24}
-                color='black'
-                onPress={() => console.log('hihi')}
-              />
-            </>
-          )}
-        </View>
-      </KeyboardAccessoryView>
+      <GiftedChat
+        {...{ messages, onSend }}
+        user={{
+          _id: 1,
+        }}
+        renderUsernameOnMessage={true}
+        renderBubble={renderBubble}
+        placeholder='메세지를 입력하세요'
+      />
     </View>
   );
 }
@@ -90,31 +111,7 @@ function Room({ navigation, route }): React.ReactElement {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  textInputView: {
-    padding: 8,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-  },
-  textInput: {
-    flexGrow: 1,
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: '#0B132B',
-    padding: 10,
-    fontSize: 16,
-    marginRight: 10,
-    textAlignVertical: 'top',
-  },
-  textInputButton: {
-    flexShrink: 1,
-  },
-  profileMedium: {
-    width: 67,
-    height: 67,
-    marginRight: 12,
+    backgroundColor: '#F1F7FF',
   },
 });
 
