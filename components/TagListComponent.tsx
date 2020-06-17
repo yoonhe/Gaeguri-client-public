@@ -9,9 +9,10 @@ function TagListComponent(): React.ReactElement {
 
   const tagInputEnterEventHandler = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     const { text } = e.nativeEvent;
-    console.log('text ? ', text);
-    setInputValue('');
-    setTagList(prev => [...prev, text]);
+    if (text !== '') {
+      setInputValue('');
+      setTagList(prev => [...prev, text]);
+    }
   }, []);
 
   return (

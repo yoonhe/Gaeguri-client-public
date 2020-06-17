@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
 
 export const BorderButtonStyle = styled.Text`
-  ${props => console.log('props.backgroundColor ? ', props.backgroundColor)}
   margin-top: 10px;
   padding: 15px;
   color: ${props => (props.backgroundColor ? '#fff' : '#5dd7b9')};

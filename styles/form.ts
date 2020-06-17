@@ -1,29 +1,30 @@
 import styled from 'styled-components/native';
 
-export const FormBox = styled.View`
+export const FormBoxStyle = styled.View`
   margin-bottom: 15px;
 `;
-export const RowFormWrap = styled.View`
+export const RowFormWrapStyle = styled.View`
   flex-direction: row;
   align-items: flex-end;
 `;
-export const Form = styled.View`
+export const FormStyle = styled.View`
   flex: 1.2;
 `;
 
-export const InputTitle = styled.Text`
+export const InputTitleStyle = styled.Text`
   margin-bottom: 10px;
   color: #666;
 `;
 
 export const InputTextStyle = styled.TextInput`
+  flex-wrap: nowrap;
   padding: 15px;
   background: #fff;
   color: #0b132b;
   border-radius: 10px;
 `;
 
-export const InputCountWrap = styled.View`
+export const InputCountWrapStyle = styled.View`
   flex: 1;
   align-items: center;
   flex-direction: row;
@@ -34,7 +35,7 @@ export const InputCountWrap = styled.View`
   border: 1px solid #5dd7b9;
 `;
 
-export const InputCount = styled.TextInput`
+export const InputCountStyle = styled.TextInput`
   flex: 1;
   height: 47px;
   text-align: center;
@@ -45,7 +46,7 @@ export const InputCount = styled.TextInput`
   border-bottom-color: transparent;
 `;
 
-export const InputCountButton = styled.Text`
+export const InputCountButtonStyle = styled.Text`
   width: 47px;
   height: 47px;
   line-height: 47px;
