@@ -1,8 +1,8 @@
 import React, { useState, useCallback, useLayoutEffect } from 'react';
-import { GiftedChat, IMessage, Bubble } from 'react-native-gifted-chat';
+import { GiftedChat, IMessage, Bubble, InputToolbar, Send } from 'react-native-gifted-chat';
 
 import { HeaderRightOcticons } from '../../../styles/common';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const dummyData: IDummyData[] = [
@@ -93,6 +93,31 @@ function Room({ navigation, route }): React.ReactElement {
     );
   };
 
+  const renderInputToolbar = (props: any) => {
+    return (
+      <InputToolbar
+        {...props}
+        containerStyle={{
+          backgroundColor: '#FFFFFF',
+        }}
+      />
+    );
+  };
+
+  const onPressAvatar = () => {
+    console.log('avatar click');
+  };
+
+  const renderSend = (props: any) => {
+    return (
+      <Send {...props}>
+        <View style={{ marginRight: 10, marginBottom: 5 }}>
+          <Ionicons name='ios-send' size={24} color='black' style={{ marginHorizontal: 10 }} />
+        </View>
+      </Send>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <GiftedChat
@@ -103,6 +128,9 @@ function Room({ navigation, route }): React.ReactElement {
         renderUsernameOnMessage={true}
         renderBubble={renderBubble}
         placeholder='메세지를 입력하세요'
+        renderInputToolbar={renderInputToolbar}
+        onPressAvatar={onPressAvatar}
+        renderSend={renderSend}
       />
     </View>
   );
