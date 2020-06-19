@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
+import { TextInput } from 'react-native';
 import CountInputComponent from '../../components/CountInputComponent';
 import TagListComponent from '../../components/TagListComponent';
 import { BorderButton } from '../../components/ButtonComponent';
@@ -10,27 +11,64 @@ import {
   FormStyle,
   InputTextStyle,
   RowFormWrapStyle,
+  InputBoxStyle,
 } from '../../styles/form';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useFormik } from 'formik';
 
 function CreateProject(): React.ReactElement {
+  const formik = useFormik({
+    initialValues: {
+      projectName: '',
+      projectDescription: '',
+      projectPosition: '',
+    },
+    onSubmit(values) {
+      console.log(values);
+    },
+  });
+
+  console.log('formik.handleChange(`projectPosition`) ? ', formik.handleChange('projectPosition'));
+
   return (
     <PageWrapStyle>
       <KeyboardAwareScrollView>
-        <FormBoxComponent title="프로젝트 이름" placeholder="프로젝트 이름" />
+        <FormBoxComponent
+          title="프로젝트 이름"
+          placeholder="프로젝트 이름"
+          values={formik.values.projectName}
+          handleChange={formik.handleChange('projectName')}
+        />
 
         <FormBoxComponent
           title="프로젝트 설명"
           placeholder="프로젝트 설명"
           blurOnSubmit={true}
           multiline={true}
+          values={formik.values.projectDescription}
+          handleChange={formik.handleChange('projectDescription')}
         />
 
         <FormBoxStyle>
           <RowFormWrapStyle>
             <FormStyle>
               <InputTitleStyle>포지션 및 멤버수</InputTitleStyle>
-              <InputTextStyle placeholder="포지션" />
+              <InputBoxStyle>
+                <BorderButton
+                  text="X"
+                  width="30"
+                  height="30"
+                  radius="15"
+                  marginTop="0"
+                  marginRight="10"
+                  onPress={() => console.log('해당 포지션 로우 삭제')}
+                />
+                <InputTextStyle
+                  placeholder="포지션"
+                  value={formik.values.projectPosition}
+                  onChangeText={formik.handleChange('projectPosition')}
+                />
+              </InputBoxStyle>
             </FormStyle>
             <CountInputComponent />
           </RowFormWrapStyle>
@@ -42,11 +80,12 @@ function CreateProject(): React.ReactElement {
           <TagListComponent />
         </FormBoxStyle>
 
-        <BorderButton
-          backgroundColor={true}
-          text="완료"
-          onPress={() => console.log('프로젝트 방 생성 완료버튼 클릭')}
-        />
+        <FormBoxStyle>
+          <InputTitleStyle>태그</InputTitleStyle>
+          <TagListComponent />
+        </FormBoxStyle>
+
+        <BorderButton backgroundColor={true} text="완료" onPress={formik.handleSubmit} />
       </KeyboardAwareScrollView>
     </PageWrapStyle>
   );

@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { TextInput } from 'react-native';
 
 export const FormBoxStyle = styled.View`
   margin-bottom: 15px;
@@ -16,8 +17,14 @@ export const InputTitleStyle = styled.Text`
   color: #666;
 `;
 
-export const InputTextStyle = styled.TextInput`
+export const InputBoxStyle = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const InputTextStyle = styled(TextInput)`
   flex-wrap: nowrap;
+  flex: 1;
   padding: 15px;
   background: #fff;
   color: #0b132b;
