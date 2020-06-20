@@ -1,44 +1,68 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import CountInputComponent from '../../components/CountInputComponent';
+import React, { useState, useCallback } from 'react';
+import produce from 'immer';
+import InputAndCountInputComponent from '../../components/InputAndCountInputComponent';
 import TagListComponent from '../../components/TagListComponent';
 import { BorderButton } from '../../components/ButtonComponent';
 import FormBoxComponent from '../../components/FormBoxComponent';
 import { PageWrapStyle } from '../../styles/common';
-import {
-  FormBoxStyle,
-  InputTitleStyle,
-  FormStyle,
-  InputTextStyle,
-  RowFormWrapStyle,
-  InputBoxStyle,
-} from '../../styles/form';
+import { FormBoxStyle, InputTitleStyle } from '../../styles/form';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useFormik } from 'formik';
 
 function CreateProject({ route }): React.ReactElement {
-  const [count, setCount] = useState('1');
   const [tagList, setTagList] = useState<object[]>([]);
   const [stackList, setStackList] = useState<object[]>([]);
-
-  console.log('pass position ? ', route.params.position);
-
+  const { position } = route.params;
+  const [positionList, setPositionList] = useState([{ position: position, count: 1 }]);
+  console.log('positionList ? ', positionList);
   const formik = useFormik({
     initialValues: {
       projectName: '',
       projectDescription: '',
-      projectPosition: `${route.params.position}`,
     },
     onSubmit(values) {
-      console.log(values, count, tagList, stackList);
+      console.log(values, positionList, tagList, stackList);
     },
   });
 
-  let NumCount: number = Number(count);
-  const countPlusMinusButtonHandler = useCallback(
-    (mode: string): void => {
-      mode === 'plus' ? setCount(String((NumCount += 1))) : setCount(String((NumCount -= 1)));
+  const positionChangeHadler = useCallback(
+    (index, e) => {
+      const { text } = e.nativeEvent;
+      setPositionList(
+        produce(draft => {
+          draft[index].position = text;
+        }),
+      );
     },
-    [count],
+    [positionList],
+  );
+
+  const addPositionItemButtonHandler = useCallback(() => {
+    const projectItem = { position: '', count: 1 };
+    if (positionList[positionList.length - 1].position !== '') {
+      setPositionList(
+        produce(draft => {
+          draft.push(projectItem);
+        }),
+      );
+    }
+  }, []);
+
+  const countPlusMinusButtonHandler = useCallback(
+    (mode: string, index): void => {
+      mode === 'plus'
+        ? setPositionList(
+            produce(draft => {
+              draft[index].count = draft[index].count += 1;
+            }),
+          )
+        : setPositionList(
+            produce(draft => {
+              draft[index].count = draft[index].count -= 1;
+            }),
+          );
+    },
+    [positionList],
   );
 
   return (
@@ -61,34 +85,17 @@ function CreateProject({ route }): React.ReactElement {
         />
 
         <FormBoxStyle>
-          <RowFormWrapStyle>
-            <FormStyle>
-              <InputTitleStyle>포지션 및 멤버수</InputTitleStyle>
-              <InputBoxStyle>
-                <BorderButton
-                  text="X"
-                  width="30"
-                  height="30"
-                  radius="15"
-                  marginTop="0"
-                  marginRight="10"
-                  onPress={() => console.log('해당 포지션 로우 삭제')}
-                />
-                <InputTextStyle
-                  placeholder="포지션"
-                  value={formik.values.projectPosition}
-                  onChangeText={formik.handleChange('projectPosition')}
-                />
-              </InputBoxStyle>
-            </FormStyle>
-            <CountInputComponent
-              count={count}
-              NumCount={NumCount}
-              setCount={setCount}
+          {positionList.map((positionItem, index) => (
+            <InputAndCountInputComponent
+              position={positionItem.position}
+              index={index}
+              count={positionItem.count}
+              positionChangeHadler={positionChangeHadler}
               countPlusMinusButtonHandler={countPlusMinusButtonHandler}
+              addPositionItemButtonHandler={addPositionItemButtonHandler}
             />
-          </RowFormWrapStyle>
-          <BorderButton text="포지션 추가" onPress={() => console.log('포지션 추가 버튼 클릭')} />
+          ))}
+          <BorderButton text="포지션 추가" onPress={addPositionItemButtonHandler} />
         </FormBoxStyle>
 
         <FormBoxStyle>

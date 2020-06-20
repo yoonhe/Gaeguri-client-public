@@ -4,30 +4,24 @@ import { InputCountWrapStyle, InputCountStyle, InputCountButtonStyle } from '../
 
 function CountInputComponent({
   count,
-  setCount,
+  setPositionList,
   countPlusMinusButtonHandler,
-  ref,
+  index,
 }): React.ReactElement {
   return (
     <InputCountWrapStyle>
       <TouchableOpacity
         activeOpacity={0.8}
         disabled={count <= 1}
-        onPress={countPlusMinusButtonHandler.bind(null, 'minus')}
+        onPress={countPlusMinusButtonHandler.bind(null, 'minus', index)}
       >
         <InputCountButtonStyle>-</InputCountButtonStyle>
       </TouchableOpacity>
-      <InputCountStyle
-        type="number"
-        value={count}
-        onChangeText={text => setCount(text)}
-        maxLength={1}
-        ref={ref}
-      />
+      <InputCountStyle type="number" value={`${count}`} editable={false} />
       <TouchableOpacity
         activeOpacity={0.8}
         disabled={count > 6}
-        onPress={countPlusMinusButtonHandler.bind(null, 'plus')}
+        onPress={countPlusMinusButtonHandler.bind(null, 'plus', index)}
       >
         <InputCountButtonStyle>+</InputCountButtonStyle>
       </TouchableOpacity>

@@ -7,6 +7,7 @@ export const FormBoxStyle = styled.View`
 `;
 export const RowFormWrapStyle = styled.View`
   flex-direction: row;
+  margin-bottom: 15px;
   align-items: flex-end;
 `;
 export const FormStyle = styled.View`
