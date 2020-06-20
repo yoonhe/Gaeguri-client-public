@@ -39,6 +39,7 @@ function CreateProject({ route }): React.ReactElement {
 
   const addPositionItemButtonHandler = useCallback(() => {
     const projectItem = { position: '', count: 1 };
+    console.log('addPositionItemButtonHandler ? ', addPositionItemButtonHandler);
     if (positionList[positionList.length - 1].position !== '') {
       setPositionList(
         produce(draft => {
@@ -46,10 +47,24 @@ function CreateProject({ route }): React.ReactElement {
         }),
       );
     }
-  }, []);
+  }, [positionList]);
+
+  const deletePositionItemButtonHandler = useCallback(
+    index => {
+      console.log('positionList length? ', positionList.length);
+      if (positionList.length !== 1) {
+        setPositionList(
+          produce(draft => {
+            draft.pop(index);
+          }),
+        );
+      }
+    },
+    [positionList],
+  );
 
   const countPlusMinusButtonHandler = useCallback(
-    (mode: string, index): void => {
+    (mode: string, index: number): void => {
       mode === 'plus'
         ? setPositionList(
             produce(draft => {
@@ -92,7 +107,7 @@ function CreateProject({ route }): React.ReactElement {
               count={positionItem.count}
               positionChangeHadler={positionChangeHadler}
               countPlusMinusButtonHandler={countPlusMinusButtonHandler}
-              addPositionItemButtonHandler={addPositionItemButtonHandler}
+              deletePositionItemButtonHandler={deletePositionItemButtonHandler}
             />
           ))}
           <BorderButton text="포지션 추가" onPress={addPositionItemButtonHandler} />

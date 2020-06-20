@@ -13,6 +13,7 @@ function InputAndCountInputComponent({
   position,
   count,
   setPositionList,
+  deletePositionItemButtonHandler,
   countPlusMinusButtonHandler,
   positionChangeHadler,
   index,
@@ -30,7 +31,7 @@ function InputAndCountInputComponent({
             radius="15"
             marginTop="0"
             marginRight="10"
-            onPress={() => console.log('해당 포지션 로우 삭제')}
+            onPress={deletePositionItemButtonHandler}
           />
           <InputTextStyle
             placeholder="포지션"
