@@ -1,23 +1,18 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { InputCountWrapStyle, InputCountStyle, InputCountButtonStyle } from '../styles/form';
 
-function CountInputComponent(): React.ReactElement {
-  const [count, setCount] = useState('1');
-  let NumCount: number = Number(count);
-
-  const countPlusMinusButtonHandler = useCallback(
-    (mode: string): void => {
-      mode === 'plus' ? setCount(String((NumCount += 1))) : setCount(String((NumCount -= 1)));
-    },
-    [count],
-  );
-
+function CountInputComponent({
+  count,
+  setCount,
+  countPlusMinusButtonHandler,
+  ref,
+}): React.ReactElement {
   return (
     <InputCountWrapStyle>
       <TouchableOpacity
         activeOpacity={0.8}
-        disabled={NumCount <= 1}
+        disabled={count <= 1}
         onPress={countPlusMinusButtonHandler.bind(null, 'minus')}
       >
         <InputCountButtonStyle>-</InputCountButtonStyle>
@@ -27,10 +22,11 @@ function CountInputComponent(): React.ReactElement {
         value={count}
         onChangeText={text => setCount(text)}
         maxLength={1}
+        ref={ref}
       />
       <TouchableOpacity
         activeOpacity={0.8}
-        disabled={NumCount > 9}
+        disabled={count > 6}
         onPress={countPlusMinusButtonHandler.bind(null, 'plus')}
       >
         <InputCountButtonStyle>+</InputCountButtonStyle>

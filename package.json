@@ -31,7 +31,8 @@
     "react-native-vector-icons": "^6.6.0",
     "react-native-web": "~0.11.7",
     "react-navigation-header-buttons": "^4.0.2",
-    "styled-components": "^5.1.1"
+    "styled-components": "^5.1.1",
+    "use-immer": "^0.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { BorderButtonStyle } from '../styles/button';
 
-type Props = {
+interface BorderButtonProps {
   text: string;
   radius?: string;
   width?: string;
@@ -11,7 +11,7 @@ type Props = {
   marginRight?: string;
   backgroundColor?: Boolean;
   onPress: () => void;
-};
+}
 
 function BorderButton({
   text,
@@ -22,7 +22,7 @@ function BorderButton({
   height,
   marginTop,
   marginRight,
-}: Props): React.ReactElement {
+}: BorderButtonProps): React.ReactElement {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
       <BorderButtonStyle

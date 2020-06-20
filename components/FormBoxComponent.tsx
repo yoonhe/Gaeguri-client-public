@@ -3,38 +3,34 @@ import { InputTitleStyle, FormBoxStyle, InputTextStyle } from '../styles/form';
 
 type FormBoxProps = {
   title: string;
-  values: string;
-  propjectName: string;
+  values?: string;
   placeholder: string;
-  blurOnSubmit?: boolean;
-  multiline?: boolean;
-  handleChange: () => string;
-  onBlur: () => void;
+  blurOnSubmit: boolean;
+  multiline: boolean;
+  onChangeText: () => void;
 };
 
-function FormBox({
+function FormBoxComponent({
   title,
   placeholder,
   blurOnSubmit,
   multiline,
-  handleChange,
+  onChangeText,
   values,
-  onBlur,
 }: FormBoxProps): React.ReactElement {
   console.log('values? ', values);
   return (
     <FormBoxStyle>
-      <InputTitleStyle>{title}</InputTitleStyle>
+      {title && <InputTitleStyle>{title}</InputTitleStyle>}
       <InputTextStyle
         placeholder={placeholder}
         blurOnSubmit={blurOnSubmit}
         multiline={multiline}
         value={values}
-        onChangeText={handleChange}
-        onBlur={onBlur}
+        onChangeText={onChangeText}
       />
     </FormBoxStyle>
   );
 }
 
-export default FormBox;
+export default FormBoxComponent;

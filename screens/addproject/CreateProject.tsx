@@ -1,5 +1,4 @@
-import React, { useState, useCallback } from 'react';
-import { TextInput } from 'react-native';
+import React, { useState, useCallback, useEffect } from 'react';
 import CountInputComponent from '../../components/CountInputComponent';
 import TagListComponent from '../../components/TagListComponent';
 import { BorderButton } from '../../components/ButtonComponent';
@@ -16,19 +15,31 @@ import {
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useFormik } from 'formik';
 
-function CreateProject(): React.ReactElement {
+function CreateProject({ route }): React.ReactElement {
+  const [count, setCount] = useState('1');
+  const [tagList, setTagList] = useState<object[]>([]);
+  const [stackList, setStackList] = useState<object[]>([]);
+
+  console.log('pass position ? ', route.params.position);
+
   const formik = useFormik({
     initialValues: {
       projectName: '',
       projectDescription: '',
-      projectPosition: '',
+      projectPosition: `${route.params.position}`,
     },
     onSubmit(values) {
-      console.log(values);
+      console.log(values, count, tagList, stackList);
     },
   });
 
-  console.log('formik.handleChange(`projectPosition`) ? ', formik.handleChange('projectPosition'));
+  let NumCount: number = Number(count);
+  const countPlusMinusButtonHandler = useCallback(
+    (mode: string): void => {
+      mode === 'plus' ? setCount(String((NumCount += 1))) : setCount(String((NumCount -= 1)));
+    },
+    [count],
+  );
 
   return (
     <PageWrapStyle>
@@ -37,7 +48,7 @@ function CreateProject(): React.ReactElement {
           title="프로젝트 이름"
           placeholder="프로젝트 이름"
           values={formik.values.projectName}
-          handleChange={formik.handleChange('projectName')}
+          onChangeText={formik.handleChange('projectName')}
         />
 
         <FormBoxComponent
@@ -46,7 +57,7 @@ function CreateProject(): React.ReactElement {
           blurOnSubmit={true}
           multiline={true}
           values={formik.values.projectDescription}
-          handleChange={formik.handleChange('projectDescription')}
+          onChangeText={formik.handleChange('projectDescription')}
         />
 
         <FormBoxStyle>
@@ -70,19 +81,24 @@ function CreateProject(): React.ReactElement {
                 />
               </InputBoxStyle>
             </FormStyle>
-            <CountInputComponent />
+            <CountInputComponent
+              count={count}
+              NumCount={NumCount}
+              setCount={setCount}
+              countPlusMinusButtonHandler={countPlusMinusButtonHandler}
+            />
           </RowFormWrapStyle>
           <BorderButton text="포지션 추가" onPress={() => console.log('포지션 추가 버튼 클릭')} />
         </FormBoxStyle>
 
         <FormBoxStyle>
           <InputTitleStyle>기술스택</InputTitleStyle>
-          <TagListComponent />
+          <TagListComponent tagList={tagList} setTagList={setTagList} />
         </FormBoxStyle>
 
         <FormBoxStyle>
           <InputTitleStyle>태그</InputTitleStyle>
-          <TagListComponent />
+          <TagListComponent tagList={stackList} setTagList={setStackList} />
         </FormBoxStyle>
 
         <BorderButton backgroundColor={true} text="완료" onPress={formik.handleSubmit} />

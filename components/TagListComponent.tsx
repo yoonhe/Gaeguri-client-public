@@ -3,8 +3,7 @@ import { TagList } from '../styles/tag';
 import TagListItemComponent from './TagListItemComponent';
 import { InputTextStyle } from '../styles/form';
 
-function TagListComponent(): React.ReactElement {
-  const [tagList, setTagList] = useState<string[]>([]);
+function TagListComponent({ tagList, setTagList }): React.ReactElement {
   const [inputValue, setInputValue] = useState('');
 
   const tagInputEnterEventHandler = useCallback((e: React.FormEvent<HTMLFormElement>) => {

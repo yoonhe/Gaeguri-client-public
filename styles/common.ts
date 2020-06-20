@@ -6,3 +6,8 @@ export const PageWrapStyle = styled.View`
   flex: 1;
   background: #f5f5f5;
 `;
+
+export const PageWrapStyleVer2 = styled(PageWrapStyle)`
+  flex: 0.2;
+  margin: auto 0;
+`;
