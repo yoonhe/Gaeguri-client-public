@@ -15,7 +15,7 @@ function InputAndCountInputComponent({
   setPositionList,
   deletePositionItemButtonHandler,
   countPlusMinusButtonHandler,
-  positionChangeHadler,
+  positionChangeHandler,
   index,
 }) {
   console.log('index??? ', index);
@@ -36,7 +36,7 @@ function InputAndCountInputComponent({
           <InputTextStyle
             placeholder="포지션"
             value={position}
-            onChange={positionChangeHadler.bind(null, index)}
+            onChange={positionChangeHandler.bind(null, index)}
           />
         </InputBoxStyle>
       </FormStyle>

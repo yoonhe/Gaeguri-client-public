@@ -25,7 +25,7 @@ function CreateProject({ route }): React.ReactElement {
     },
   });
 
-  const positionChangeHadler = useCallback(
+  const positionChangeHandler = useCallback(
     (index, e) => {
       const { text } = e.nativeEvent;
       setPositionList(
@@ -90,22 +90,13 @@ function CreateProject({ route }): React.ReactElement {
           onChangeText={formik.handleChange('projectName')}
         />
 
-        <FormBoxComponent
-          title="프로젝트 설명"
-          placeholder="프로젝트 설명"
-          blurOnSubmit={true}
-          multiline={true}
-          values={formik.values.projectDescription}
-          onChangeText={formik.handleChange('projectDescription')}
-        />
-
         <FormBoxStyle>
           {positionList.map((positionItem, index) => (
             <InputAndCountInputComponent
               position={positionItem.position}
               index={index}
               count={positionItem.count}
-              positionChangeHadler={positionChangeHadler}
+              positionChangeHandler={positionChangeHandler}
               countPlusMinusButtonHandler={countPlusMinusButtonHandler}
               deletePositionItemButtonHandler={deletePositionItemButtonHandler}
             />
@@ -113,8 +104,17 @@ function CreateProject({ route }): React.ReactElement {
           <BorderButton text="포지션 추가" onPress={addPositionItemButtonHandler} />
         </FormBoxStyle>
 
+        <FormBoxComponent
+          title="프로젝트 소개"
+          placeholder="프로젝트 소개"
+          blurOnSubmit={true}
+          multiline={true}
+          values={formik.values.projectDescription}
+          onChangeText={formik.handleChange('projectDescription')}
+        />
+
         <FormBoxStyle>
-          <InputTitleStyle>기술스택</InputTitleStyle>
+          <InputTitleStyle>주요스택</InputTitleStyle>
           <TagListComponent tagList={tagList} setTagList={setTagList} produce={produce} />
         </FormBoxStyle>
 
@@ -122,6 +122,8 @@ function CreateProject({ route }): React.ReactElement {
           <InputTitleStyle>태그</InputTitleStyle>
           <TagListComponent tagList={stackList} setTagList={setStackList} produce={produce} />
         </FormBoxStyle>
+
+        <FormBoxComponent title="완료일정" placeholder="완료일정" />
 
         <BorderButton backgroundColor={true} text="완료" onPress={formik.handleSubmit} />
       </KeyboardAwareScrollView>
