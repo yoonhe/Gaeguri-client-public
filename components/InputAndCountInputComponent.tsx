@@ -31,7 +31,7 @@ function InputAndCountInputComponent({
             radius="15"
             marginTop="0"
             marginRight="10"
-            onPress={deletePositionItemButtonHandler}
+            onPress={deletePositionItemButtonHandler.bind(null, index)}
           />
           <InputTextStyle
             placeholder="포지션"

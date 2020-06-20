@@ -14,7 +14,7 @@ function CreateProject({ route }): React.ReactElement {
   const [stackList, setStackList] = useState<object[]>([]);
   const { position } = route.params;
   const [positionList, setPositionList] = useState([{ position: position, count: 1 }]);
-  console.log('positionList ? ', positionList);
+
   const formik = useFormik({
     initialValues: {
       projectName: '',
@@ -55,7 +55,7 @@ function CreateProject({ route }): React.ReactElement {
       if (positionList.length !== 1) {
         setPositionList(
           produce(draft => {
-            draft.pop(index);
+            draft.splice(index, 1);
           }),
         );
       }
@@ -115,12 +115,12 @@ function CreateProject({ route }): React.ReactElement {
 
         <FormBoxStyle>
           <InputTitleStyle>기술스택</InputTitleStyle>
-          <TagListComponent tagList={tagList} setTagList={setTagList} />
+          <TagListComponent tagList={tagList} setTagList={setTagList} produce={produce} />
         </FormBoxStyle>
 
         <FormBoxStyle>
           <InputTitleStyle>태그</InputTitleStyle>
-          <TagListComponent tagList={stackList} setTagList={setStackList} />
+          <TagListComponent tagList={stackList} setTagList={setStackList} produce={produce} />
         </FormBoxStyle>
 
         <BorderButton backgroundColor={true} text="완료" onPress={formik.handleSubmit} />
