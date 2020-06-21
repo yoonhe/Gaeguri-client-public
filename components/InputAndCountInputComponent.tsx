@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  RowFormWrapStyle,
-  FormStyle,
-  InputTitleStyle,
-  InputBoxStyle,
-  InputTextStyle,
-} from '../styles/form';
+import { RowFormWrapStyle, FormStyle, InputBoxStyle, InputTextStyle } from '../styles/form';
 import { BorderButton } from '../components/ButtonComponent';
 import CountInputComponent from './CountInputComponent';
 

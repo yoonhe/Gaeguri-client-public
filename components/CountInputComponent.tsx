@@ -2,12 +2,7 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { InputCountWrapStyle, InputCountStyle, InputCountButtonStyle } from '../styles/form';
 
-function CountInputComponent({
-  count,
-  setPositionList,
-  countPlusMinusButtonHandler,
-  index,
-}): React.ReactElement {
+function CountInputComponent({ count, countPlusMinusButtonHandler, index }): React.ReactElement {
   return (
     <InputCountWrapStyle>
       <TouchableOpacity
