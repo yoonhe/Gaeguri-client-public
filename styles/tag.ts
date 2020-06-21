@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
-export const TagListStyle = styled.View`
 import { Color } from './common';
-export const TagList = styled.View`
+export const TagListStyle = styled.View`
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;

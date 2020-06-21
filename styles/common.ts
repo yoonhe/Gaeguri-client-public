@@ -133,5 +133,5 @@ export const DividerStyle = styled.View`
 `;
 
 export const HeaderRightOcticons = styled(Octicons)`
-  marginhorizontal: 10px;
+  marginHorizontal: 10px;
 `;
