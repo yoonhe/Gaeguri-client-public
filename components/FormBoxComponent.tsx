@@ -1,13 +1,18 @@
 import React from 'react';
 import { InputTitleStyle, FormBoxStyle, InputTextStyle } from '../styles/form';
+import { InputButton } from './ButtonComponent';
 
 type FormBoxProps = {
   title: string;
   values?: string;
-  placeholder: string;
-  blurOnSubmit: boolean;
-  multiline: boolean;
-  onChangeText: () => void;
+  placeholder?: string | boolean;
+  blurOnSubmit?: boolean;
+  multiline?: boolean;
+  isButton?: boolean;
+  text?: string;
+  onPress?: () => void;
+  onChangeText?: () => void;
+  onFocus?: () => void;
 };
 
 function FormBoxComponent({
@@ -16,19 +21,27 @@ function FormBoxComponent({
   blurOnSubmit,
   multiline,
   onChangeText,
+  onFocus,
   values,
+  isButton,
+  text,
+  onPress,
 }: FormBoxProps): React.ReactElement {
-  console.log('values? ', values);
   return (
     <FormBoxStyle>
       {title && <InputTitleStyle>{title}</InputTitleStyle>}
-      <InputTextStyle
-        placeholder={placeholder}
-        blurOnSubmit={blurOnSubmit}
-        multiline={multiline}
-        value={values}
-        onChangeText={onChangeText}
-      />
+      {isButton ? (
+        <InputButton text={text} onPress={onPress} placeholder={placeholder} />
+      ) : (
+        <InputTextStyle
+          placeholder={placeholder}
+          blurOnSubmit={blurOnSubmit}
+          multiline={multiline}
+          value={values}
+          onChangeText={onChangeText}
+          onFocus={onFocus}
+        />
+      )}
     </FormBoxStyle>
   );
 }

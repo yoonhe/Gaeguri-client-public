@@ -2,6 +2,7 @@ import styled from 'styled-components/native';
 import { TextInput } from 'react-native';
 
 export const FormBoxStyle = styled.View`
+  position: relative;
   flex: 1;
   margin-bottom: 15px;
 `;
@@ -64,4 +65,15 @@ export const InputCountButtonStyle = styled.Text`
   color: #fff;
   font-size: 20px;
   background: #60d1b7;
+`;
+
+export const DateTimePickerBoxStyle = styled.View`
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background: #fff;
+  z-index: 9999;
+
+  box-shadow: 10px -5px 3px rgba(0, 0, 0, 0.2);
 `;

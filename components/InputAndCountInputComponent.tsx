@@ -18,11 +18,9 @@ function InputAndCountInputComponent({
   positionChangeHandler,
   index,
 }) {
-  console.log('index??? ', index);
   return (
     <RowFormWrapStyle>
       <FormStyle>
-        <InputTitleStyle>포지션 및 멤버수</InputTitleStyle>
         <InputBoxStyle>
           <BorderButton
             text="X"

@@ -4,6 +4,7 @@ import InputAndCountInputComponent from '../../components/InputAndCountInputComp
 import TagListComponent from '../../components/TagListComponent';
 import { BorderButton } from '../../components/ButtonComponent';
 import FormBoxComponent from '../../components/FormBoxComponent';
+import DateTimePickerComponent from '../../components/DateTimePickerComponent';
 import { PageWrapStyle } from '../../styles/common';
 import { FormBoxStyle, InputTitleStyle } from '../../styles/form';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -12,6 +13,7 @@ import { useFormik } from 'formik';
 function CreateProject({ route }): React.ReactElement {
   const [tagList, setTagList] = useState<object[]>([]);
   const [stackList, setStackList] = useState<object[]>([]);
+  const [date, setDate] = useState<Date | null>(null);
   const { position } = route.params;
   const [positionList, setPositionList] = useState([{ position: position, count: 1 }]);
 
@@ -39,7 +41,6 @@ function CreateProject({ route }): React.ReactElement {
 
   const addPositionItemButtonHandler = useCallback(() => {
     const projectItem = { position: '', count: 1 };
-    console.log('addPositionItemButtonHandler ? ', addPositionItemButtonHandler);
     if (positionList[positionList.length - 1].position !== '') {
       setPositionList(
         produce(draft => {
@@ -51,7 +52,6 @@ function CreateProject({ route }): React.ReactElement {
 
   const deletePositionItemButtonHandler = useCallback(
     index => {
-      console.log('positionList length? ', positionList.length);
       if (positionList.length !== 1) {
         setPositionList(
           produce(draft => {
@@ -91,6 +91,7 @@ function CreateProject({ route }): React.ReactElement {
         />
 
         <FormBoxStyle>
+          <InputTitleStyle>포지션 및 멤버수</InputTitleStyle>
           {positionList.map((positionItem, index) => (
             <InputAndCountInputComponent
               position={positionItem.position}
@@ -123,7 +124,7 @@ function CreateProject({ route }): React.ReactElement {
           <TagListComponent tagList={stackList} setTagList={setStackList} produce={produce} />
         </FormBoxStyle>
 
-        <FormBoxComponent title="완료일정" placeholder="완료일정" />
+        <DateTimePickerComponent date={date} setDate={setDate} />
 
         <BorderButton backgroundColor={true} text="완료" onPress={formik.handleSubmit} />
       </KeyboardAwareScrollView>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
-import { BorderButtonStyle } from '../styles/button';
+import { BorderButtonStyle, InputButtonStyle } from '../styles/button';
 import { TagTextButtonStyle } from '../styles/tag';
 
 interface BorderButtonProps {
@@ -44,6 +44,14 @@ export function TextButton({ text, onPress }: BorderButtonProps): React.ReactEle
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
       <TagTextButtonStyle>{text}</TagTextButtonStyle>
+    </TouchableOpacity>
+  );
+}
+
+export function InputButton({ text, onPress, placeholder }): React.ReactElement {
+  return (
+    <TouchableOpacity style={{ backgroundColor: 'blue' }} onPress={onPress} activeOpacity={0.8}>
+      <InputButtonStyle placeholder={placeholder}>{text}</InputButtonStyle>
     </TouchableOpacity>
   );
 }

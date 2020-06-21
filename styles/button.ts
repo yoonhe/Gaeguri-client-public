@@ -13,3 +13,12 @@ export const BorderButtonStyle = styled.Text`
   text-align: center;
   overflow: hidden;
 `;
+
+export const InputButtonStyle = styled.Text`
+  flex-wrap: nowrap;
+  flex: 1;
+  padding: 15px;
+  background: #fff;
+  border-radius: 10px;
+  color: ${props => (props.placeholder ? `#c7c7cd` : '#0b132b')};
+`;
