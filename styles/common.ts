@@ -67,9 +67,6 @@ export const Color = {
   N0: '#FFFFFF', //Primery
 };
 
-// Layout Style
-export const ScrollWrap = styled(ScrollView)``;
-
 export const TextTitleStyle = styled.Text`
   font-size: 18px;
   font-weight: 600;
@@ -112,9 +109,15 @@ export const TextCaptionStyle = styled.Text`
   color: ${Color.N400};
 `;
 
-export const PageWrap = styled.View`
+export const PageWrapStyle = styled.View`
   padding: 30px 30px 10px;
   flex: 1;
+  background: #f5f5f5;
+`;
+
+export const PageWrapStyleVer2 = styled(PageWrapStyle)`
+  flex: 0.2;
+  margin: auto 0;
 `;
 
 export const PageWrapWhiteStyle = styled.ScrollView`

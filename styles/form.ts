@@ -1,45 +1,79 @@
-import styled, { css } from 'styled-components/native';
+import styled from 'styled-components/native';
+import { TextInput } from 'react-native';
 
-export const FormBox = styled.View`
+export const FormBoxStyle = styled.View`
+  position: relative;
+  flex: 1;
   margin-bottom: 15px;
 `;
-export const RowFormWrap = styled.View`
+export const RowFormWrapStyle = styled.View`
   flex-direction: row;
+  margin-bottom: 15px;
   align-items: flex-end;
 `;
-export const Form = styled.View`
-  flex: 1.3;
+export const FormStyle = styled.View`
+  flex: 1.2;
 `;
 
-export const InputTitle = styled.Text`
+export const InputTitleStyle = styled.Text`
   margin-bottom: 10px;
   color: #666;
 `;
 
-export const InputText = styled.TextInput`
-  padding: 15px;
-  background: #fff;
-`;
-
-export const InputCountWrap = styled.View`
-  flex: 1;
+export const InputBoxStyle = styled.View`
   flex-direction: row;
-  margin-top: 10px;
-  width: 100%;
+  align-items: center;
 `;
 
-export const InputCount = styled.TextInput`
+export const InputTextStyle = styled(TextInput)`
+  flex-wrap: nowrap;
   flex: 1;
+  padding: 15px;
+  min-height: 50px;
+  background: #fff;
+  color: #0b132b;
+  border-radius: 10px;
+`;
+
+export const InputCountWrapStyle = styled.View`
+  flex: 1;
+  align-items: center;
+  flex-direction: row;
+  margin: 10px 0 0 10px;
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #5dd7b9;
+`;
+
+export const InputCountStyle = styled.TextInput`
+  flex: 1;
+  height: 47px;
   text-align: center;
   background: #fff;
-  height: 47px;
+  color: #0b132b;
+  border: 1px solid #5dd7b9;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
 `;
 
-export const InputCountButton = styled.Text`
-  background: #dcdcdc;
+export const InputCountButtonStyle = styled.Text`
+  width: 47px;
   height: 47px;
   line-height: 47px;
-  width: 47px;
   text-align: center;
-  border-radius: 15px;
+  color: #fff;
+  font-size: 20px;
+  background: #60d1b7;
+`;
+
+export const DateTimePickerBoxStyle = styled.View`
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background: #fff;
+  z-index: 9999;
+
+  box-shadow: 10px -5px 3px rgba(0, 0, 0, 0.2);
 `;
