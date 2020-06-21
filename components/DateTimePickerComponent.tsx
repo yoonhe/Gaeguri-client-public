@@ -8,26 +8,16 @@ import { DateTimePickerBoxStyle } from '../styles/form';
 interface DateTimePickerProps {
   date: Date | null;
   setDate: Function;
+  formatDate: Function;
 }
 
-function DateTimePickerComponent({ date, setDate }: DateTimePickerProps): React.ReactElement {
+function DateTimePickerComponent({
+  date,
+  setDate,
+  formatDate,
+}: DateTimePickerProps): React.ReactElement {
   const [show, setShow] = useState(false);
   const today = new Date();
-
-  const formatDate = useCallback(() => {
-    if (!date) {
-      return;
-    }
-
-    let year: string = date && `${date.getFullYear()}`;
-    let month: string = date && `${date.getMonth()}`;
-    let day: string = date && `${date.getDate()}`;
-
-    month = month.length === 1 ? `0${month}` : month;
-    day = day.length === 1 ? `0${day}` : day;
-
-    return `${year}. ${month}. ${day}`;
-  }, [date]);
 
   const onChange = useCallback(
     (event, selectedDate) => {

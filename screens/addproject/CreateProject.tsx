@@ -17,13 +17,28 @@ function CreateProject({ route }): React.ReactElement {
   const { position } = route.params;
   const [positionList, setPositionList] = useState([{ position: position, count: 1 }]);
 
+  const formatDate = useCallback(() => {
+    if (!date) {
+      return;
+    }
+
+    let year: string = date && `${date.getFullYear()}`;
+    let month: string = date && `${date.getMonth()}`;
+    let day: string = date && `${date.getDate()}`;
+
+    month = month.length === 1 ? `0${month}` : month;
+    day = day.length === 1 ? `0${day}` : day;
+
+    return `${year}. ${month}. ${day}`;
+  }, [date]);
+
   const formik = useFormik({
     initialValues: {
       projectName: '',
       projectDescription: '',
     },
     onSubmit(values) {
-      console.log(values, positionList, tagList, stackList);
+      console.log(formatDate(), values, positionList, tagList, stackList);
     },
   });
 
@@ -124,7 +139,7 @@ function CreateProject({ route }): React.ReactElement {
           <TagListComponent tagList={stackList} setTagList={setStackList} produce={produce} />
         </FormBoxStyle>
 
-        <DateTimePickerComponent date={date} setDate={setDate} />
+        <DateTimePickerComponent formatDate={formatDate} date={date} setDate={setDate} />
 
         <BorderButton backgroundColor={true} text="완료" onPress={formik.handleSubmit} />
       </KeyboardAwareScrollView>
