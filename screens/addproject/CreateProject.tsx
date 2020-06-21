@@ -1,63 +1,134 @@
-import React, { useState, createRef } from 'react';
-import ReactNative, {
-  View,
-  Button,
-  Text,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
+import React, { useState, useCallback } from 'react';
+import produce from 'immer';
+import InputAndCountInputComponent from '../../components/InputAndCountInputComponent';
+import TagListComponent from '../../components/TagListComponent';
+import { BorderButton } from '../../components/ButtonComponent';
+import FormBoxComponent from '../../components/FormBoxComponent';
+import DateTimePickerComponent from '../../components/DateTimePickerComponent';
+import { PageWrapStyle } from '../../styles/common';
+import { FormBoxStyle, InputTitleStyle } from '../../styles/form';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { PageWrap } from '../../styles/common';
-import {
-  InputTitle,
-  FormBox,
-  InputText,
-  InputCountWrap,
-  InputCount,
-  Form,
-  RowFormWrap,
-  InputCountButton,
-} from '../../styles/form';
-import { TagList, TagItem } from '../../styles/tag';
-import { BorderButton } from '../../components/buttonComponent';
+import { useFormik } from 'formik';
 
-function CreateProject({ route }) {
+function CreateProject({ route }): React.ReactElement {
+  const [tagList, setTagList] = useState<object[]>([]);
+  const [stackList, setStackList] = useState<object[]>([]);
+  const [date, setDate] = useState<Date | null>(null);
+  const { position } = route.params;
+  const [positionList, setPositionList] = useState([{ position: position, count: 1 }]);
+
+  const formik = useFormik({
+    initialValues: {
+      projectName: '',
+      projectDescription: '',
+    },
+    onSubmit(values) {
+      console.log(values, positionList, tagList, stackList);
+    },
+  });
+
+  const positionChangeHandler = useCallback(
+    (index, e) => {
+      const { text } = e.nativeEvent;
+      setPositionList(
+        produce(draft => {
+          draft[index].position = text;
+        }),
+      );
+    },
+    [positionList],
+  );
+
+  const addPositionItemButtonHandler = useCallback(() => {
+    const projectItem = { position: '', count: 1 };
+    if (positionList[positionList.length - 1].position !== '') {
+      setPositionList(
+        produce(draft => {
+          draft.push(projectItem);
+        }),
+      );
+    }
+  }, [positionList]);
+
+  const deletePositionItemButtonHandler = useCallback(
+    index => {
+      if (positionList.length !== 1) {
+        setPositionList(
+          produce(draft => {
+            draft.splice(index, 1);
+          }),
+        );
+      }
+    },
+    [positionList],
+  );
+
+  const countPlusMinusButtonHandler = useCallback(
+    (mode: string, index: number): void => {
+      mode === 'plus'
+        ? setPositionList(
+            produce(draft => {
+              draft[index].count = draft[index].count += 1;
+            }),
+          )
+        : setPositionList(
+            produce(draft => {
+              draft[index].count = draft[index].count -= 1;
+            }),
+          );
+    },
+    [positionList],
+  );
+
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1 }}
-    >
-      <PageWrap>
-        <FormBox>
-          <InputTitle>프로젝트 이름</InputTitle>
-          <InputText placeholder="프로젝트 이름" />
-        </FormBox>
-        <FormBox inline={true}>
-          <RowFormWrap>
-            <Form>
-              <InputTitle>포지션 및 멤버수</InputTitle>
-              <InputText placeholder="포지션" />
-            </Form>
-            <InputCountWrap>
-              <InputCountButton test="left">-</InputCountButton>
-              <InputCount>0</InputCount>
-              <InputCountButton test="right">+</InputCountButton>
-            </InputCountWrap>
-          </RowFormWrap>
-          <BorderButton text="포지션 추가" onPress={() => console.log('포지션 추가 버튼 클릭')} />
-        </FormBox>
-        <FormBox>
-          <InputTitle>기술스택</InputTitle>
-          <InputText placeholder="기술스택 입력 후 엔터" />
-          <TagList>
-            <TagItem>#Java</TagItem>
-            <TagItem>#C</TagItem>
-          </TagList>
-        </FormBox>
-        <BorderButton text="완료" onPress={() => console.log('프로젝트 방 생성 완료버튼 클릭')} />
-      </PageWrap>
-    </KeyboardAvoidingView>
+    <PageWrapStyle>
+      <KeyboardAwareScrollView>
+        <FormBoxComponent
+          title="프로젝트 이름"
+          placeholder="프로젝트 이름"
+          values={formik.values.projectName}
+          onChangeText={formik.handleChange('projectName')}
+        />
+
+        <FormBoxStyle>
+          <InputTitleStyle>포지션 및 멤버수</InputTitleStyle>
+          {positionList.map((positionItem, index) => (
+            <InputAndCountInputComponent
+              position={positionItem.position}
+              index={index}
+              count={positionItem.count}
+              positionChangeHandler={positionChangeHandler}
+              countPlusMinusButtonHandler={countPlusMinusButtonHandler}
+              deletePositionItemButtonHandler={deletePositionItemButtonHandler}
+            />
+          ))}
+          <BorderButton text="포지션 추가" onPress={addPositionItemButtonHandler} />
+        </FormBoxStyle>
+
+        <FormBoxComponent
+          title="프로젝트 소개"
+          placeholder="프로젝트 소개"
+          blurOnSubmit={true}
+          multiline={true}
+          values={formik.values.projectDescription}
+          onChangeText={formik.handleChange('projectDescription')}
+        />
+
+        <FormBoxStyle>
+          <InputTitleStyle>주요스택</InputTitleStyle>
+          <TagListComponent tagList={tagList} setTagList={setTagList} produce={produce} />
+        </FormBoxStyle>
+
+        <FormBoxStyle>
+          <InputTitleStyle>태그</InputTitleStyle>
+          <TagListComponent tagList={stackList} setTagList={setStackList} produce={produce} />
+        </FormBoxStyle>
+
+        <DateTimePickerComponent date={date} setDate={setDate} />
+
+        <BorderButton backgroundColor={true} text="완료" onPress={formik.handleSubmit} />
+      </KeyboardAwareScrollView>
+    </PageWrapStyle>
   );
 }
 
