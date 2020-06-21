@@ -2,37 +2,37 @@ import styled from 'styled-components/native';
 import { ScrollView } from 'react-native';
 import { Octicons } from '@expo/vector-icons';
 
-//컬러 팔레트 레퍼런스 : https://atlassian.design/guidelines/brand/color
-//숫자가 클수록 진한 색입니다.
+// 컬러 팔레트 레퍼런스 : https://atlassian.design/guidelines/brand/color
+// 숫자가 클수록 진한 색입니다.
 export const Color = {
-  //Blue
+  // Blue
   B500: '#0747A6',
-  B400: '#0052CC', //Primery
+  B400: '#0052CC', // Primery
   B300: '#0065FF',
   B200: '#2684FF',
   B100: '#4C9AFF',
   B75: '#B3D4FF',
   B50: '#DEEBFF',
-  //Green
+  // Green
   G500: '#006644',
   G400: '#00875A',
-  G300: '#36B37E', //Primery
+  G300: '#36B37E', // Primery
   G200: '#57D9A3',
   G100: '#79F2C0',
   G75: '#ABF5D1',
   G50: '#E3FCEF',
-  //Red
+  // Red
   R500: '#BF2600',
   R400: '#DE350B',
-  R300: '#FF5630', //Primery
+  R300: '#FF5630', // Primery
   R200: '#FF7452',
   R100: '#FF8F73',
   R75: '#FFBDAD',
   R50: '#FFEBE6',
-  //Yellow
+  // Yellow
   Y500: '#FF8B00',
   Y400: '#FF991F',
-  Y300: '#FFAB00', //Primery
+  Y300: '#FFAB00', // Primery
   Y200: '#FFC400',
   Y100: '#FFE380',
   Y75: '#FFF0B3',
@@ -40,14 +40,14 @@ export const Color = {
   // Teals
   T500: '#008DA6',
   T400: '#00A3BF',
-  T300: '#00B8D9', //Primery
+  T300: '#00B8D9', // Primery
   T200: '#00C7E6',
   T100: '#79E2F2',
   T75: '#B3F5FF',
   T50: '#E6FCFF',
-  //Neutrals
+  // Neutrals
   N900: '#091E42',
-  N800: '#172B4D', //Primery
+  N800: '#172B4D', // Primery
   N700: '#253858',
   N600: '#344563',
   N500: '#42526E',
@@ -64,7 +64,7 @@ export const Color = {
   N30: '#EBECF0',
   N20: '#F4F5F7',
   N10: '#FAFBFC',
-  N0: '#FFFFFF', //Primery
+  N0: '#FFFFFF', // Primery
 };
 
 export const TextTitleStyle = styled.Text`
