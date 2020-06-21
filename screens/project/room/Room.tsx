@@ -1,55 +1,146 @@
-import React, { useCallback } from 'react';
-import { View, TextInput, Button } from 'react-native';
-import { Ionicons, Octicons } from '@expo/vector-icons';
-import {
-  HeaderButtons,
-  HeaderButton,
-  Item,
-  HiddenItem,
-  OverflowMenu,
-} from 'react-navigation-header-buttons';
+import React, { useState, useCallback, useLayoutEffect } from 'react';
+import { GiftedChat, IMessage, Bubble, InputToolbar, Send } from 'react-native-gifted-chat';
+
+import { HeaderRightOcticons } from '../../../styles/common';
+import { StyleSheet, View, Image } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+
+const dummyData: IDummyData[] = [
+  {
+    _id: 1,
+    text: '안녕하세요~',
+    createdAt: new Date(),
+    user: {
+      _id: 1,
+      name: '조재익',
+      avatar: 'https://placeimg.com/140/140/any',
+    },
+  },
+  {
+    _id: 2,
+    text: '반가워요!',
+    createdAt: new Date(),
+    user: {
+      _id: 2,
+      name: '서나연',
+      avatar: 'https://placeimg.com/140/140/any',
+    },
+  },
+  {
+    _id: 3,
+    text: '어서오세요!',
+    createdAt: new Date(),
+    user: {
+      _id: 3,
+      name: '윤해은',
+      avatar: 'https://placeimg.com/140/140/any',
+    },
+  },
+];
+
+interface IDummyData {
+  _id: number;
+  text: string;
+  createdAt: Date;
+  user: {
+    _id: number;
+    name: string;
+    avatar: string;
+  };
+}
 
 function Room({ navigation, route }): React.ReactElement {
-  const [value, onChangeText] = React.useState(route.params.title);
+  const [routerTitle, setRouterTitle] = useState<string>(route.params.title);
+  const [messages, setMessages] = React.useState<IMessage[]>(dummyData);
 
-  const goBack = useCallback(() => {
-    navigation.goBack();
-  }, []);
-
-  const IoniconsHeaderButton = props => (
-    // the `props` here come from <Item ... />
-    // you may access them and pass something else to `HeaderButton` if you like
-    <HeaderButton {...props} IconComponent={Ionicons} iconSize={23} color='blue' />
-  );
+  const onSend = (newMessages: IMessage[] = []) =>
+    setMessages(GiftedChat.append(messages, newMessages));
 
   const onOpenDrawer = useCallback(() => {
     navigation.openDrawer();
   }, []);
 
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     navigation.setOptions({
-      title: value === '' ? 'No title' : value,
+      title: routerTitle === '' ? 'React 프로젝트 하실 분!' : routerTitle,
       headerRight: () => (
-        <Octicons
-          style={{ marginHorizontal: 10 }}
-          name='three-bars'
-          size={24}
-          color='black'
-          onPress={onOpenDrawer}
-        />
+        <HeaderRightOcticons name='three-bars' size={24} color='black' onPress={onOpenDrawer} />
       ),
     });
-  }, [navigation, value]);
+  }, [navigation, routerTitle]);
+
+  const renderBubble = (props: any) => {
+    return (
+      <Bubble
+        {...props}
+        textStyle={{
+          right: {
+            color: 'black',
+          },
+          left: {
+            color: 'black',
+          },
+        }}
+        wrapperStyle={{
+          left: {
+            backgroundColor: '#FFFFFF',
+          },
+          right: {
+            backgroundColor: '#B5D4FF',
+          },
+        }}
+      />
+    );
+  };
+
+  const renderInputToolbar = (props: any) => {
+    return (
+      <InputToolbar
+        {...props}
+        containerStyle={{
+          backgroundColor: '#FFFFFF',
+        }}
+      />
+    );
+  };
+
+  const onPressAvatar = () => {
+    console.log('avatar click');
+  };
+
+  const renderSend = (props: any) => {
+    return (
+      <Send {...props}>
+        <View style={{ marginRight: 10, marginBottom: 5 }}>
+          <Ionicons name='ios-send' size={24} color='black' style={{ marginHorizontal: 10 }} />
+        </View>
+      </Send>
+    );
+  };
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <TextInput
-        style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-        onChangeText={onChangeText}
-        value={value}
+    <View style={styles.container}>
+      <GiftedChat
+        {...{ messages, onSend }}
+        user={{
+          _id: 1,
+        }}
+        renderUsernameOnMessage={true}
+        renderBubble={renderBubble}
+        placeholder='메세지를 입력하세요'
+        renderInputToolbar={renderInputToolbar}
+        onPressAvatar={onPressAvatar}
+        renderSend={renderSend}
       />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F1F7FF',
+  },
+});
 
 export default Room;
