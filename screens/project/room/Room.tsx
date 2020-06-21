@@ -1,8 +1,7 @@
 import React, { useState, useCallback, useLayoutEffect } from 'react';
 import { GiftedChat, IMessage, Bubble, InputToolbar, Send } from 'react-native-gifted-chat';
-
 import { HeaderRightOcticons } from '../../../styles/common';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const dummyData: IDummyData[] = [
@@ -51,20 +50,20 @@ interface IDummyData {
 
 function Room({ navigation, route }): React.ReactElement {
   const [routerTitle, setRouterTitle] = useState<string>(route.params.title);
-  const [messages, setMessages] = React.useState<IMessage[]>(dummyData);
+  const [messages, setMessages] = useState<IMessage[]>(dummyData);
 
   const onSend = (newMessages: IMessage[] = []) =>
     setMessages(GiftedChat.append(messages, newMessages));
 
-  const onOpenDrawer = useCallback(() => {
-    navigation.openDrawer();
+  const onOpenSideBar = useCallback(() => {
+    navigation.navigate('Drawer');
   }, []);
 
   useLayoutEffect(() => {
     navigation.setOptions({
       title: routerTitle === '' ? 'React 프로젝트 하실 분!' : routerTitle,
       headerRight: () => (
-        <HeaderRightOcticons name='three-bars' size={24} color='black' onPress={onOpenDrawer} />
+        <HeaderRightOcticons name='three-bars' size={24} color='black' onPress={onOpenSideBar} />
       ),
     });
   }, [navigation, routerTitle]);

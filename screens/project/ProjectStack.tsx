@@ -2,13 +2,14 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Main from './Main';
 import Room from './room/Room';
+import Drawer from './room/Drawer';
 
 const Project = createStackNavigator();
 
 function ProjectScreen({ navigation, route }): React.ReactElement {
   const routeName: string = route.state ? route.state.routes[route.state.index].name : '';
 
-  const tabBarInVisibleRouters: string[] = ['Room'];
+  const tabBarInVisibleRouters: string[] = ['Room', 'Drawer'];
 
   if (tabBarInVisibleRouters.includes(routeName)) {
     navigation.setOptions({ tabBarVisible: false });
@@ -26,6 +27,7 @@ function ProjectScreen({ navigation, route }): React.ReactElement {
         }}
       />
       <Project.Screen name='Room' component={Room} />
+      <Project.Screen name='Drawer' component={Drawer} />
     </Project.Navigator>
   );
 }
