@@ -56,7 +56,7 @@ function Room({ navigation, route }): React.ReactElement {
     setMessages(GiftedChat.append(messages, newMessages));
 
   const onOpenSideBar = useCallback(() => {
-    navigation.navigate('Drawer');
+    navigation.navigate('Drawer', { title: routerTitle });
   }, []);
 
   useLayoutEffect(() => {

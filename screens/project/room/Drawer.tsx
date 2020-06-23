@@ -1,16 +1,7 @@
-import React, { useLayoutEffect, useCallback } from 'react';
+import React, { useLayoutEffect, useCallback, useRef } from 'react';
 import { View, Text, Button, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
-import {
-  PageWrapWhiteStyle,
-  PageWrap,
-  TextContentStyle,
-  TextSubTitleStyle,
-  TextTitleStyle,
-  TextDateStyle,
-  DividerStyle,
-  Color,
-} from '../../../styles/common';
+import { DividerStyle } from '../../../styles/common';
 import DrawerFooter from './DrawerFooter';
 
 const DATA: IData[] = [
@@ -65,6 +56,14 @@ const DATA: IData[] = [
   },
 ];
 
+const me = {
+  id: 1,
+};
+
+const owner = {
+  id: 1,
+};
+
 interface IData {
   id: number;
   name: string;
@@ -73,7 +72,7 @@ interface IData {
   owner: boolean;
 }
 
-function Drawer({ navigation, router }): React.ReactElement {
+function Drawer({ navigation }): React.ReactElement {
   useLayoutEffect(() => {
     navigation.setOptions({
       title: '프로젝트 서랍',
@@ -81,8 +80,12 @@ function Drawer({ navigation, router }): React.ReactElement {
     });
   }, [navigation]);
 
-  const closeDrawer = useCallback(() => {
+  const closeDrawer = () => {
     navigation.goBack();
+  };
+
+  const onRetreat = useCallback(id => {
+    console.log(id);
   }, []);
 
   const keyExtractor = (item: IData) => String(item.id);
@@ -114,12 +117,17 @@ function Drawer({ navigation, router }): React.ReactElement {
           {item.position}
         </Text>
         <Text style={{ fontSize: 16, left: 130, position: 'absolute' }}>{item.name}</Text>
-        <TouchableOpacity style={{ position: 'absolute', right: 5 }}>
-          <Image
-            style={styles.retreatButton}
-            source={require('../../../assets/Room/retreat.png')}
-          />
-        </TouchableOpacity>
+        {owner.id === me.id && me.id !== item.id && (
+          <TouchableOpacity
+            style={{ position: 'absolute', right: 5 }}
+            onPress={() => onRetreat(item.id)}
+          >
+            <Image
+              style={styles.retreatButton}
+              source={require('../../../assets/Room/retreat.png')}
+            />
+          </TouchableOpacity>
+        )}
       </View>
     );
   };
@@ -128,7 +136,7 @@ function Drawer({ navigation, router }): React.ReactElement {
     <View>
       <FlatList data={DATA} renderItem={renderItem} keyExtractor={keyExtractor} />
       <DividerStyle />
-      <DrawerFooter />
+      <DrawerFooter navigation={navigation} />
     </View>
   );
 }

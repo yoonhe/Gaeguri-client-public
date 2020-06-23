@@ -2,13 +2,13 @@ import React, { useCallback } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Alert } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
-function DrawerFooter(): React.ReactElement {
+function DrawerFooter({ navigation }): React.ReactElement {
   const inviteMember = useCallback(() => {
     console.log('Invite');
   }, []);
 
   const projectSettings = useCallback(() => {
-    console.log('projectSettings');
+    navigation.navigate('ProjectSetting');
   }, []);
 
   const exitProject = useCallback(() => {
@@ -22,7 +22,7 @@ function DrawerFooter(): React.ReactElement {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        { text: '나가기', onPress: () => console.log('OK Pressed'), style: 'destructive' },
+        { text: '나가기', onPress: () => navigation.navigate('Main'), style: 'destructive' },
       ],
       { cancelable: false },
     );
