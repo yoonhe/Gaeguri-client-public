@@ -1,6 +1,5 @@
 import React from 'react';
 import { InputTitleStyle, FormBoxStyle, InputTextStyle } from '../styles/form';
-import { InputButton } from './ButtonComponent';
 
 type FormBoxProps = {
   title: string;
@@ -8,11 +7,10 @@ type FormBoxProps = {
   placeholder?: string | boolean;
   blurOnSubmit?: boolean;
   multiline?: boolean;
-  isButton?: boolean;
   text?: string;
-  onPress?: () => void;
   onChangeText?: () => void;
   onFocus?: () => void;
+  children;
 };
 
 function FormBoxComponent({
@@ -23,15 +21,14 @@ function FormBoxComponent({
   onChangeText,
   onFocus,
   values,
-  isButton,
-  text,
-  onPress,
+  children,
+  ...props
 }: FormBoxProps): React.ReactElement {
   return (
-    <FormBoxStyle>
+    <FormBoxStyle {...props}>
       {title && <InputTitleStyle>{title}</InputTitleStyle>}
-      {isButton ? (
-        <InputButton text={text} onPress={onPress} placeholder={placeholder} />
+      {children ? (
+        children
       ) : (
         <InputTextStyle
           placeholder={placeholder}

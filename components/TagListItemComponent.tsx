@@ -16,7 +16,7 @@ function TagListItemComponent({
   return (
     <TagItemStyle>
       <TagTextStyle># {tagName}</TagTextStyle>
-      <TextButton text="x" onPress={deleteTagButtonHandler.bind(null, index)} />
+      <TextButton onPress={deleteTagButtonHandler.bind(null, index)}>x</TextButton>
     </TagItemStyle>
   );
 }

@@ -4,6 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { BorderButton } from './ButtonComponent';
 import FormBoxComponent from './FormBoxComponent';
 import { DateTimePickerBoxStyle } from '../styles/form';
+import { InputButton } from './ButtonComponent';
 
 interface DateTimePickerProps {
   date: Date | null;
@@ -39,13 +40,11 @@ function DateTimePickerComponent({
 
   return (
     <>
-      <FormBoxComponent
-        title="완료일정"
-        isButton={true}
-        text={date ? formatDate() : '완료일정'}
-        placeholder={!date}
-        onPress={showDatePicker}
-      />
+      <FormBoxComponent title="완료일정">
+        <InputButton onPress={showDatePicker} placeholder={!date}>
+          {date ? formatDate() : '완료일정'}
+        </InputButton>
+      </FormBoxComponent>
       {show && (
         <DateTimePickerBoxStyle>
           <DateTimePicker
@@ -56,7 +55,7 @@ function DateTimePickerComponent({
             display="default"
             onChange={onChange}
           />
-          <BorderButton text="확인" onPress={closeDatePicker} />
+          <BorderButton onPress={closeDatePicker}>확인</BorderButton>
         </DateTimePickerBoxStyle>
       )}
     </>

@@ -110,14 +110,12 @@ export const TextCaptionStyle = styled.Text`
 `;
 
 export const PageWrapStyle = styled.View`
+  flex:1;
   padding: 30px 30px 10px;
-  flex: 1;
-  background: #f5f5f5;
 `;
 
-export const PageWrapStyleVer2 = styled(PageWrapStyle)`
-  flex: 0.2;
-  margin: auto 0;
+export const PageWrapAlignCenterStyle = styled(PageWrapStyle)`
+  justify-content:center;
 `;
 
 export const PageWrapWhiteStyle = styled.ScrollView`

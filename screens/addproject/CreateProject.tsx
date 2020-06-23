@@ -6,7 +6,6 @@ import { BorderButton } from '../../components/ButtonComponent';
 import FormBoxComponent from '../../components/FormBoxComponent';
 import DateTimePickerComponent from '../../components/DateTimePickerComponent';
 import { PageWrapStyle } from '../../styles/common';
-import { FormBoxStyle, InputTitleStyle } from '../../styles/form';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useFormik } from 'formik';
 
@@ -105,8 +104,7 @@ function CreateProject({ route }): React.ReactElement {
           onChangeText={formik.handleChange('projectName')}
         />
 
-        <FormBoxStyle>
-          <InputTitleStyle>포지션 및 멤버수</InputTitleStyle>
+        <FormBoxComponent title="포지션 및 멤버수">
           {positionList.map((positionItem, index) => (
             <InputAndCountInputComponent
               position={positionItem.position}
@@ -117,8 +115,8 @@ function CreateProject({ route }): React.ReactElement {
               deletePositionItemButtonHandler={deletePositionItemButtonHandler}
             />
           ))}
-          <BorderButton text="포지션 추가" onPress={addPositionItemButtonHandler} />
-        </FormBoxStyle>
+          <BorderButton onPress={addPositionItemButtonHandler}>포지션 추가</BorderButton>
+        </FormBoxComponent>
 
         <FormBoxComponent
           title="프로젝트 소개"
@@ -129,19 +127,19 @@ function CreateProject({ route }): React.ReactElement {
           onChangeText={formik.handleChange('projectDescription')}
         />
 
-        <FormBoxStyle>
-          <InputTitleStyle>주요스택</InputTitleStyle>
+        <FormBoxComponent title="주요스택">
           <TagListComponent tagList={tagList} setTagList={setTagList} produce={produce} />
-        </FormBoxStyle>
+        </FormBoxComponent>
 
-        <FormBoxStyle>
-          <InputTitleStyle>태그</InputTitleStyle>
+        <FormBoxComponent title="태그">
           <TagListComponent tagList={stackList} setTagList={setStackList} produce={produce} />
-        </FormBoxStyle>
+        </FormBoxComponent>
 
         <DateTimePickerComponent formatDate={formatDate} date={date} setDate={setDate} />
 
-        <BorderButton backgroundColor={true} text="완료" onPress={formik.handleSubmit} />
+        <BorderButton backgroundColor={true} onPress={formik.handleSubmit}>
+          완료
+        </BorderButton>
       </KeyboardAwareScrollView>
     </PageWrapStyle>
   );
