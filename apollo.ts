@@ -3,7 +3,7 @@ interface Options {
 }
 
 const options: Options = {
-  uri: 'http://localhost:4000',
+  uri: 'http://localhost:4000/graphql',
 };
 
 export default options;
