@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { PageWrapStyleVer2 } from '../../styles/common';
+import { PageWrapAlignCenterStyle } from '../../styles/common';
 import FormBoxComponent from '../../components/FormBoxComponent';
 import { BorderButton } from '../../components/ButtonComponent';
 
@@ -10,14 +10,14 @@ function ChoosePosition({ navigation }): React.ReactElement {
   }, [position]);
 
   return (
-    <PageWrapStyleVer2>
+    <PageWrapAlignCenterStyle>
       <FormBoxComponent
         value={position}
         onChangeText={text => setPosition(text)}
         placeholder="포지션을 입력해주세요"
       />
-      <BorderButton onPress={nextPageButtonHandler} text="다음" />
-    </PageWrapStyleVer2>
+      <BorderButton onPress={nextPageButtonHandler}>다음</BorderButton>
+    </PageWrapAlignCenterStyle>
   );
 }
 

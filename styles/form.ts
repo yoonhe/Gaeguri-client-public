@@ -1,9 +1,7 @@
 import styled from 'styled-components/native';
-import { TextInput } from 'react-native';
 
 export const FormBoxStyle = styled.View`
   position: relative;
-  flex: 1;
   margin-bottom: 15px;
 `;
 export const RowFormWrapStyle = styled.View`
@@ -12,7 +10,7 @@ export const RowFormWrapStyle = styled.View`
   align-items: flex-end;
 `;
 export const FormStyle = styled.View`
-  flex: 1.2;
+  flex: 1;
 `;
 
 export const InputTitleStyle = styled.Text`
@@ -25,9 +23,8 @@ export const InputBoxStyle = styled.View`
   align-items: center;
 `;
 
-export const InputTextStyle = styled(TextInput)`
-  flex-wrap: nowrap;
-  flex: 1;
+export const InputTextStyle = styled.TextInput`
+  ${props => props.row && 'flex:1'};
   padding: 15px;
   min-height: 50px;
   background: #fff;

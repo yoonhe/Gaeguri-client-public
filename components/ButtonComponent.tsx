@@ -1,57 +1,45 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
-import { BorderButtonStyle, InputButtonStyle } from '../styles/button';
+import { BorderButtonStyle, InputButtonStyle, CircleButtonStyle } from '../styles/button';
 import { TagTextButtonStyle } from '../styles/tag';
 
 interface BorderButtonProps {
-  text: string;
-  radius?: string;
-  width?: string;
-  height?: string;
-  marginTop?: string;
-  marginRight?: string;
-  backgroundColor?: Boolean;
+  children: string;
   onPress: () => void;
 }
 
 export function BorderButton({
-  text,
+  children,
   onPress,
-  backgroundColor,
-  radius,
-  width,
-  height,
-  marginTop,
-  marginRight,
+  ...props
 }: BorderButtonProps): React.ReactElement {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
-      <BorderButtonStyle
-        marginTop={marginTop}
-        marginRight={marginRight}
-        height={height}
-        width={width}
-        radius={radius}
-        backgroundColor={backgroundColor}
-      >
-        {text}
-      </BorderButtonStyle>
+      <BorderButtonStyle {...props}>{children}</BorderButtonStyle>
     </TouchableOpacity>
   );
 }
 
-export function TextButton({ text, onPress }: BorderButtonProps): React.ReactElement {
+export function TextButton({ children, onPress }: BorderButtonProps): React.ReactElement {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
-      <TagTextButtonStyle>{text}</TagTextButtonStyle>
+      <TagTextButtonStyle>{children}</TagTextButtonStyle>
     </TouchableOpacity>
   );
 }
 
-export function InputButton({ text, onPress, placeholder }): React.ReactElement {
+export function InputButton({ children, onPress, ...props }): React.ReactElement {
   return (
-    <TouchableOpacity style={{ backgroundColor: 'blue' }} onPress={onPress} activeOpacity={0.8}>
-      <InputButtonStyle placeholder={placeholder}>{text}</InputButtonStyle>
+    <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
+      <InputButtonStyle {...props}>{children}</InputButtonStyle>
+    </TouchableOpacity>
+  );
+}
+
+export function CircleButton({ children, onPress }): React.ReactElement {
+  return (
+    <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
+      <CircleButtonStyle>{children}</CircleButtonStyle>
     </TouchableOpacity>
   );
 }

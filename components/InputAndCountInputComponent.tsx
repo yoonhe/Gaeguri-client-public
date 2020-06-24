@@ -1,6 +1,6 @@
 import React from 'react';
 import { RowFormWrapStyle, FormStyle, InputBoxStyle, InputTextStyle } from '../styles/form';
-import { BorderButton } from '../components/ButtonComponent';
+import { BorderButton, CircleButton } from '../components/ButtonComponent';
 import CountInputComponent from './CountInputComponent';
 
 function InputAndCountInputComponent({
@@ -16,19 +16,12 @@ function InputAndCountInputComponent({
     <RowFormWrapStyle>
       <FormStyle>
         <InputBoxStyle>
-          <BorderButton
-            text="X"
-            width="30"
-            height="30"
-            radius="15"
-            marginTop="0"
-            marginRight="10"
-            onPress={deletePositionItemButtonHandler.bind(null, index)}
-          />
+          <CircleButton onPress={deletePositionItemButtonHandler.bind(null, index)}>X</CircleButton>
           <InputTextStyle
             placeholder="포지션"
             value={position}
             onChange={positionChangeHandler.bind(null, index)}
+            row={true}
           />
         </InputBoxStyle>
       </FormStyle>
