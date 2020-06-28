@@ -1,4 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useQuery } from '@apollo/react-hooks';
+import { Alert } from 'react-native';
+import { gql } from 'apollo-boost';
 import produce from 'immer';
 import InputAndCountInputComponent from '../../components/InputAndCountInputComponent';
 import TagListComponent from '../../components/TagListComponent';
@@ -8,28 +11,36 @@ import DateTimePickerComponent from '../../components/DateTimePickerComponent';
 import { PageWrapStyle } from '../../styles/common';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useFormik } from 'formik';
+import moment from 'moment';
+
+const GET_PROJECT_DETAIL = gql`
+  query GetProjectDetail($Project_id: Int) {
+    getProjectDetail(Project_id: $Project_id) {
+      Project_name
+      EndAt
+    }
+  }
+`;
 
 function CreateProject({ route }): React.ReactElement {
   const [tagList, setTagList] = useState<object[]>([]);
   const [stackList, setStackList] = useState<object[]>([]);
   const [date, setDate] = useState<Date | null>(null);
   const { position } = route.params;
-  const [positionList, setPositionList] = useState([{ position: position, count: 1 }]);
+  const [positionList, setPositionList] = useState([{ name: position, count: 1 }]);
 
-  const formatDate = useCallback(() => {
-    if (!date) {
-      return;
-    }
+  const { loading, error, data } = useQuery(GET_PROJECT_DETAIL, {
+    variables: { Project_id: 19 },
+  });
 
-    let year: string = date && `${date.getFullYear()}`;
-    let month: string = date && `${date.getMonth()}`;
-    let day: string = date && `${date.getDate()}`;
-
-    month = month.length === 1 ? `0${month}` : month;
-    day = day.length === 1 ? `0${day}` : day;
-
-    return `${year}. ${month}. ${day}`;
-  }, [date]);
+  if (loading) {
+    console.log('loading...??????', loading);
+  } else if (error) {
+    // link;
+    console.log('error...??????', error);
+  } else if (data) {
+    console.log('data...??????', data);
+  }
 
   const formik = useFormik({
     initialValues: {
@@ -37,7 +48,36 @@ function CreateProject({ route }): React.ReactElement {
       projectDescription: '',
     },
     onSubmit(values) {
-      console.log(formatDate(), values, positionList, tagList, stackList);
+      const { projectName, projectDescription } = values;
+
+      if (!projectName) {
+        return Alert.alert('프로젝트 이름을 입력하세요', '', [
+          { text: 'OK', onPress: () => console.log('OK Pressed') },
+        ]);
+      }
+
+      for (let position of positionList) {
+        if (!position.name) {
+          return Alert.alert('포지션 이름이 비어있습니다. 삭제 또는 입력해주세요', '', [
+            { text: 'OK', onPress: () => console.log('OK Pressed') },
+          ]);
+        }
+      }
+
+      if (!date) {
+        return Alert.alert('완료일정을 입력하세요', '', [
+          { text: 'OK', onPress: () => console.log('OK Pressed') },
+        ]);
+      }
+
+      console.log(
+        moment(date).format('YYYY-MM-DD'),
+        projectName,
+        projectDescription,
+        positionList,
+        tagList,
+        stackList,
+      );
     },
   });
 
@@ -46,7 +86,7 @@ function CreateProject({ route }): React.ReactElement {
       const { text } = e.nativeEvent;
       setPositionList(
         produce(draft => {
-          draft[index].position = text;
+          draft[index].name = text;
         }),
       );
     },
@@ -54,8 +94,8 @@ function CreateProject({ route }): React.ReactElement {
   );
 
   const addPositionItemButtonHandler = useCallback(() => {
-    const projectItem = { position: '', count: 1 };
-    if (positionList[positionList.length - 1].position !== '') {
+    const projectItem = { name: '', count: 1 };
+    if (positionList[positionList.length - 1].name !== '') {
       setPositionList(
         produce(draft => {
           draft.push(projectItem);
@@ -107,7 +147,8 @@ function CreateProject({ route }): React.ReactElement {
         <FormBoxComponent title="포지션 및 멤버수">
           {positionList.map((positionItem, index) => (
             <InputAndCountInputComponent
-              position={positionItem.position}
+              key={`${Date()}${-index}`}
+              position={positionItem.name}
               index={index}
               count={positionItem.count}
               positionChangeHandler={positionChangeHandler}
@@ -135,7 +176,7 @@ function CreateProject({ route }): React.ReactElement {
           <TagListComponent tagList={stackList} setTagList={setStackList} produce={produce} />
         </FormBoxComponent>
 
-        <DateTimePickerComponent formatDate={formatDate} date={date} setDate={setDate} />
+        <DateTimePickerComponent date={date} setDate={setDate} />
 
         <BorderButton backgroundColor={true} onPress={formik.handleSubmit}>
           완료
