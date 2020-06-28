@@ -11,8 +11,8 @@ const client = new ApolloClient({
   ...apolloClientOptions,
   cache,
   onError: ({ networkError, graphQLErrors }) => {
-    console.log('[App.tsx Console] graphQLErrors ??? ', graphQLErrors);
-    console.log('[App.tsx Console] networkError ??? ', networkError);
+    console.log('graphQLErrors', graphQLErrors);
+    console.log('networkError', networkError);
   },
 });
 function App(): React.ReactElement {
