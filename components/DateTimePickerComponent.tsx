@@ -5,25 +5,20 @@ import { BorderButton } from './ButtonComponent';
 import FormBoxComponent from './FormBoxComponent';
 import { DateTimePickerBoxStyle } from '../styles/form';
 import { InputButton } from './ButtonComponent';
+import moment from 'moment';
 
 interface DateTimePickerProps {
   date: Date | null;
   setDate: Function;
-  formatDate: Function;
 }
 
-function DateTimePickerComponent({
-  date,
-  setDate,
-  formatDate,
-}: DateTimePickerProps): React.ReactElement {
+function DateTimePickerComponent({ date, setDate }: DateTimePickerProps): React.ReactElement {
   const [show, setShow] = useState(false);
   const today = new Date();
 
   const onChange = useCallback(
     (event, selectedDate) => {
       const currentDate: Date = selectedDate || date;
-      console.log('currentDate ? ', currentDate);
       setShow(Platform.OS === 'ios');
       setDate(currentDate);
     },
@@ -42,7 +37,7 @@ function DateTimePickerComponent({
     <>
       <FormBoxComponent title="완료일정">
         <InputButton onPress={showDatePicker} placeholder={!date}>
-          {date ? formatDate() : '완료일정'}
+          {date ? moment(date).format('YYYY-MM-DD') : '완료일정'}
         </InputButton>
       </FormBoxComponent>
       {show && (

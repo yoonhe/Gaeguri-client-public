@@ -6,14 +6,15 @@ import apolloClientOptions from './apollo';
 import StatusBarComponent from './components/StatusBarComponent';
 import BottomTabNavigation from './navigation/BottomTabNavigation';
 import { NavigationContainer } from '@react-navigation/native';
-
 const cache = new InMemoryCache();
-
 const client = new ApolloClient({
-  cache,
   ...apolloClientOptions,
+  cache,
+  onError: ({ networkError, graphQLErrors }) => {
+    console.log('[App.tsx Console] graphQLErrors ??? ', graphQLErrors);
+    console.log('[App.tsx Console] networkError ??? ', networkError);
+  },
 });
-
 function App(): React.ReactElement {
   return (
     <ApolloProvider client={client}>
@@ -24,5 +25,4 @@ function App(): React.ReactElement {
     </ApolloProvider>
   );
 }
-
 export default App;
