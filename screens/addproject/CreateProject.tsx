@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useMutation } from '@apollo/react-hooks';
+import { StackActions, CommonActions } from '@react-navigation/native';
 import { Alert } from 'react-native';
 import { gql } from 'apollo-boost';
 import produce from 'immer';
@@ -45,9 +46,7 @@ function CreateProject({ route, navigation }): React.ReactElement {
   const { position } = route.params;
   const [positionList, setPositionList] = useState([{ name: position, count: 1 }]);
 
-  console.log('date ? ', date);
-
-  const [createNewProject, { data }] = useMutation(CREATE_PROJECT);
+  const [createNewProject] = useMutation(CREATE_PROJECT);
 
   const formik = useFormik({
     initialValues: {
@@ -91,7 +90,12 @@ function CreateProject({ route, navigation }): React.ReactElement {
         },
       });
 
-      navigation.navigate('프로젝트');
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 1,
+          routes: [{ name: '프로젝트' }],
+        }),
+      );
     },
   });
 
