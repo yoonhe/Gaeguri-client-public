@@ -1,10 +1,10 @@
-import React, { useState, useCallback } from 'react';
-import { Platform } from 'react-native';
+import React, {useState, useCallback} from 'react';
+import {Platform} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { BorderButton } from './ButtonComponent';
+import {BorderButton} from './ButtonComponent';
 import FormBoxComponent from './FormBoxComponent';
-import { DateTimePickerBoxStyle } from '../styles/form';
-import { InputButton } from './ButtonComponent';
+import {DateTimePickerBoxStyle} from '../styles/form';
+import {InputButton} from './ButtonComponent';
 import moment from 'moment';
 
 interface DateTimePickerProps {
@@ -12,7 +12,10 @@ interface DateTimePickerProps {
   setDate: Function;
 }
 
-function DateTimePickerComponent({ date, setDate }: DateTimePickerProps): React.ReactElement {
+function DateTimePickerComponent({
+  date,
+  setDate,
+}: DateTimePickerProps): React.ReactElement {
   const [show, setShow] = useState(false);
   const today = new Date();
 

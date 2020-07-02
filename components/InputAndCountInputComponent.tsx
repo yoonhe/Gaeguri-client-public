@@ -1,6 +1,11 @@
-import React from 'react';
-import { RowFormWrapStyle, FormStyle, InputBoxStyle, InputTextStyle } from '../styles/form';
-import { BorderButton, CircleButton } from '../components/ButtonComponent';
+import React, {useState, useEffect} from 'react';
+import {
+  RowFormWrapStyle,
+  FormStyle,
+  InputBoxStyle,
+  InputTextStyle,
+} from '../styles/form';
+import {BorderButton, CircleButton} from '../components/ButtonComponent';
 import CountInputComponent from './CountInputComponent';
 
 function InputAndCountInputComponent({
@@ -12,15 +17,26 @@ function InputAndCountInputComponent({
   positionChangeHandler,
   index,
 }) {
+  const [positionValue, setPositionValue] = useState(position);
+
+  // useEffect(() => {
+  //   console.log('positionValue ? ', positionValue);
+  //   // positionChangeHandler(index, positionValue);
+  // }, [positionValue]);
+
   return (
     <RowFormWrapStyle>
       <FormStyle>
         <InputBoxStyle>
-          <CircleButton onPress={deletePositionItemButtonHandler.bind(null, index)}>X</CircleButton>
+          <CircleButton
+            onPress={deletePositionItemButtonHandler.bind(null, index)}>
+            X
+          </CircleButton>
           <InputTextStyle
             placeholder="포지션"
-            value={position}
-            onChange={positionChangeHandler.bind(null, index)}
+            value={positionValue}
+            onChangeText={(text) => setPositionValue(text)}
+            onBlur={positionChangeHandler.bind(null, index, positionValue)}
             row={true}
           />
         </InputBoxStyle>
