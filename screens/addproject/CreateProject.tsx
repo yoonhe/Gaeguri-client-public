@@ -82,7 +82,7 @@ function CreateProject({ route, navigation }): React.ReactElement {
       createNewProject({
         variables: {
           Project_name: projectName,
-          User_id: 2,
+          User_id: 3,
           EndAt: dateFormat,
           Desc: projectDescription,
           NoOfPosition: positionList,
