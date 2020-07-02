@@ -22,7 +22,7 @@ export const TagTextStyle = styled.Text`
   margin-right: ${props => (props.type === 'text' ? '0' : '30px')};
   align-items: flex-start;
   color: ${props => (props.type === 'text' ? '#8A929E' : '#5dd7b9')};
-  font-size: ${props => props.type === 'text' && '16px'};
+  ${props => props.type === 'text' && 'font-size:16px'};
 `;
 
 export const TagTextButtonStyle = styled.Text`
