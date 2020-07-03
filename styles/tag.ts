@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { Color } from './common';
+
 export const TagListStyle = styled.View`
   display: flex;
   flex-wrap: wrap;
@@ -12,17 +13,17 @@ export const TagItemStyle = styled.View`
   flex-direction: row;
   margin: 5px;
   padding: 10px 0 10px 10px;
-  color: #5dd7b9;
-  border: 1px solid #5dd7b9;
+  color: ${Color.G300};
+  border: 1px solid ${Color.G300};
   border-radius: 15px;
-  background: #fff;
+  background: ${Color.N0};
   overflow: hidden;
 `;
 
 export const TagTextStyle = styled.Text`
   margin-right: 30px;
   align-items: flex-start;
-  color: #5dd7b9;
+  color: ${Color.G300};
 `;
 
 export const TagTextButtonStyle = styled.Text`
@@ -32,7 +33,7 @@ export const TagTextButtonStyle = styled.Text`
   width: 20px;
   height: 30px;
   line-height: 25px;
-  color: #5dd7b9;
+  color: ${Color.G300};
   text-align: center;
 `;
 
