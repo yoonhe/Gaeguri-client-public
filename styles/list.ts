@@ -1,5 +1,15 @@
-import styled from 'styled-components';
+
+import styled from 'styled-components/native';
 import { Color } from './common';
+
+export const ProjectHistoryStyle = styled.View`
+  margin-top: 8px;
+  height: 90px;
+  padding: 0 8px;
+  background: ${Color.G50};
+  border: 1px solid ${Color.G300};
+  border-radius: 5px;
+`;
 
 export const CardListStyle = styled.View`
   margin-bottom: 10px;
@@ -32,14 +42,17 @@ export const TextWrapStyle = styled.View`
 export const TextListStyle = styled.View`
   flex-direction: row;
 `;
+
 export const TextListItemStyle = styled.Text`
   margin-left: 3px;
 `;
+
 export const StateWrap = styled.View`
   margin-top: 5px;
   flex-direction: row;
   align-items: center;
 `;
+
 export const StateStyle = styled.Text`
   color: #50555c;
 `;
