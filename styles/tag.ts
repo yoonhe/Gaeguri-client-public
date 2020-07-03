@@ -23,7 +23,8 @@ export const TagItemStyle = styled.View`
 export const TagTextStyle = styled.Text`
   margin-right: 30px;
   align-items: flex-start;
-  color: ${Color.G300};
+  color: ${props => (props.type === 'text' ? '#8A929E' : '#5dd7b9')};
+  ${props => props.type === 'text' && 'font-size:16px'};
 `;
 
 export const TagTextButtonStyle = styled.Text`
