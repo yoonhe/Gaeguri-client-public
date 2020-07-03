@@ -19,17 +19,11 @@ function ProjectScreen({ navigation, route }): React.ReactElement {
   }
 
   return (
-    <Project.Navigator initialRouteName='Main'>
-      <Project.Screen
-        name='Main'
-        component={Main}
-        options={{
-          title: '',
-        }}
-      />
-      <Project.Screen name='Room' component={Room} />
-      <Project.Screen name='Drawer' component={Drawer} />
-      <Project.Screen name='ProjectSetting' component={ProjectSetting} />
+    <Project.Navigator initialRouteName="Main">
+      <Project.Screen name="MAIN" component={Main} />
+      <Project.Screen name="Room" component={Room} />
+      <Project.Screen name="Drawer" component={Drawer} />
+      <Project.Screen name="ProjectSetting" component={ProjectSetting} />
     </Project.Navigator>
   );
 }
