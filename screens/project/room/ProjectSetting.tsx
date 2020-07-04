@@ -5,9 +5,10 @@ import { useFormik } from 'formik';
 import { PageWrapStyle } from '../../../styles/common';
 import gql from 'graphql-tag';
 import { useMutation, useQuery } from '@apollo/react-hooks';
+import { BorderButton } from '../../../components/ButtonComponent';
 
 const UPDATE_PROJECT = gql`
-  mutation UpdateProjectInfo($input: upProject) {
+  mutation UpdateProjectInfo($input: upProject!) {
     updateProjectInfo(input: $input) {
       message
       path
@@ -16,18 +17,24 @@ const UPDATE_PROJECT = gql`
 `;
 
 const GET_PROJECT = gql`
-  {
-    getProjectDetail(Project_id: 2) {
+  query GetProjectDetail($Project_id: Int!) {
+    getProjectDetail(Project_id: $Project_id) {
       Project_name
+      status
     }
   }
 `;
 
+// 모집중: ‘await’ 시작: ‘Start’ 종료: ‘End’
 function ProjectSetting({ navigation }): React.ReactElement {
-  const [updateProject] = useMutation(UPDATE_PROJECT);
-  const { loading, error, data } = useQuery(GET_PROJECT);
+  const [updateProject] = useMutation(UPDATE_PROJECT, {
+    refetchQueries: [{ query: GET_PROJECT, variables: { Project_id: 2 } }],
+    awaitRefetchQueries: true,
+  });
 
-  console.log();
+  const { loading, error, data } = useQuery(GET_PROJECT, {
+    variables: { Project_id: 2 },
+  });
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -47,27 +54,37 @@ function ProjectSetting({ navigation }): React.ReactElement {
       projectProgress: '',
     },
     onSubmit(values) {
-      console.log(values);
       updateProject({
         variables: {
           input: {
             Project_id: 2,
-            Project_name: 'Vue 플젝 구함',
+            Project_name: values.projectName,
           },
         },
       });
     },
   });
 
+  const onClick = useCallback(() => {
+    console.log('click');
+  }, []);
+
+  console.log(data?.getProjectDetail?.status);
+
   return (
     <PageWrapStyle>
       <FormBoxComponent
         title='프로젝트 이름'
-        placeholder={data.getProjectDetail.Project_name}
+        placeholder={data?.getProjectDetail?.Project_name}
         values={formik.values.projectName}
         onChangeText={formik.handleChange('projectName')}
       />
       <Text>진행 상황</Text>
+      <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1 }}>
+        <BorderButton children='모집중' onPress={onClick} />
+        <BorderButton children='진행중' onPress={onClick} />
+        <BorderButton children='종료' onPress={onClick} />
+      </View>
     </PageWrapStyle>
   );
 }

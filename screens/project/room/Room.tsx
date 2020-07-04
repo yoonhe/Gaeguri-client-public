@@ -1,14 +1,9 @@
-import React, {useState, useCallback, useLayoutEffect} from 'react';
-import {
-  GiftedChat,
-  IMessage,
-  Bubble,
-  InputToolbar,
-  Send,
-} from 'react-native-gifted-chat';
-import {HeaderRightOcticons} from '../../../styles/common';
-import {StyleSheet, View} from 'react-native';
-// import { Ionicons } from '@expo/vector-icons';
+import React, { useState, useCallback, useLayoutEffect } from 'react';
+import { GiftedChat, IMessage, Bubble, InputToolbar, Send } from 'react-native-gifted-chat';
+import { HeaderRightOcticons } from '../../../styles/common';
+import { StyleSheet, View, Text } from 'react-native';
+import Icon from 'react-native-vector-icons/Octicons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const dummyData: IDummyData[] = [
   {
@@ -54,7 +49,7 @@ interface IDummyData {
   };
 }
 
-function Room({navigation, route}): React.ReactElement {
+function Room({ navigation, route }): React.ReactElement {
   const [routerTitle, setRouterTitle] = useState<string>(route.params.title);
   const [messages, setMessages] = useState<IMessage[]>(dummyData);
 
@@ -62,18 +57,18 @@ function Room({navigation, route}): React.ReactElement {
     setMessages(GiftedChat.append(messages, newMessages));
 
   const onOpenSideBar = useCallback(() => {
-    navigation.navigate('Drawer', {title: routerTitle});
+    navigation.navigate('Drawer', { title: routerTitle });
   }, []);
 
   useLayoutEffect(() => {
     navigation.setOptions({
       title: routerTitle === '' ? 'React 프로젝트 하실 분!' : routerTitle,
       headerRight: () => (
-        <HeaderRightOcticons
-          name="three-bars"
+        <Icon
+          name='three-bars'
           size={24}
-          color="black"
           onPress={onOpenSideBar}
+          style={{ marginHorizontal: 10 }}
         />
       ),
     });
@@ -121,8 +116,8 @@ function Room({navigation, route}): React.ReactElement {
   const renderSend = (props: any) => {
     return (
       <Send {...props}>
-        <View style={{marginRight: 10, marginBottom: 5}}>
-          {/* <Ionicons name='ios-send' size={24} color='black' style={{ marginHorizontal: 10 }} /> */}
+        <View style={{ marginRight: 10, marginBottom: 5 }}>
+          <Ionicons name='ios-send' size={24} color='black' style={{ marginHorizontal: 10 }} />
         </View>
       </Send>
     );
@@ -131,13 +126,13 @@ function Room({navigation, route}): React.ReactElement {
   return (
     <View style={styles.container}>
       <GiftedChat
-        {...{messages, onSend}}
+        {...{ messages, onSend }}
         user={{
           _id: 1,
         }}
         renderUsernameOnMessage={true}
         renderBubble={renderBubble}
-        placeholder="메세지를 입력하세요"
+        placeholder='메세지를 입력하세요'
         renderInputToolbar={renderInputToolbar}
         onPressAvatar={onPressAvatar}
         renderSend={renderSend}
