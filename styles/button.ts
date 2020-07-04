@@ -1,7 +1,18 @@
 import styled from 'styled-components/native';
 import { Color } from './common';
 
+export const ButtonWrap = styled.View`
+  margin-top: -10px;
+  margin-right: -10px;
+  flex-direction: row;
+`;
+
+export const ButtonBox = styled.TouchableOpacity`
+  ${props => props.row && 'flex:1; margin-right:10px'};
+`;
+
 export const BorderButtonStyle = styled.Text`
+  width: 100%;
   margin-top: 10px;
   padding: ${props => (props.small ? '10px' : '15px')};
   color: ${props => (props.backgroundColor ? '#fff' : '#5dd7b9')};
@@ -10,6 +21,10 @@ export const BorderButtonStyle = styled.Text`
   border-radius: 5px;
   text-align: center;
   overflow: hidden;
+`;
+
+export const ButtonText = styled.Text`
+  color: #5dd7b9;
 `;
 
 export const CircleButtonStyle = styled(BorderButtonStyle)`

@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { ScrollView } from 'react-native';
 import profileImage from '../assets/profile_medium.png';
 // import { Octicons } from '@expo/vector-icons';
 
@@ -115,7 +116,7 @@ export const TextCaptionStyle = styled.Text`
 
 export const PageWrapStyle = styled.View`
   flex: 1;
-  padding: 30px 30px 10px;
+  padding: 30px;
 `;
 
 export const PageWrapAlignCenterStyle = styled(PageWrapStyle)`

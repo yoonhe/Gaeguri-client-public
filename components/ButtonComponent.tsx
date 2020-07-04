@@ -1,7 +1,13 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
-import { BorderButtonStyle, InputButtonStyle, CircleButtonStyle } from '../styles/button';
-import { TagTextButtonStyle } from '../styles/tag';
+import { TouchableOpacity, Button } from 'react-native';
+import {
+  ButtonBox,
+  BorderButtonStyle,
+  InputButtonStyle,
+  CircleButtonStyle,
+  ButtonText,
+} from '../styles/button';
+import { TagTextButtonStyle, TagTextTouchStyle } from '../styles/tag';
 
 interface BorderButtonProps {
   children: string;
@@ -14,32 +20,32 @@ export function BorderButton({
   ...props
 }: BorderButtonProps): React.ReactElement {
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
+    <ButtonBox {...props} onPress={onPress} activeOpacity={0.8}>
       <BorderButtonStyle {...props}>{children}</BorderButtonStyle>
-    </TouchableOpacity>
+    </ButtonBox>
   );
 }
 
 export function TextButton({ children, onPress }: BorderButtonProps): React.ReactElement {
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
-      <TagTextButtonStyle>{children}</TagTextButtonStyle>
-    </TouchableOpacity>
+    <TagTextButtonStyle onPress={onPress} activeOpacity={0.8}>
+      <ButtonText>{children}</ButtonText>
+    </TagTextButtonStyle>
   );
 }
 
 export function InputButton({ children, onPress, ...props }): React.ReactElement {
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
+    <ButtonBox {...props} onPress={onPress} activeOpacity={0.8}>
       <InputButtonStyle {...props}>{children}</InputButtonStyle>
-    </TouchableOpacity>
+    </ButtonBox>
   );
 }
 
 export function CircleButton({ children, onPress }): React.ReactElement {
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
+    <ButtonBox onPress={onPress} activeOpacity={0.8}>
       <CircleButtonStyle>{children}</CircleButtonStyle>
-    </TouchableOpacity>
+    </ButtonBox>
   );
 }
