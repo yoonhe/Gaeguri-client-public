@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { ScrollView } from 'react-native';
+import profileImage from '../assets/profile_medium.png';
 // import { Octicons } from '@expo/vector-icons';
 
 // 컬러 팔레트 레퍼런스 : https://atlassian.design/guidelines/brand/color
@@ -16,7 +17,7 @@ export const Color = {
   // Green
   G500: '#006644',
   G400: '#00875A',
-  G300: '#36B37E', // Primery
+  G300: '#5dd7b9', // Primery
   G200: '#57D9A3',
   G100: '#79F2C0',
   G75: '#ABF5D1',
@@ -67,38 +68,42 @@ export const Color = {
   N0: '#FFFFFF', // Primery
 };
 
+// 텍스트 : 프로필 유저네임, 큰제목용
 export const TextTitleStyle = styled.Text`
-  font-size: 18px;
-  font-weight: 600;
-  margin: 6px 0 8px 0px;
+  font-size: 17px;
+  font-weight: 700;
+  margin-top: 6px;
   color: ${Color.N800};
 `;
 
+// 텍스트 : 프로필 항목 타이틀
 export const TextSubTitleStyle = styled.Text`
   font-size: 13px;
   font-weight: 600;
-  margin: 8px 0 6px 0px;
+  margin-top: 16px;
   color: ${Color.N500};
 `;
 
+// 텍스트 : 항목 내용 텍스트
 export const TextContentStyle = styled.Text`
-  font-size: 15px;
-  font-weight: 400;
+  font-size: 16px;
+  font-weight: 300;
   line-height: 22px;
-  margin: 0 0 2px 0px;
+  margin-top: 8px;
   color: ${Color.N600};
 `;
 
 export const TextLinkStyle = styled.Text`
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 400;
-  margin: 2px 0 2px 0px;
+  margin-top: 8px;
   color: ${Color.B400};
 `;
 
 export const TextDateStyle = styled.Text`
   font-size: 13px;
   font-weight: 400;
+  margin-top: 4px;
   color: ${Color.N300};
 `;
 
@@ -124,9 +129,11 @@ export const PageWrapWhiteStyle = styled.ScrollView`
   background-color: ${Color.N0};
 `;
 
+// 디바이더 : 항목 사이 가로 줄
 export const DividerStyle = styled.View`
   height: 1px;
   background-color: ${Color.N30};
+  margin-top: 12px;
   margin-bottom: 12px;
 `;
 
@@ -137,4 +144,32 @@ export const DividerStyle = styled.View`
 
 export const HeaderRightOcticons = styled.View`
   marginhorizontal: 10px;
+`;
+
+// 프로필 이미지 : 마이페이지
+export const ProfileMediumStyle = styled.Image.attrs(props =>
+  props.image
+    ? {
+        source: 'https://placeimg.com/67/67/any',
+      }
+    : { source: profileImage },
+)`
+  width: 67px;
+  height: 67px;
+  border-radius: 34px;
+  margin-right: 12px;
+`;
+
+// 프로필 이미지 : 유저 프로필 모달
+export const ProfileSmallStyle = styled.Image.attrs(props =>
+  props.image
+    ? {
+        source: 'https://placeimg.com/67/67/any',
+      }
+    : { source: profileImage },
+)`
+  width: 52px;
+  height: 52px;
+  border-radius: 26px;
+  margin-right: 12px;
 `;

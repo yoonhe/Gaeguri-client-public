@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { Color } from './common';
+
 export const TagListStyle = styled.View`
   display: flex;
   flex-wrap: wrap;
@@ -18,7 +19,7 @@ export const TagItemStyle = styled.View`
   padding: 10px 0 10px 10px;
   border: 1px solid #5dd7b9;
   border-radius: 15px;
-  background: #fff;
+  background: ${Color.N0};
   overflow: hidden;
 `;
 
@@ -48,7 +49,7 @@ export const TagTextButtonStyle = styled.TouchableOpacity`
   right: 0;
   width: 20px;
   line-height: 25px;
-  color: #5dd7b9;
+  color: ${Color.G300};
   text-align: center;
 `;
 

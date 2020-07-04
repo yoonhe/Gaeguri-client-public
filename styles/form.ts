@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { Color } from './common';
 
 export const FormBoxStyle = styled.View`
   position: relative;
@@ -27,7 +28,7 @@ export const InputTextStyle = styled.TextInput`
   ${props => props.row && 'flex:1'};
   padding: 15px;
   min-height: 50px;
-  background: #fff;
+  background: ${Color.N0};
   color: #0b132b;
   border-radius: 10px;
 `;
@@ -47,7 +48,7 @@ export const InputCountStyle = styled.TextInput`
   flex: 1;
   height: 47px;
   text-align: center;
-  background: #fff;
+  background: ${Color.N0};
   color: #0b132b;
   border: 1px solid #5dd7b9;
   border-top-color: transparent;
@@ -59,7 +60,7 @@ export const InputCountButtonStyle = styled.Text`
   height: 47px;
   line-height: 47px;
   text-align: center;
-  color: #fff;
+  color: ${Color.N0};
   font-size: 20px;
   background: #60d1b7;
 `;
@@ -69,7 +70,7 @@ export const DateTimePickerBoxStyle = styled.View`
   left: 0;
   bottom: 0;
   width: 100%;
-  background: #fff;
+  background: ${Color.N0};
   z-index: 9999;
 
   box-shadow: 10px -5px 3px rgba(0, 0, 0, 0.2);
