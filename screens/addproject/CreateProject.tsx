@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { StackActions, CommonActions } from '@react-navigation/native';
-import { Alert } from 'react-native';
+import { Alert, View } from 'react-native';
 import { gql } from 'apollo-boost';
 import produce from 'immer';
 import InputAndCountInputComponent from '../../components/InputAndCountInputComponent';
@@ -10,6 +10,8 @@ import { BorderButton } from '../../components/ButtonComponent';
 import FormBoxComponent from '../../components/FormBoxComponent';
 import DateTimePickerComponent from '../../components/DateTimePickerComponent';
 import { PageWrapStyle } from '../../styles/common';
+import { ButtonWrap } from '../../styles/button';
+
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useFormik } from 'formik';
 import moment from 'moment';
@@ -190,6 +192,20 @@ function CreateProject({ route, navigation }): React.ReactElement {
 
         <FormBoxComponent title="주요스택">
           <TagListComponent tagList={tagList} setTagList={setTagList} produce={produce} />
+        </FormBoxComponent>
+
+        <FormBoxComponent title="주요스택">
+          <ButtonWrap>
+            <BorderButton row={true} backgroundColor={true} onPress={formik.handleSubmit}>
+              완료
+            </BorderButton>
+            <BorderButton row={true} backgroundColor={true} onPress={formik.handleSubmit}>
+              완료
+            </BorderButton>
+            <BorderButton row={true} backgroundColor={true} onPress={formik.handleSubmit}>
+              완료
+            </BorderButton>
+          </ButtonWrap>
         </FormBoxComponent>
 
         <FormBoxComponent title="태그">

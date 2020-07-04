@@ -24,6 +24,7 @@ function TagListComponent({ tagList, setTagList }): React.ReactElement {
 
   const deleteTagButtonHandler = useCallback(
     index => {
+      console.log('deleteTagButtonHandler ?  ');
       setTagList(
         produce(draft => {
           draft.splice(index, 1);
@@ -44,12 +45,7 @@ function TagListComponent({ tagList, setTagList }): React.ReactElement {
       <TagListStyle>
         {tagList &&
           tagList.map((tagName, index) => (
-            <TagListItemComponent
-              deleteTagButtonHandler={deleteTagButtonHandler}
-              key={index}
-              index={index}
-              tagName={tagName}
-            />
+            <TagListItemComponent key={index} index={index} tagName={tagName} />
           ))}
       </TagListStyle>
     </>

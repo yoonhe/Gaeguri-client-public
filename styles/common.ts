@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import {ScrollView} from 'react-native';
+import { ScrollView } from 'react-native';
 // import { Octicons } from '@expo/vector-icons';
 
 // 컬러 팔레트 레퍼런스 : https://atlassian.design/guidelines/brand/color
@@ -111,7 +111,7 @@ export const TextCaptionStyle = styled.Text`
 
 export const PageWrapStyle = styled.View`
   flex: 1;
-  padding: 30px 30px 10px;
+  padding: 30px;
 `;
 
 export const PageWrapAlignCenterStyle = styled(PageWrapStyle)`

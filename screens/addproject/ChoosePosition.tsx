@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { View } from 'react-native';
 import { PageWrapAlignCenterStyle } from '../../styles/common';
 import FormBoxComponent from '../../components/FormBoxComponent';
 import { BorderButton } from '../../components/ButtonComponent';
@@ -11,12 +12,14 @@ function ChoosePosition({ navigation }): React.ReactElement {
 
   return (
     <PageWrapAlignCenterStyle>
-      <FormBoxComponent
-        value={position}
-        onChangeText={text => setPosition(text)}
-        placeholder="포지션을 입력해주세요"
-      />
-      <BorderButton onPress={nextPageButtonHandler}>다음</BorderButton>
+      <View>
+        <FormBoxComponent
+          value={position}
+          onChangeText={text => setPosition(text)}
+          placeholder="포지션을 입력해주세요"
+        />
+        <BorderButton onPress={nextPageButtonHandler}>다음</BorderButton>
+      </View>
     </PageWrapAlignCenterStyle>
   );
 }

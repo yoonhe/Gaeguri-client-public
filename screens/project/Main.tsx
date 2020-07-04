@@ -9,12 +9,14 @@ import {
   ButtonAndTextStyle,
   TextWrapStyle,
   TextListStyle,
+  TextListItemWrapStyle,
   TextListItemStyle,
   StateWrap,
   StateStyle,
   StateShapeStyle,
+  NewIcon,
 } from '../../styles/list';
-import { TagListStyle, TagItemStyle, TagTextStyle } from '../../styles/tag';
+import { TextTagListStyle, TextTagItemStyle, TextTagTextStyle } from '../../styles/tag';
 import { BorderButton } from '../../components/ButtonComponent';
 
 const GET_PROJECT = gql`
@@ -44,7 +46,7 @@ const GET_PROJECT = gql`
 
 function Main({ navigation }): React.ReactElement {
   const { loading, error, data } = useQuery(GET_PROJECT, {
-    variables: { User_id: 10 },
+    variables: { User_id: 0 },
   });
   const goToRoom = useCallback(() => {
     navigation.navigate('Room', { title: '' });
@@ -61,13 +63,13 @@ function Main({ navigation }): React.ReactElement {
             <CardListStyle>
               <CardListTitle>{project.Project_name}</CardListTitle>
               {/* <Text>{project.Desc}</Text> */}
-              <TagListStyle type="text">
+              <TextTagListStyle>
                 {project.projectstack.map(stackItem => (
-                  <TagItemStyle type="text">
-                    <TagTextStyle type="text">#{stackItem.stack.Stack_name}</TagTextStyle>
-                  </TagItemStyle>
+                  <TextTagItemStyle>
+                    <TextTagTextStyle>#{stackItem.stack.Stack_name}</TextTagTextStyle>
+                  </TextTagItemStyle>
                 ))}
-              </TagListStyle>
+              </TextTagListStyle>
               <ButtonAndTextStyle>
                 <BorderButton onPress={goToRoom} backgroundColor={true}>
                   참여요청
@@ -78,15 +80,20 @@ function Main({ navigation }): React.ReactElement {
                     <StateStyle>{project.status === 'await' && '모집중'}</StateStyle>
                   </StateWrap>
                   <TextListStyle>
-                    {project.projectpositionno.map(positionInfo => (
-                      <>
-                        <TextListItemStyle>{positionInfo.position.Position_name}</TextListItemStyle>
+                    {project.projectpositionno.map((positionInfo, index) => (
+                      <TextListItemWrapStyle key={index} index={index}>
+                        <TextListItemStyle>
+                          {positionInfo.position.Position_name}{' '}
+                        </TextListItemStyle>
                         <TextListItemStyle>{positionInfo.NoOfPosition}</TextListItemStyle>
-                      </>
+                        <Text>{index !== project.projectpositionno.length - 1 && ','}</Text>
+                      </TextListItemWrapStyle>
                     ))}
                   </TextListStyle>
                 </TextWrapStyle>
               </ButtonAndTextStyle>
+
+              <NewIcon>NEW</NewIcon>
             </CardListStyle>
           ))}
       </ScrollView>

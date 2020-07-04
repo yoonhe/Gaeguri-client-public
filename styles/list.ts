@@ -2,16 +2,21 @@ import styled from 'styled-components';
 import { Color } from './common';
 
 export const CardListStyle = styled.View`
+  position: relative;
   margin-bottom: 10px;
   padding: 20px 30px;
   border: 1px solid #dcdcdc;
   background: #fff;
   border-radius: 15px;
+  min-height: 140px;
+  overflow: hidden;
 `;
 
 export const CardListTitle = styled.Text`
+  margin-right: 50px;
   margin-bottom: 5px;
-  font-size: 20px;
+  font-size: 18px;
+  color: ${Color.N800};
 `;
 
 export const ButtonAndTextStyle = styled.View`
@@ -32,8 +37,15 @@ export const TextWrapStyle = styled.View`
 export const TextListStyle = styled.View`
   flex-direction: row;
 `;
+
+export const TextListItemWrapStyle = styled.View`
+  flex-direction: row;
+
+  ${props => props.index !== 0 && 'margin-left:5px;'}
+`;
+
 export const TextListItemStyle = styled.Text`
-  margin-left: 3px;
+  color: ${Color.N800};
 `;
 export const StateWrap = styled.View`
   margin-top: 5px;
@@ -41,7 +53,7 @@ export const StateWrap = styled.View`
   align-items: center;
 `;
 export const StateStyle = styled.Text`
-  color: #50555c;
+  color: ${Color.N100};
 `;
 
 export const StateShapeStyle = styled.View`
@@ -50,4 +62,14 @@ export const StateShapeStyle = styled.View`
   height: 10px;
   border-radius: 5px;
   background: ${Color.G75};
+`;
+
+export const NewIcon = styled.Text`
+  position: absolute;
+  top: -32px;
+  right: -60px;
+  padding: 50px 45px 3px;
+  background: #5dd7b9;
+  color: #fff;
+  transform: rotate(50deg);
 `;
