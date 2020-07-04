@@ -1,73 +1,52 @@
-import React, {useEffect, useCallback, useLayoutEffect, useState} from 'react';
-import {View, Image, StyleSheet, Button} from 'react-native';
+import React, { useCallback, useLayoutEffect } from 'react';
+import { View, Button } from 'react-native';
 import {
   PageWrapWhiteStyle,
-  PageWrap,
   TextContentStyle,
   TextSubTitleStyle,
   TextTitleStyle,
-  TextDateStyle,
   DividerStyle,
-  Color,
+  ProfileSmallStyle,
 } from '../../styles/common';
-import {StackStyle} from '../../styles/tag';
-// import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { TagListStyle, TagItemStyle, TagTextStyle } from '../../styles/tag';
+import UserProjectHistory from '../../components/UserProjectHistory';
+import gql from 'graphql-tag';
+import { useQuery } from '@apollo/react-hooks';
 
-//DB요청 정보: user_id
-//DB 반환 정보: profile 사진, username, email, 짧은 소개, 기술스택
-const dummyUser: IDummyUser = {
-  profile: 'https://placeimg.com/67/67/any',
-  username: '김코딩',
-  introduction:
-    '안녕하세요, 김코딩 입니다. 코딩이 취미인 프런트엔드 개발자입니다. 요즘은 그래프큐앨을 공부하고 있습니다. 제 블로그와 유튜브 채널에도 방문해주세요. 만나서 반갑습니다.',
-  stack: ['react', 'react-native', 'node.js', 'express', 'redux', 'mySQL'],
-  email: 'kimcoding@email.com',
-  projects: [
-    {
-      title: '리액트 앱 프로젝트!!',
-      position: '프론트엔드',
-      date: '2020년 7월 1일',
-    },
-    {
-      title: '그래프큐앨 스터디 프로젝트 함께해요',
-      position: '백엔드',
-      date: '2020년 7월 1일',
-    },
-    {
-      title: 'Node.js 공부하면서 놀면서 만들어요',
-      position: '프론트엔드',
-      date: '2020년 7월 1일',
-    },
-  ],
-};
+// DB요청 정보: user_id
+// DB 반환 정보: profile 사진, username, email, 짧은 소개, 기술스택
 
-interface IDummyUser {
-  profile: string;
-  username: string;
-  introduction: string;
-  email: string;
-  stack: string[];
-  projects: Iprojects[];
-}
+const GET_MY_PROFILE = gql`
+  query GetMyProfile {
+    ok
+    error
+    user {
+      User_id
+      Username
+      AboutMe
+      userstack {
+        stack {
+          Stack_name
+        }
+      }
+      Email
+    }
+  }
+`;
 
-interface Iprojects {
-  title: string;
-  position: string;
-  date: string;
-}
+function MyProfile({ navigation, route }): React.ReactElement {
+  const { loading, error, data } = useQuery(GET_MY_PROFILE);
+  if (loading) console.log('Loading...');
+  if (error) console.log(`Error! ${error.message}`);
+  if (data) console.log('data ? ', data);
+  // const user = data.GetMyProfile;
 
-function MyProfile({navigation, route}): React.ReactElement {
-  const {profile, username, introduction, stack, email} = dummyUser;
+  //더미데이터
+  const stackList = ['JavaScript', 'Java', 'JavaScript', 'Java', 'JavaScript', 'Java'];
 
   const gotoEditProfile = useCallback(() => {
-    navigation.navigate('EditMyProfile', {
-      profile,
-      username,
-      introduction,
-      stack,
-      email,
-    });
-  }, [profile, username, introduction, stack, email]);
+    navigation.navigate('EditMyProfile', {});
+  }, []);
 
   //헤더에 버튼 넣기
   useLayoutEffect(() => {
@@ -78,73 +57,55 @@ function MyProfile({navigation, route}): React.ReactElement {
 
   return (
     <PageWrapWhiteStyle>
-      <View
-        style={{flexDirection: 'row', alignItems: 'center', marginBottom: 16}}>
-        <Image
-          style={styles.profileMedium}
-          source={
-            profile !== ''
-              ? {uri: profile}
-              : require('../../assets/MyProfile/profile_medium.png')
-          }
-        />
-        <TextTitleStyle>{username}</TextTitleStyle>
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
+        {/* 프로필이미지, 유저네임 */}
+        <ProfileSmallStyle image={false} />
+        {/* <TextTitleStyle>{user.username}</TextTitleStyle> */}
+        <TextTitleStyle>김코딩</TextTitleStyle>
       </View>
       <DividerStyle />
-      <View>
-        <TextSubTitleStyle>Introduction</TextSubTitleStyle>
-        <TextContentStyle>{introduction}</TextContentStyle>
-      </View>
-      <TextSubTitleStyle>Stack</TextSubTitleStyle>
-      <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-        {stack.map((stack) => {
-          return <StackStyle key={stack}>{stack}</StackStyle>;
-        })}
-      </View>
+      {/* 짧은소개 */}
+      <TextSubTitleStyle>짧은소개</TextSubTitleStyle>
+      {/* <TextContentStyle>{user.AboutMe}</TextContentStyle> */}
+      <TextContentStyle>
+        안녕하세요, 코딩을 좋아하는 김코딩 입니다. 안녕하세요, 코딩을 좋아하는 김코딩 입니다.
+        안녕하세요, 코딩을 좋아하는 김코딩 입니다. 안녕하세요, 코딩을 좋아하는 김코딩 입니다.
+        안녕하세요, 코딩을 좋아하는 김코딩 입니다. 안녕하세요, 코딩을 좋아하는 김코딩 입니다.
+        안녕하세요, 코딩을 좋아하는 김코딩 입니다. 안녕하세요, 코딩을 좋아하는 김코딩 입니다.
+        안녕하세요, 코딩을 좋아하는 김코딩 입니다. 안녕하세요, 코딩을 좋아하는 김코딩 입니다.
+        안녕하세요, 코딩을 좋아하는 김코딩 입니다. 안녕하세요, 코딩을 좋아하는 김코딩 입니다.
+        안녕하세요, 코딩을 좋아하는 김코딩 입니다. 안녕하세요, 코딩을 좋아하는 김코딩 입니다.
+      </TextContentStyle>
+      {/* 기술스택 */}
+      <TextSubTitleStyle>기술스택</TextSubTitleStyle>
+      <TagListStyle>
+        {/* {user.userstack.stack === 'null' ? (
+          <TextContentStyle>기술스택이 없습니다.</TextContentStyle>
+        ) : (
+          user.userstack.stack.map(stack => (
+            <TagItemStyle key={stack.Stack_id}>
+              <TagTextStyle>{stack.Stack_name}</TagTextStyle>
+            </TagItemStyle>
+          ))
+        )} */}
+        {stackList &&
+          stackList.map((stack, index) => (
+            <TagItemStyle key={index}>
+              <TagTextStyle>{stack}</TagTextStyle>
+            </TagItemStyle>
+          ))}
+      </TagListStyle>
+      {/* 프로젝트 히스토리 */}
+      <TextSubTitleStyle>프로젝트 히스토리</TextSubTitleStyle>
 
-      <TextSubTitleStyle>Project History</TextSubTitleStyle>
-      {dummyUser.projects.map((project) => {
-        return (
-          <View style={styles.history} key={project.title}>
-            <TextContentStyle>{project.title}</TextContentStyle>
-            <TextDateStyle>
-              {project.position} | {project.date}
-            </TextDateStyle>
-          </View>
-        );
-      })}
-      <TextSubTitleStyle>Contact</TextSubTitleStyle>
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        {/* <MaterialCommunityIcons
-          name="email-outline"
-          size={20}
-          color={`${Color.N500}`}
-          style={{ marginRight: 2 }}
-        /> */}
-        <TextContentStyle>{email}</TextContentStyle>
-      </View>
+      {/* 프로젝트 컴포넌트 */}
+      <UserProjectHistory />
+      <TextSubTitleStyle>이메일</TextSubTitleStyle>
+      {/* <TextContentStyle>{user.Email}</TextContentStyle> */}
+      <TextContentStyle>user@email.com</TextContentStyle>
+      <DividerStyle />
     </PageWrapWhiteStyle>
   );
 }
-
-const styles = StyleSheet.create({
-  profileMedium: {
-    width: 67,
-    height: 67,
-    borderRadius: 34,
-    marginRight: 12,
-  },
-  history: {
-    justifyContent: 'center',
-    height: 70,
-    marginTop: 2,
-    marginBottom: 4,
-    borderColor: `${Color.B400}`,
-    backgroundColor: `${Color.B50}`,
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 8,
-  },
-});
 
 export default MyProfile;

@@ -12,7 +12,6 @@ function ShowOffScreen() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>ShowOff Screen</Text>
-
       {/* 모달띄울 버튼 */}
       <Button title="유저프로필 모달 프리뷰" onPress={toggleModal} />
       {/* 유저프로필 모달 */}
