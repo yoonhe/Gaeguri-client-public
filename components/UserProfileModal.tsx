@@ -1,7 +1,6 @@
 import React from 'react';
 import Modal from 'react-native-modal';
 import { View, StyleSheet, ScrollView } from 'react-native';
-// import Dimensions from 'react-native-extra-dimensions-android';
 import {
   PageWrapStyle,
   TextContentStyle,
@@ -12,7 +11,7 @@ import {
   ProfileSmallStyle,
 } from '../styles/common';
 import { TagListStyle, TagItemStyle, TagTextStyle } from '../styles/tag';
-import { BorderButtonStyle } from '../styles/button';
+import { BorderButtonSmallStyle, BorderButtonStyle } from '../styles/button';
 import UserProjectHistory from './UserProjectHistory';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
@@ -35,7 +34,7 @@ const GET_MY_PROFILE = gql`
   }
 `;
 
-function UserProfileModal({ isModalVisible, toggleModal }): React.ReactElement {
+function UserProfileModal({ isModalVisible, toggleModal, route }): React.ReactElement {
   const { loading, error, data } = useQuery(GET_MY_PROFILE);
   if (loading) console.log('Loading...');
   if (error) console.log(`Error! ${error.message}`);
@@ -61,9 +60,7 @@ function UserProfileModal({ isModalVisible, toggleModal }): React.ReactElement {
               <ProfileSmallStyle image={false} />
               <TextTitleStyle>김코딩</TextTitleStyle>
             </View>
-            <BorderButtonStyle small={true} backgroundColor={true} onPress={() => {}}>
-              초대하기
-            </BorderButtonStyle>
+            <BorderButtonSmallStyle backgroundColor={true}>초대하기</BorderButtonSmallStyle>
           </View>
           <DividerStyle />
           <ScrollView>
