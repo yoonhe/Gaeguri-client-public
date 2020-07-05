@@ -166,8 +166,7 @@ export const ProfileSmallStyle = styled.Image.attrs(props =>
     ? {
         source: 'https://placeimg.com/67/67/any',
       }
-    : // : { source: profileImage },
-      { source: profileImage },
+    : { source: profileImage },
 )`
   width: 52px;
   height: 52px;
