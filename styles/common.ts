@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { ScrollView } from 'react-native';
-import profileImage from '../assets/profile_medium.png';
+const profileImage = require('../assets/profile_medium.png') as string;
 // import { Octicons } from '@expo/vector-icons';
 
 // 컬러 팔레트 레퍼런스 : https://atlassian.design/guidelines/brand/color
@@ -15,13 +15,13 @@ export const Color = {
   B75: '#B3D4FF',
   B50: '#DEEBFF',
   // Green
-  G500: '#006644',
-  G400: '#00875A',
+  G500: '#339582',
+  G400: '#35b19a',
   G300: '#5dd7b9', // Primery
-  G200: '#57D9A3',
-  G100: '#79F2C0',
-  G75: '#ABF5D1',
-  G50: '#E3FCEF',
+  G200: '#67e2c3',
+  G100: '#85f7dc',
+  G75: '#b2f8e2',
+  G50: '#e6fdf5',
   // Red
   R500: '#BF2600',
   R400: '#DE350B',
