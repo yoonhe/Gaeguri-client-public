@@ -67,7 +67,7 @@ function UserProjectHistory({}): React.ReactElement {
   return (
     <View>
       {loading && <Text>loading...</Text>}
-      {projects === 'undefined' ? (
+      {projects === null ? (
         <TextContentStyle>참여한 프로젝트가 없습니다.</TextContentStyle>
       ) : (
         projects.map(project => (
