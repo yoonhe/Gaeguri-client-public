@@ -62,22 +62,19 @@ function UserProjectHistory({}): React.ReactElement {
   if (error) console.log(`Error! ${error.message}`);
   if (data) console.log('data ?? ', data);
 
-  const projects = data.getMyProjectList;
+  // const projects = data.getMyProjectList;
 
   return (
     <View>
       {loading && <Text>loading...</Text>}
-      {projects === null ? (
-        <TextContentStyle>참여한 프로젝트가 없습니다.</TextContentStyle>
-      ) : (
-        projects.map(project => (
+      {data &&
+        data.getMyProjectList.map(project => (
           <ProjectHistoryStyle key={project.Project_id}>
             <TextContentStyle>{project.Project_name}</TextContentStyle>
             {/* <TextDateStyle>{project.projectpositionno.position.Position_name}</TextDateStyle> */}
             <TextDateStyle>{project.EndAt}</TextDateStyle>
           </ProjectHistoryStyle>
-        ))
-      )}
+        ))}
     </View>
   );
 }
