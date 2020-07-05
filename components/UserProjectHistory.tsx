@@ -67,13 +67,13 @@ function UserProjectHistory({}): React.ReactElement {
   return (
     <View>
       {loading && <Text>loading...</Text>}
-      {projects === 'null' ? (
+      {projects === 'undefined' ? (
         <TextContentStyle>참여한 프로젝트가 없습니다.</TextContentStyle>
       ) : (
         projects.map(project => (
           <ProjectHistoryStyle key={project.Project_id}>
             <TextContentStyle>{project.Project_name}</TextContentStyle>
-            <TextDateStyle>{project.projectpositionno.position}</TextDateStyle>
+            {/* <TextDateStyle>{project.projectpositionno.position.Position_name}</TextDateStyle> */}
             <TextDateStyle>{project.EndAt}</TextDateStyle>
           </ProjectHistoryStyle>
         ))

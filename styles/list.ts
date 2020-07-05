@@ -3,7 +3,7 @@ import { Color } from './common';
 
 export const ProjectHistoryStyle = styled.View`
   margin-top: 8px;
-  padding: 0 8px;
+  padding: 0 8px 8px;
   background: ${Color.G50};
   border: 1px solid ${Color.G300};
   border-radius: 5px;
