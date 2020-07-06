@@ -1,10 +1,11 @@
 import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import CreateProjectStack from '../screens/addproject/CreateProjectStack';
 import ShowOffScreen from '../screens/showoff/ShowOff';
 import MyProfileStack from '../screens/myprofile/MyProfileStack'; // 이름수정
 import ProjectStack from '../screens/project/ProjectStack';
 import HomeScreen from '../screens/home/Home';
+import Login from '../screens/login/Login';
 
 function BottomTabNavigation(): React.ReactElement {
   const Tab = createBottomTabNavigator();
@@ -16,6 +17,7 @@ function BottomTabNavigation(): React.ReactElement {
       <Tab.Screen name="만들기" component={CreateProjectStack} />
       <Tab.Screen name="자랑하기" component={ShowOffScreen} />
       <Tab.Screen name="마이" component={MyProfileStack} />
+      <Tab.Screen name="로그인" component={Login} />
     </Tab.Navigator>
   );
 }
