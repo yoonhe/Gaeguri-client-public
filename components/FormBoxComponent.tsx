@@ -10,6 +10,7 @@ type FormBoxProps = {
   text?: string;
   onChangeText?: () => void;
   onFocus?: () => void;
+  secureTextEntry?: string;
   children;
 };
 
@@ -22,6 +23,7 @@ function FormBoxComponent({
   onFocus,
   values,
   children,
+  secureTextEntry,
   ...props
 }: FormBoxProps): React.ReactElement {
   return (
@@ -37,6 +39,7 @@ function FormBoxComponent({
           value={values}
           onChangeText={onChangeText}
           onFocus={onFocus}
+          secureTextEntry={secureTextEntry}
         />
       )}
     </FormBoxStyle>
