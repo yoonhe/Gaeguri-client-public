@@ -30,11 +30,12 @@ export const InputTextStyle = styled.TextInput`
   min-height: 50px;
   background: ${Color.N0};
   color: #0b132b;
+  border: 1px solid #dcdcdc;
   border-radius: 10px;
 `;
 
 export const InputCountWrapStyle = styled.View`
-  flex: 1;
+  flex: 0.7;
   align-items: center;
   flex-direction: row;
   margin: 10px 0 0 10px;

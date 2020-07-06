@@ -45,7 +45,12 @@ function TagListComponent({ tagList, setTagList }): React.ReactElement {
       <TagListStyle>
         {tagList &&
           tagList.map((tagName, index) => (
-            <TagListItemComponent key={index} index={index} tagName={tagName} />
+            <TagListItemComponent
+              deleteTagButtonHandler={deleteTagButtonHandler}
+              key={index}
+              index={index}
+              tagName={tagName}
+            />
           ))}
       </TagListStyle>
     </>
