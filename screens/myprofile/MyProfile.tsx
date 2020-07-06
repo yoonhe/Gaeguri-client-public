@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect } from 'react';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { View, Button } from 'react-native';
 import {
   PageWrapWhiteStyle,
@@ -6,15 +6,13 @@ import {
   TextSubTitleStyle,
   TextTitleStyle,
   DividerStyle,
-  ProfileSmallStyle,
+  ProfileMediumStyle,
 } from '../../styles/common';
 import { TagListStyle, TagItemStyle, TagTextStyle } from '../../styles/tag';
 import UserProjectHistory from '../../components/UserProjectHistory';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
-
-// DB요청 정보: user_id
-// DB 반환 정보: profile 사진, username, email, 짧은 소개, 기술스택
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const GET_MY_PROFILE = gql`
   query GetMyProfile {
@@ -35,18 +33,22 @@ const GET_MY_PROFILE = gql`
 `;
 
 function MyProfile({ navigation, route }): React.ReactElement {
+  console.log(route.data);
+
   const { loading, error, data } = useQuery(GET_MY_PROFILE);
   if (loading) console.log('Loading...');
   if (error) console.log(`Error! ${error.message}`);
-  if (data) console.log('data ? ', data);
+  if (data) console.log('MyProfile data ? ', data);
   // const user = data.GetMyProfile;
+
+  const [userImage, setUserImage] = useState('');
 
   //더미데이터
   const stackList = ['JavaScript', 'Java', 'JavaScript', 'Java', 'JavaScript', 'Java'];
 
   const gotoEditProfile = useCallback(() => {
-    navigation.navigate('EditMyProfile', {});
-  }, []);
+    navigation.navigate('EditMyProfile', { userImage: '' });
+  }, [userImage]);
 
   //헤더에 버튼 넣기
   useLayoutEffect(() => {
@@ -59,7 +61,7 @@ function MyProfile({ navigation, route }): React.ReactElement {
     <PageWrapWhiteStyle>
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
         {/* 프로필이미지, 유저네임 */}
-        <ProfileSmallStyle image={false} />
+        <ProfileMediumStyle image={userImage} />
         {/* <TextTitleStyle>{user.username}</TextTitleStyle> */}
         <TextTitleStyle>김코딩</TextTitleStyle>
       </View>

@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from 'react-native-modal';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import {
-  PageWrapStyle,
+  PageWrapWhiteStyle,
   TextContentStyle,
   TextSubTitleStyle,
   TextTitleStyle,
@@ -46,7 +46,7 @@ function UserProfileModal({ isModalVisible, toggleModal, route }): React.ReactEl
   // console.log(' deviceWidth ?? :', deviceWidth);
 
   return (
-    <PageWrapStyle>
+    <PageWrapWhiteStyle>
       <Modal
         isVisible={isModalVisible}
         propagateSwipe={true}
@@ -97,7 +97,7 @@ function UserProfileModal({ isModalVisible, toggleModal, route }): React.ReactEl
           </ScrollView>
         </View>
       </Modal>
-    </PageWrapStyle>
+    </PageWrapWhiteStyle>
   );
 }
 
