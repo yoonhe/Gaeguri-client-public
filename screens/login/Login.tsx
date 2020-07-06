@@ -35,6 +35,10 @@ function Login({ route, navigation }): React.ReactElement {
         return Alert.alert('이메일을 입력하세요', '', [
           { text: 'OK', onPress: () => console.log('OK Pressed') },
         ]);
+      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+        return Alert.alert('이메일을 형식을 확인해주세요', '', [
+          { text: 'OK', onPress: () => console.log('OK Pressed') },
+        ]);
       }
 
       if (!password) {
