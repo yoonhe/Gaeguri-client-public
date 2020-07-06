@@ -35,15 +35,17 @@ const CREATE_PROJECT = gql`
       NoOfPosition: $NoOfPosition
       Stacks: $Stacks
     ) {
-      path
-      message
+      ok
+      error
+      newProject {
+        Project_name
+      }
     }
   }
 `;
 
 function CreateProject({ route, navigation }): React.ReactElement {
   const [tagList, setTagList] = useState<object[]>([]);
-  const [stackList, setStackList] = useState<object[]>([]);
   const [date, setDate] = useState<Date | null>(null);
   const { position } = route.params;
   const [positionList, setPositionList] = useState([{ name: position, count: 1 }]);
@@ -79,7 +81,7 @@ function CreateProject({ route, navigation }): React.ReactElement {
       }
 
       let dateFormat = moment(date).format('YYYY-MM-DD');
-      console.log(date, projectName, projectDescription, positionList, tagList, stackList);
+      console.log(date, projectName, projectDescription, positionList, tagList);
 
       createNewProject({
         variables: {
@@ -88,7 +90,7 @@ function CreateProject({ route, navigation }): React.ReactElement {
           EndAt: dateFormat,
           Desc: projectDescription,
           NoOfPosition: positionList,
-          Stacks: stackList,
+          Stacks: tagList,
         },
       });
 
@@ -192,24 +194,6 @@ function CreateProject({ route, navigation }): React.ReactElement {
 
         <FormBoxComponent title="주요스택">
           <TagListComponent tagList={tagList} setTagList={setTagList} produce={produce} />
-        </FormBoxComponent>
-
-        <FormBoxComponent title="주요스택">
-          <ButtonWrap>
-            <BorderButton row={true} backgroundColor={true} onPress={formik.handleSubmit}>
-              완료
-            </BorderButton>
-            <BorderButton row={true} backgroundColor={true} onPress={formik.handleSubmit}>
-              완료
-            </BorderButton>
-            <BorderButton row={true} backgroundColor={true} onPress={formik.handleSubmit}>
-              완료
-            </BorderButton>
-          </ButtonWrap>
-        </FormBoxComponent>
-
-        <FormBoxComponent title="태그">
-          <TagListComponent tagList={stackList} setTagList={setStackList} produce={produce} />
         </FormBoxComponent>
 
         <DateTimePickerComponent date={date} setDate={setDate} />
