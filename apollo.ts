@@ -3,7 +3,7 @@ interface Options {
 }
 
 const options: Options = {
-  uri: 'http://52.78.76.186:4000/graphql',
+  uri: 'http://10.0.2.2:4000/graphql',
 };
 
 export default options;
