@@ -13,10 +13,9 @@ export const CardListStyle = styled.View`
   position: relative;
   margin-bottom: 10px;
   padding: 20px 30px;
-  border: 1px solid #dcdcdc;
-  background: #fff;
+  border: 1px solid ${props => (props.status === 'End' ? '#dcdcdc' : `${Color.G300}`)};
+  background: ${props => (props.status === 'End' ? 'rgba(242, 242, 242, 0.5)' : '#fff')};
   border-radius: 15px;
-  min-height: 140px;
   overflow: hidden;
 `;
 
@@ -24,7 +23,7 @@ export const CardListTitle = styled.Text`
   margin-right: 50px;
   margin-bottom: 5px;
   font-size: 18px;
-  color: ${Color.N800};
+  color: ${props => (props.status === 'End' ? `${Color.N70}` : `${Color.N800}`)};
 `;
 
 export const ButtonAndTextStyle = styled.View`
@@ -63,7 +62,23 @@ export const StateWrap = styled.View`
 `;
 
 export const StateStyle = styled.Text`
-  color: ${Color.N100};
+  color: ${props => {
+    let color;
+    switch (props.status) {
+      case 'await':
+        color = Color.N100;
+        break;
+
+      case 'Start':
+        color = Color.G300;
+        break;
+
+      case 'End':
+        color = Color.N50;
+        break;
+    }
+    return color;
+  }};
 `;
 
 export const StateShapeStyle = styled.View`
@@ -71,7 +86,23 @@ export const StateShapeStyle = styled.View`
   width: 10px;
   height: 10px;
   border-radius: 5px;
-  background: ${Color.G75};
+  background: ${props => {
+    let color;
+    switch (props.status) {
+      case 'await':
+        color = Color.G75;
+        break;
+
+      case 'Start':
+        color = Color.G300;
+        break;
+
+      case 'End':
+        color = Color.N50;
+        break;
+    }
+    return color;
+  }};
 `;
 
 export const NewIcon = styled.Text`
@@ -79,7 +110,8 @@ export const NewIcon = styled.Text`
   top: -32px;
   right: -60px;
   padding: 50px 45px 3px;
-  background: #5dd7b9;
+  background: ${Color.G300};
   color: #fff;
+  font-size: 10px;
   transform: rotate(50deg);
 `;

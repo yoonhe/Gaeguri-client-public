@@ -53,6 +53,8 @@ function Room({ navigation, route }): React.ReactElement {
   const [routerTitle, setRouterTitle] = useState<string>(route.params.title);
   const [messages, setMessages] = useState<IMessage[]>(dummyData);
 
+  console.log('route.params.projectId ? ', route.params.projectId);
+
   const onSend = (newMessages: IMessage[] = []) =>
     setMessages(GiftedChat.append(messages, newMessages));
 
@@ -65,7 +67,7 @@ function Room({ navigation, route }): React.ReactElement {
       title: routerTitle === '' ? 'React 프로젝트 하실 분!' : routerTitle,
       headerRight: () => (
         <Icon
-          name='three-bars'
+          name="three-bars"
           size={24}
           onPress={onOpenSideBar}
           style={{ marginHorizontal: 10 }}
@@ -117,7 +119,7 @@ function Room({ navigation, route }): React.ReactElement {
     return (
       <Send {...props}>
         <View style={{ marginRight: 10, marginBottom: 5 }}>
-          <Ionicons name='ios-send' size={24} color='black' style={{ marginHorizontal: 10 }} />
+          <Ionicons name="ios-send" size={24} color="black" style={{ marginHorizontal: 10 }} />
         </View>
       </Send>
     );
@@ -132,7 +134,7 @@ function Room({ navigation, route }): React.ReactElement {
         }}
         renderUsernameOnMessage={true}
         renderBubble={renderBubble}
-        placeholder='메세지를 입력하세요'
+        placeholder="메세지를 입력하세요"
         renderInputToolbar={renderInputToolbar}
         onPressAvatar={onPressAvatar}
         renderSend={renderSend}
