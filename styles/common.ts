@@ -117,6 +117,7 @@ export const TextCaptionStyle = styled.Text`
 export const PageWrapStyle = styled.View`
   flex: 1;
   padding: 30px;
+  background: #fff;
 `;
 
 export const PageWrapAlignCenterStyle = styled(PageWrapStyle)`

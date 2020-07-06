@@ -27,6 +27,7 @@ export const TextTagItemStyle = styled(TagItemStyle)`
   margin: 0 10px 0 0;
   padding: 0;
   border: none;
+  background: transparent;
 `;
 
 export const TagTextStyle = styled.Text`
