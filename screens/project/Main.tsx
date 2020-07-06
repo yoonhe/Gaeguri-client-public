@@ -35,8 +35,8 @@ function Main({ navigation }): React.ReactElement {
     variables: { User_id: 0 },
   });
 
-  const goToRoom = useCallback(() => {
-    navigation.navigate('Room', { title: '' });
+  const goToRoom = useCallback(projectId => {
+    navigation.navigate('Room', { title: '', projectId: projectId });
   }, []);
 
   return (

@@ -66,7 +66,7 @@ function CardListComponent({ project, goToRoom }) {
       </TextTagListStyle>
       <ButtonAndTextStyle>
         <BorderButton
-          onPress={goToRoom}
+          onPress={goToRoom.bind(null, project.Project_id)}
           backgroundColor={project.status === 'End' ? 'disabled' : true}
           disabled={project.status === 'End'}
         >
