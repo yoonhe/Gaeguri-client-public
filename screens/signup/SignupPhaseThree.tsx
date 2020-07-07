@@ -38,8 +38,22 @@ const GET_POSITION = gql`
 `;
 
 const SIGNUP = gql`
-  mutation EmailSignUp($Username: String!, $Email: String!, $Password: String!) {
-    EmailSignUp(Username: $Username, Email: $Email, Password: $Password) {
+  mutation EmailSignUp(
+    $Username: String!
+    $Email: String!
+    $Password: String!
+    $Position_id: Int
+    $stack: [String]
+    $AboutMe: String
+  ) {
+    EmailSignUp(
+      Username: $Username
+      Email: $Email
+      Password: $Password
+      Position_id: $Position_id
+      stack: $stack
+      AboutMe: $AboutMe
+    ) {
       ok
       error
     }
