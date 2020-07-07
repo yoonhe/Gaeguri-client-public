@@ -34,6 +34,10 @@ function CardListComponent({ project, goToRoom }) {
     variables: { Project_id: project.Project_id },
   });
 
+  if (error) {
+    console.log('[CardListCompoennt Error] ? ', error);
+  }
+
   const statusFormat = useCallback(() => {
     let statusName;
     switch (project.status) {
@@ -54,7 +58,7 @@ function CardListComponent({ project, goToRoom }) {
   }, []);
 
   return (
-    <CardListStyle key={project.id} status={project.status}>
+    <CardListStyle status={project.status}>
       <CardListTitle status={project.status}>{project.Project_name}</CardListTitle>
       {/* <Text>{project.Desc}</Text> */}
       <TextTagListStyle>
@@ -66,7 +70,7 @@ function CardListComponent({ project, goToRoom }) {
       </TextTagListStyle>
       <ButtonAndTextStyle>
         <BorderButton
-          onPress={goToRoom.bind(null, project.Project_id)}
+          onPress={goToRoom.bind(null, project.Project_id, project.Project_name)}
           backgroundColor={project.status === 'End' ? 'disabled' : true}
           disabled={project.status === 'End'}
         >
@@ -89,7 +93,7 @@ function CardListComponent({ project, goToRoom }) {
         </TextWrapStyle>
       </ButtonAndTextStyle>
 
-      {moment(data.getProjectDetail.createdAt) > deadLine && <NewIcon>NEW</NewIcon>}
+      {data && moment(data.getProjectDetail.createdAt) > deadLine && <NewIcon>NEW</NewIcon>}
     </CardListStyle>
   );
 }

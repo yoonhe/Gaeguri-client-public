@@ -53,7 +53,7 @@ function Room({ navigation, route }): React.ReactElement {
   const [routerTitle, setRouterTitle] = useState<string>(route.params.title);
   const [messages, setMessages] = useState<IMessage[]>(dummyData);
 
-  console.log('route.params.projectId ? ', route.params.projectId);
+  console.log('route.params.projectId ? ', route.params.projectId, route.params.projectName);
 
   const onSend = (newMessages: IMessage[] = []) =>
     setMessages(GiftedChat.append(messages, newMessages));
