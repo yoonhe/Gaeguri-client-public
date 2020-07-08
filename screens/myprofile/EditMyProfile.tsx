@@ -1,14 +1,5 @@
 import React, { useState, useCallback, useLayoutEffect, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ActionSheetIOS,
-  TextInput,
-  Button,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, StyleSheet, TextInput, Button, Image, TouchableOpacity } from 'react-native';
 import {
   TextCaptionStyle,
   DividerStyle,

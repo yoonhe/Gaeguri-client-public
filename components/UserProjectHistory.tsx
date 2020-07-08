@@ -55,9 +55,9 @@ projectpositionno{
       }
 */
 
-function UserProjectHistory({}): React.ReactElement {
+function UserProjectHistory({ route }): React.ReactElement {
   const { loading, error, data } = useQuery(GET_MY_PROJECTLIST, {
-    variables: { User_id: 1 },
+    variables: { User_id: 11 },
   });
   if (loading) console.log('Loading...');
   if (error) console.log(`Error! ${error.message}`);
