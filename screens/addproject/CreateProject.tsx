@@ -16,6 +16,31 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useFormik } from 'formik';
 import moment from 'moment';
 
+const GET_PROJECT = gql`
+  query GettMyProjectList($User_id: Int!) {
+    getAvailableProjectList(User_id: $User_id) {
+      Project_id
+      Project_name
+      StartAt
+      EndAt
+      Desc
+      status
+      Owner_id
+      projectstack {
+        stack {
+          Stack_name
+        }
+      }
+      projectpositionno {
+        NoOfPosition
+        position {
+          Position_name
+        }
+      }
+    }
+  }
+`;
+
 const CREATE_PROJECT = gql`
   mutation CreateNewProject(
     $Project_name: String!
@@ -38,7 +63,24 @@ const CREATE_PROJECT = gql`
       ok
       error
       newProject {
+        Project_id
         Project_name
+        StartAt
+        EndAt
+        Desc
+        status
+        Owner_id
+        projectstack {
+          stack {
+            Stack_name
+          }
+        }
+        projectpositionno {
+          NoOfPosition
+          position {
+            Position_name
+          }
+        }
       }
     }
   }
@@ -50,7 +92,31 @@ function CreateProject({ route, navigation }): React.ReactElement {
   const { position } = route.params;
   const [positionList, setPositionList] = useState([{ name: position, count: 1 }]);
 
-  const [createNewProject] = useMutation(CREATE_PROJECT);
+  const [createNewProject] = useMutation(CREATE_PROJECT, {
+    update(cache, { data }) {
+      const newProject = data?.createNewProject.newProject;
+      console.log('data ? ', data);
+      console.log('newProject ? ', newProject);
+      const existingProjects = cache.readQuery({
+        query: GET_PROJECT,
+        variables: {
+          User_id: 0,
+        },
+      });
+
+      console.log('existingProjects ? ', existingProjects);
+
+      cache.writeQuery({
+        query: GET_PROJECT,
+        variables: {
+          User_id: 0,
+        },
+        data: {
+          getAvailableProjectList: [newProject, ...existingProjects?.getAvailableProjectList],
+        },
+      });
+    },
+  });
 
   const formik = useFormik({
     initialValues: {
