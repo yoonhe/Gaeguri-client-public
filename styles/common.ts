@@ -147,13 +147,9 @@ export const HeaderRightOcticons = styled.View`
   marginhorizontal: 10px;
 `;
 
-// 프로필 이미지 : 마이페이지
+// 프로필 이미지 : 마이페이지용
 export const ProfileMediumStyle = styled.Image.attrs(props =>
-  props.image
-    ? {
-        source: 'https://placeimg.com/67/67/any',
-      }
-    : { source: profileImage },
+  props.image ? { source: props.image } : { source: profileImage },
 )`
   width: 67px;
   height: 67px;
@@ -161,13 +157,9 @@ export const ProfileMediumStyle = styled.Image.attrs(props =>
   margin-right: 12px;
 `;
 
-// 프로필 이미지 : 유저 프로필 모달
+// 프로필 이미지 :프로필 모달용
 export const ProfileSmallStyle = styled.Image.attrs(props =>
-  props.image
-    ? {
-        source: 'https://placeimg.com/67/67/any',
-      }
-    : { source: profileImage },
+  props.image ? { source: props.image } : { source: profileImage },
 )`
   width: 52px;
   height: 52px;

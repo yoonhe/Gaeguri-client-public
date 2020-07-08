@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { TextContentStyle, TextDateStyle } from '../styles/common';
 import { ProjectHistoryStyle } from '../styles/list';
+import moment from 'moment';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 
@@ -54,15 +55,13 @@ projectpositionno{
       }
 */
 
-function UserProjectHistory({}): React.ReactElement {
+function UserProjectHistory({ route }): React.ReactElement {
   const { loading, error, data } = useQuery(GET_MY_PROJECTLIST, {
-    variables: { User_id: 1 },
+    variables: { User_id: 11 },
   });
   if (loading) console.log('Loading...');
   if (error) console.log(`Error! ${error.message}`);
   if (data) console.log('data ?? ', data);
-
-  // const projects = data.getMyProjectList;
 
   return (
     <View>
@@ -72,7 +71,7 @@ function UserProjectHistory({}): React.ReactElement {
           <ProjectHistoryStyle key={project.Project_id}>
             <TextContentStyle>{project.Project_name}</TextContentStyle>
             {/* <TextDateStyle>{project.projectpositionno.position.Position_name}</TextDateStyle> */}
-            <TextDateStyle>{project.EndAt}</TextDateStyle>
+            <TextDateStyle>{moment(project.EndAt).format('YYYY-MM-DD')}</TextDateStyle>
           </ProjectHistoryStyle>
         ))}
     </View>

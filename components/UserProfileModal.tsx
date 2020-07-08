@@ -2,7 +2,6 @@ import React from 'react';
 import Modal from 'react-native-modal';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import {
-  PageWrapStyle,
   TextContentStyle,
   TextSubTitleStyle,
   TextTitleStyle,
@@ -46,7 +45,7 @@ function UserProfileModal({ isModalVisible, toggleModal, route }): React.ReactEl
   // console.log(' deviceWidth ?? :', deviceWidth);
 
   return (
-    <PageWrapStyle>
+    <View>
       <Modal
         isVisible={isModalVisible}
         propagateSwipe={true}
@@ -66,8 +65,6 @@ function UserProfileModal({ isModalVisible, toggleModal, route }): React.ReactEl
           <ScrollView>
             <TextSubTitleStyle>짧은소개</TextSubTitleStyle>
             <TextContentStyle>
-              안녕하세요, 코딩을 좋아하는 김코딩 입니다. 안녕하세요, 코딩을 좋아하는 김코딩 입니다.
-              안녕하세요, 코딩을 좋아하는 김코딩 입니다. 안녕하세요, 코딩을 좋아하는 김코딩 입니다.
               안녕하세요, 코딩을 좋아하는 김코딩 입니다. 안녕하세요, 코딩을 좋아하는 김코딩 입니다.
               안녕하세요, 코딩을 좋아하는 김코딩 입니다. 안녕하세요, 코딩을 좋아하는 김코딩 입니다.
               안녕하세요, 코딩을 좋아하는 김코딩 입니다. 안녕하세요, 코딩을 좋아하는 김코딩 입니다.
@@ -97,7 +94,7 @@ function UserProfileModal({ isModalVisible, toggleModal, route }): React.ReactEl
           </ScrollView>
         </View>
       </Modal>
-    </PageWrapStyle>
+    </View>
   );
 }
 
