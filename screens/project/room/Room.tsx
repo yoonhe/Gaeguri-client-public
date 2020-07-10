@@ -1,10 +1,10 @@
 import React, { useState, useCallback, useLayoutEffect, useEffect } from 'react';
 import { GiftedChat, IMessage, Bubble, InputToolbar, Send } from 'react-native-gifted-chat';
 import { HeaderRightOcticons } from '../../../styles/common';
-import { StyleSheet, View, Text } from 'react-native';
-import Icon from 'react-native-vector-icons/Octicons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { GET_CHAT, CHAT_SUBSCRIPTION, SEND_MESSAGE } from './RoomQuries';
+import { StyleSheet, View, Text, Button, Alert } from 'react-native';
+// import Icon from 'react-native-vector-icons/Octicons';
+// import Ionicons from 'react-native-vector-icons/Ionicons';
+import { GET_CHAT, CHAT_SUBSCRIPTION, SEND_MESSAGE, GET_MYINFO } from './RoomQuries';
 import { useMutation, useQuery, useSubscription } from '@apollo/react-hooks';
 
 function Room({ navigation, route }): React.ReactElement {
@@ -15,6 +15,8 @@ function Room({ navigation, route }): React.ReactElement {
   const chetData = useQuery(GET_CHAT, {
     variables: { Project_id: route.params.projectId },
   });
+
+  const myInfo = useQuery(GET_MYINFO);
 
   const [updateMessage] = useMutation(SEND_MESSAGE, {
     update(cache, { data }) {
@@ -54,10 +56,13 @@ function Room({ navigation, route }): React.ReactElement {
           name: data.user.Username,
         },
       };
-
       return setMessageArray(GiftedChat.append(messageArray, [obj]));
     }
-  }, [chatSub.data]);
+
+    if (chatSub.error) {
+      console.log(chatSub.error);
+    }
+  }, [chatSub.loading]);
 
   useLayoutEffect(() => {
     if (chetData.data) {
@@ -80,6 +85,7 @@ function Room({ navigation, route }): React.ReactElement {
   }, [!chetData.loading]);
 
   const onSend = newMessages => {
+    console.log(newMessages);
     updateMessage({
       variables: {
         Contents: newMessages[0].text,
@@ -94,17 +100,17 @@ function Room({ navigation, route }): React.ReactElement {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: routerTitle === '' ? 'React 프로젝트 하실 분!' : routerTitle,
-      headerRight: () => (
-        <Icon
-          name="three-bars"
-          size={24}
-          onPress={onOpenSideBar}
-          style={{ marginHorizontal: 10 }}
-        />
-      ),
+      title: route.params.projectName,
+      // headerRight: () => (
+      //   <Icon
+      //     name="three-bars"
+      //     size={24}
+      //     onPress={onOpenSideBar}
+      //     style={{ marginHorizontal: 10 }}
+      //   />
+      // ),
     });
-  }, [navigation, routerTitle]);
+  }, [navigation]);
 
   const renderBubble = (props: any) => {
     return (
@@ -149,7 +155,8 @@ function Room({ navigation, route }): React.ReactElement {
     return (
       <Send {...props}>
         <View style={{ marginRight: 10, marginBottom: 5 }}>
-          <Ionicons name="ios-send" size={24} color="black" style={{ marginHorizontal: 10 }} />
+          {/* <Ionicons name="ios-send" size={24} color="black" style={{ marginHorizontal: 10 }} /> */}
+          <Text>{'Send'}</Text>
         </View>
       </Send>
     );
@@ -165,12 +172,13 @@ function Room({ navigation, route }): React.ReactElement {
           onSend={onSend}
           renderUsernameOnMessage={true}
           renderBubble={renderBubble}
-          placeholder="메세지를 입력하세요"
+          placeholder='메세지를 입력하세요'
           renderInputToolbar={renderInputToolbar}
           onPressAvatar={onPressAvatar}
           renderSend={renderSend}
           user={{
-            _id: 1,
+            _id: myInfo?.data?.GetMyProfile?.user?.User_id,
+            name: myInfo?.data?.GetMyProfile?.user?.Username,
           }}
         />
       )}
