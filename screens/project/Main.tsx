@@ -35,9 +35,13 @@ function Main({ navigation }): React.ReactElement {
     variables: { User_id: 0 },
   });
 
-  const goToRoom = useCallback(projectId => {
-    navigation.navigate('Room', { title: '', projectId: projectId });
-  }, []);
+  if (data) {
+    console.log('[CardListComponents] data ? ', data);
+  }
+
+  if (error) {
+    console.log('[CardListComponents] error ? ', error);
+  }
 
   return (
     <PageWrapStyle>
@@ -45,7 +49,7 @@ function Main({ navigation }): React.ReactElement {
         {loading && <Text>loading...</Text>}
         {data &&
           data.getAvailableProjectList.map(project => (
-            <CardListComponent key={project.Project_id} project={project} goToRoom={goToRoom} />
+            <CardListComponent key={project} project={project} navigation={navigation} />
           ))}
       </ScrollView>
     </PageWrapStyle>

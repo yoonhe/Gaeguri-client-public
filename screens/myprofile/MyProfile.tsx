@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect } from 'react';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { View, Button } from 'react-native';
 import {
   PageWrapWhiteStyle,
@@ -6,20 +6,17 @@ import {
   TextSubTitleStyle,
   TextTitleStyle,
   DividerStyle,
-  ProfileSmallStyle,
+  ProfileMediumStyle,
 } from '../../styles/common';
 import { TagListStyle, TagItemStyle, TagTextStyle } from '../../styles/tag';
 import UserProjectHistory from '../../components/UserProjectHistory';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-community/async-storage';
 
-// DB요청 정보: user_id
-// DB 반환 정보: profile 사진, username, email, 짧은 소개, 기술스택
-
-const GET_MY_PROFILE = gql`
+const GET_MYPROFILE = gql`
   query GetMyProfile {
-    ok
-    error
     user {
       User_id
       Username
@@ -35,17 +32,19 @@ const GET_MY_PROFILE = gql`
 `;
 
 function MyProfile({ navigation, route }): React.ReactElement {
-  const { loading, error, data } = useQuery(GET_MY_PROFILE);
+  const { loading, error, data } = useQuery(GET_MYPROFILE);
   if (loading) console.log('Loading...');
-  if (error) console.log(`Error! ${error.message}`);
-  if (data) console.log('data ? ', data);
-  // const user = data.GetMyProfile;
+  if (error) console.log(`Error!! : ${error.message}`);
+  if (data) console.log('data.GetMyProfile ?? :', data, data.GetMyProfile);
+
+  // let { user } = data.GetMyProfile;
+  // const [userImage, setUserImage] = useState(user.Profile_photo_path);
 
   //더미데이터
   const stackList = ['JavaScript', 'Java', 'JavaScript', 'Java', 'JavaScript', 'Java'];
 
   const gotoEditProfile = useCallback(() => {
-    navigation.navigate('EditMyProfile', {});
+    navigation.navigate('EditMyProfile');
   }, []);
 
   //헤더에 버튼 넣기
@@ -59,14 +58,14 @@ function MyProfile({ navigation, route }): React.ReactElement {
     <PageWrapWhiteStyle>
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
         {/* 프로필이미지, 유저네임 */}
-        <ProfileSmallStyle image={false} />
+        <ProfileMediumStyle image={false} />
         {/* <TextTitleStyle>{user.username}</TextTitleStyle> */}
         <TextTitleStyle>김코딩</TextTitleStyle>
       </View>
       <DividerStyle />
       {/* 짧은소개 */}
       <TextSubTitleStyle>짧은소개</TextSubTitleStyle>
-      {/* <TextContentStyle>{user.AboutMe}</TextContentStyle> */}
+      {/* <TextContentStyle>{data ? user.AboutMe : 'loading...'}</TextContentStyle> */}
       <TextContentStyle>
         안녕하세요, 코딩을 좋아하는 김코딩 입니다. 안녕하세요, 코딩을 좋아하는 김코딩 입니다.
         안녕하세요, 코딩을 좋아하는 김코딩 입니다. 안녕하세요, 코딩을 좋아하는 김코딩 입니다.

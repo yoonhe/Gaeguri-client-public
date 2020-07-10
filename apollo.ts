@@ -22,14 +22,14 @@ const authMiddleware = setContext(async (_, { headers }) => {
 });
 
 const httpLink = new HttpLink({
-  uri: 'http://52.78.76.186:4000/graphql',
+  uri: 'http://35.193.13.247:4000/graphql',
 });
 
 const wsLink = new WebSocketLink({
   options: {
     reconnect: true,
   },
-  uri: 'ws://52.78.76.186:4000/subscription',
+  uri: 'ws://35.193.13.247:4000/subscription',
 });
 
 const combinedLinks = split(
