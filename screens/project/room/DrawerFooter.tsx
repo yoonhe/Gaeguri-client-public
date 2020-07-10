@@ -1,8 +1,8 @@
-import React, {useCallback} from 'react';
-import {View, TouchableOpacity, Text, StyleSheet, Alert} from 'react-native';
+import React, { useCallback } from 'react';
+import { View, TouchableOpacity, Text, StyleSheet, Alert } from 'react-native';
 // import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
-function DrawerFooter({navigation}): React.ReactElement {
+function DrawerFooter({ navigation }): React.ReactElement {
   const inviteMember = useCallback(() => {
     console.log('Invite');
   }, []);
@@ -28,7 +28,7 @@ function DrawerFooter({navigation}): React.ReactElement {
           style: 'destructive',
         },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
   }, []);
 
