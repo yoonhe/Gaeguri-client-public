@@ -6,6 +6,7 @@ import {
   InputButtonStyle,
   CircleButtonStyle,
   ButtonText,
+  PickerButtonStyle,
 } from '../styles/button';
 import { TagTextButtonStyle, TagTextTouchStyle } from '../styles/tag';
 
@@ -46,6 +47,14 @@ export function CircleButton({ children, onPress }): React.ReactElement {
   return (
     <ButtonBox onPress={onPress} activeOpacity={0.8}>
       <CircleButtonStyle>{children}</CircleButtonStyle>
+    </ButtonBox>
+  );
+}
+
+export function PickerButton({ children, onPress, ...props }): React.ReactElement {
+  return (
+    <ButtonBox {...props} onPress={onPress} activeOpacity={0.8}>
+      <PickerButtonStyle {...props}>{children}</PickerButtonStyle>
     </ButtonBox>
   );
 }
