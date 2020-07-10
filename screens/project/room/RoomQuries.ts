@@ -50,30 +50,15 @@ export const SEND_MESSAGE = gql`
   }
 `;
 
-// export const SEND_MESSAGE = gql`
-//   mutation sendMessage($text: String!, $chatId: Int!) {
-//     SendChatMessage(text: $text, chatId: $chatId) {
-//       ok
-//       error
-//       message {
-//         id
-//         text
-//         userId
-//       }
-//     }
-//   }
-// `;
-
-// mutation {
-//   SendChat(Project_id: 2, Contents: "6번 사용자입니다") {
-//     error
-//     ok
-//     chat {
-//       Chat_id
-//       Contents
-//       createdAt
-//       Project_id
-//       User_id
-//     }
-//   }
-// }
+export const GET_MYINFO = gql`
+  query getMyProfile {
+    GetMyProfile {
+      ok
+      error
+      user {
+        User_id
+        Username
+      }
+    }
+  }
+`;
