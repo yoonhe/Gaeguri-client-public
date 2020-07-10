@@ -17,19 +17,28 @@ const authMiddleware = setContext(async (_, { headers }) => {
     headers: {
       ...headers,
       'X-JWT': token || null,
+      authorization: token ? `Bearer ${token}` : '',
     },
   };
 });
 
+// const authMiddleware = new ApolloLink((operation, forward) => {
+//   const token = AsyncStorage.getItem('token');
+//   const authorization = `Bearer ${token}` || null;
+//   operation.setContext({ headers: { 'X-JWT': token || null, authorization } });
+//   return forward(operation);
+// });
+
 const httpLink = new HttpLink({
-  uri: 'http://52.78.76.186:4000/graphql',
+  uri: 'http://35.193.13.247:4000/graphql',
+  credentials: 'include',
 });
 
 const wsLink = new WebSocketLink({
   options: {
     reconnect: true,
   },
-  uri: 'ws://52.78.76.186:4000/subscription',
+  uri: 'ws://35.193.13.247:4000/subscription',
 });
 
 const combinedLinks = split(

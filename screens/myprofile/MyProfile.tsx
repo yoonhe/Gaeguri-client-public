@@ -12,17 +12,25 @@ import { TagListStyle, TagItemStyle, TagTextStyle } from '../../styles/tag';
 import UserProjectHistory from '../../components/UserProjectHistory';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
+
+//토큰 확인 용
+const checkToken = async () => {
+  const token = await AsyncStorage.getItem('token');
+  console.log('token 확인 :', token);
+};
 
 const GET_MYPROFILE = gql`
   query GetMyProfile {
+    error
     user {
       User_id
       Username
+      Profile_photo_path
       AboutMe
       userstack {
         stack {
+          Stack_id
           Stack_name
         }
       }
@@ -31,14 +39,23 @@ const GET_MYPROFILE = gql`
   }
 `;
 
-function MyProfile({ navigation, route }): React.ReactElement {
-  const { loading, error, data } = useQuery(GET_MYPROFILE);
-  if (loading) console.log('Loading...');
-  if (error) console.log(`Error!! : ${error.message}`);
-  if (data) console.log('data.GetMyProfile ?? :', data, data.GetMyProfile);
+function MyProfile({ navigation }): React.ReactElement {
+  //토큰확인
+  checkToken();
 
-  // let { user } = data.GetMyProfile;
-  // const [userImage, setUserImage] = useState(user.Profile_photo_path);
+  //데이터 확인
+  const { loading, error, data } = useQuery(GET_MYPROFILE, { errorPolicy: 'all' });
+  if (loading) console.log('Loading...');
+  if (error) console.log(`Error?? : ${error.message}`);
+  if (data) console.log('[data] 확인 :', data);
+  if (data) console.log('[data.GetMyProfile] 확인 :', data.GetMyProfile);
+
+  //프로필 편집을 위한 state
+  // const userData = data.GetMyProfile.user;
+  // const [username, setUsername] = useState<string>(userData.Username);
+  // const [aboutMe, setAboutMe] = useState<string | null>(userData.AboutMe);
+  // const [myStack, setMyStack] = useState<object[]>(userData.userstack.stack.Stack_name);
+  // const [emailAddress, setEmailAddress] = useState<string>(userData.Email);
 
   //더미데이터
   const stackList = ['JavaScript', 'Java', 'JavaScript', 'Java', 'JavaScript', 'Java'];
@@ -67,8 +84,6 @@ function MyProfile({ navigation, route }): React.ReactElement {
       <TextSubTitleStyle>짧은소개</TextSubTitleStyle>
       {/* <TextContentStyle>{data ? user.AboutMe : 'loading...'}</TextContentStyle> */}
       <TextContentStyle>
-        안녕하세요, 코딩을 좋아하는 김코딩 입니다. 안녕하세요, 코딩을 좋아하는 김코딩 입니다.
-        안녕하세요, 코딩을 좋아하는 김코딩 입니다. 안녕하세요, 코딩을 좋아하는 김코딩 입니다.
         안녕하세요, 코딩을 좋아하는 김코딩 입니다. 안녕하세요, 코딩을 좋아하는 김코딩 입니다.
         안녕하세요, 코딩을 좋아하는 김코딩 입니다. 안녕하세요, 코딩을 좋아하는 김코딩 입니다.
         안녕하세요, 코딩을 좋아하는 김코딩 입니다. 안녕하세요, 코딩을 좋아하는 김코딩 입니다.

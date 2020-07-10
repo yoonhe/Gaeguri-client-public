@@ -56,12 +56,16 @@ projectpositionno{
 */
 
 function UserProjectHistory({ route }): React.ReactElement {
+  //유저 ID 지정
+  // console.log('route.params ??:', route.params);
+  // const userId = route.params !== undefined ? route.params : 9;
+
   const { loading, error, data } = useQuery(GET_MY_PROJECTLIST, {
-    variables: { User_id: 11 },
+    variables: { User_id: 9 },
   });
   if (loading) console.log('Loading...');
   if (error) console.log(`Error! ${error.message}`);
-  if (data) console.log('data ?? ', data);
+  if (data) console.log('[data.getMyProjectList] 확인??:', data.getMyProjectList);
 
   return (
     <View>

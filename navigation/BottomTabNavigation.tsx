@@ -30,22 +30,22 @@ function BottomTabNavigation(): React.ReactElement {
             만들기: 'edit',
             마이: 'person',
           };
-          const colors = focused ? `${Color.G300}` : `${Color.N400}`;
+          const colors = focused ? `${Color.G300}` : `${Color.N300}`;
           return <Icon name={icons[route.name]} size={26} color={colors} />;
         },
       })}
       tabBarOptions={{
         activeTintColor: `${Color.G300}`,
-        inactiveTintColor: `${Color.N400}`,
+        inactiveTintColor: `${Color.N300}`,
       }}
     >
       <Tab.Screen name="홈" component={HomeScreen} />
       <Tab.Screen name="프로젝트" component={ProjectStack} />
       <Tab.Screen name="만들기" component={CreateProjectStack} />
       <Tab.Screen name="마이" component={MyProfileStack} />
-      {/* <Tab.Screen name="로그인" component={Login} />
-      <Tab.Screen name="Signup" component={SignupStack} />
-      <Tab.Screen name="자랑하기" component={ShowOffScreen} /> */}
+      <Tab.Screen name="로그인" component={Login} />
+      {/* <Tab.Screen name="Signup" component={SignupStack} /> */}
+      {/* <Tab.Screen name="자랑하기" component={ShowOffScreen} /> */}
     </Tab.Navigator>
   );
 }
