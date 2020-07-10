@@ -65,8 +65,8 @@ function ProjectSetting({ navigation }): React.ReactElement {
   useLayoutEffect(() => {
     navigation.setOptions({
       title: '프로젝트 설정하기',
-      headerLeft: () => <Button title='닫기' onPress={closeSetting} />,
-      headerRight: () => <Button title='완료' onPress={formik.handleSubmit} />,
+      headerLeft: () => <Button title="닫기" onPress={closeSetting} />,
+      headerRight: () => <Button title="완료" onPress={formik.handleSubmit} />,
     });
   }, [navigation]);
 
@@ -102,12 +102,12 @@ function ProjectSetting({ navigation }): React.ReactElement {
   return (
     <PageWrapStyle>
       <FormBoxComponent
-        title='프로젝트 이름'
+        title="프로젝트 이름"
         placeholder={data?.getProjectDetail?.Project_name}
         values={formik.values.projectName}
         onChangeText={formik.handleChange('projectName')}
       />
-      <FormBoxComponent title='주요스택'>
+      <FormBoxComponent title="주요스택">
         <ButtonWrap>
           {stateArr.map((state, i) => {
             return (
