@@ -2,13 +2,13 @@ import React, { useCallback } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Alert } from 'react-native';
 // import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
-function DrawerFooter({ navigation }): React.ReactElement {
+function DrawerFooter({ navigation, projectId }): React.ReactElement {
   const inviteMember = useCallback(() => {
     console.log('Invite');
   }, []);
 
   const projectSettings = useCallback(() => {
-    navigation.navigate('ProjectSetting');
+    navigation.navigate('ProjectSetting', { projectId });
   }, []);
 
   const exitProject = useCallback(() => {

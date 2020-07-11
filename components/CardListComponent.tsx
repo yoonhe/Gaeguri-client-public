@@ -27,6 +27,7 @@ function CardListComponent({ project, navigation }) {
   const GET_PROJECT_ID = gql`
     query GetProjectDetail($Project_id: Int) {
       getProjectDetail(Project_id: $Project_id) {
+        Owner_id
         createdAt
         projectpositionno {
           PP_id
@@ -88,7 +89,12 @@ function CardListComponent({ project, navigation }) {
 
   const goToRoom = useCallback((projectId, projectName) => {
     console.log('goToRoom 클릭');
-    navigation.navigate('Room', { title: '', projectId: projectId, projectName: projectName });
+    navigation.navigate('Room', {
+      title: '',
+      projectId,
+      projectName,
+      OwnerId: data.getProjectDetail.Owner_id,
+    });
   }, []);
 
   const showModalPicker = useCallback(() => {

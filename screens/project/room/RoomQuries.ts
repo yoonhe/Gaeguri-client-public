@@ -62,3 +62,18 @@ export const GET_MYINFO = gql`
     }
   }
 `;
+
+export const GET_PROJECT_USERS = gql`
+  query GetProjectUserDetail($Project_id: Int!) {
+    getProjectUserDetail(Project_id: $Project_id) {
+      user {
+        User_id
+        Username
+      }
+      position {
+        Position_id
+        Position_name
+      }
+    }
+  }
+`;
