@@ -89,7 +89,7 @@ function CardListComponent({ project, navigation }) {
       projectName,
       OwnerId,
     });
-  }, []);
+  }, [modalVisible]);
 
   const showModalPicker = useCallback(() => {
     setModalVisible(prev => !prev);

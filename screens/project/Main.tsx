@@ -34,10 +34,6 @@ const GET_PROJECT = gql`
 function Main({ navigation }): React.ReactElement {
   const { loading, error, data } = useQuery(GET_PROJECT);
 
-  if (data) {
-    console.log('[CardListComponents] data ? ', data);
-  }
-
   if (error) {
     console.log('[CardListComponents] error ? ', error);
   }

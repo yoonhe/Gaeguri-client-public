@@ -47,7 +47,11 @@ function App(): React.ReactElement {
       <StatusBarComponent />
       <AuthContext.Provider value={authContext}>
         <NavigationContainer>
-          <Stack.Navigator>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
             {userToken ? (
               <Stack.Screen name="Main" component={BottomTabNavigation} />
             ) : (
