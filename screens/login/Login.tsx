@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import { useFormik } from 'formik';
 import { gql } from 'apollo-boost';
+import SNSFacebookLogin from './SNSFacebookLogin';
 
 const LOGIN = gql`
   mutation EmailLogin($Email: String!, $Password: String!) {
@@ -76,6 +77,7 @@ function Login({ route, navigation }): React.ReactElement {
 
   return (
     <PageWrapAlignCenterStyle>
+      <SNSFacebookLogin navigation={navigation} />
       <View>
         <FormBoxComponent
           title="Email"
