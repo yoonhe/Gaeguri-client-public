@@ -7,6 +7,7 @@ import {
   CircleButtonStyle,
   ButtonText,
   PickerButtonStyle,
+  SNSButtonStyle,
 } from '../styles/button';
 import { TagTextButtonStyle, TagTextTouchStyle } from '../styles/tag';
 
@@ -23,6 +24,18 @@ export function BorderButton({
   return (
     <ButtonBox {...props} onPress={onPress} activeOpacity={0.8}>
       <BorderButtonStyle {...props}>{children}</BorderButtonStyle>
+    </ButtonBox>
+  );
+}
+
+export function SNSBorderButton({
+  children,
+  onPress,
+  ...props
+}: BorderButtonProps): React.ReactElement {
+  return (
+    <ButtonBox {...props} onPress={onPress} activeOpacity={0.8}>
+      <SNSButtonStyle {...props}>{children}</SNSButtonStyle>
     </ButtonBox>
   );
 }

@@ -2,7 +2,7 @@ import { gql } from 'apollo-boost';
 import React, { useState, useContext } from 'react';
 import { View, Alert } from 'react-native';
 import { AccessToken, GraphRequest, LoginManager, GraphRequestManager } from 'react-native-fbsdk';
-import { BorderButton } from '../../components/ButtonComponent';
+import { BorderButton, SNSBorderButton } from '../../components/ButtonComponent';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import AsyncStorage from '@react-native-community/async-storage';
 import { AuthContext } from '../../components/context';
@@ -97,7 +97,9 @@ function SNSFacebookLogin({ navigation }): React.ReactElement {
   };
   return (
     <View>
-      <BorderButton onPress={logging}>Facebook Login</BorderButton>
+      <SNSBorderButton sns={'fb'} onPress={logging}>
+        Facebook Login
+      </SNSBorderButton>
     </View>
   );
 }

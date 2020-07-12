@@ -8,7 +8,7 @@
 import { gql } from 'apollo-boost';
 import React, { useState, useContext } from 'react';
 import { CommonActions } from '@react-navigation/native';
-import { BorderButton } from '../../components/ButtonComponent';
+import { BorderButton, SNSBorderButton } from '../../components/ButtonComponent';
 import { AuthContext } from '../../components/context';
 import { Alert, View, Platform, StyleSheet, YellowBox } from 'react-native';
 import { useMutation } from '@apollo/react-hooks';
@@ -82,7 +82,9 @@ function SNSKakaoLogin({ navigation }): React.ReactElement {
   };
   return (
     <View>
-      <BorderButton onPress={kakaoLogin}>Kakaotalk Login</BorderButton>
+      <SNSBorderButton sns={'kakao'} onPress={kakaoLogin}>
+        Kakaotalk Login
+      </SNSBorderButton>
     </View>
   );
 }
