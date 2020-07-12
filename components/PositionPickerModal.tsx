@@ -7,7 +7,7 @@ function PositionPickerModal({ modalVisible, showModalPicker, positionList, goTo
   return (
     <Modal
       visible={modalVisible}
-      animationType="fade"
+      animationType='fade'
       onRequestClose={showModalPicker}
       transparent={true}
     >
@@ -19,7 +19,7 @@ function PositionPickerModal({ modalVisible, showModalPicker, positionList, goTo
               index={index}
               disabled={positionInfo.NoOfPosition === positionInfo.PC.length}
               onPress={() => {
-                goToRoom(project.Project_id, project.Project_name);
+                goToRoom(project.Project_id, project.Project_name, project.Owner_id);
                 showModalPicker();
               }}
             >
