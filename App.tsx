@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useLayoutEffect } from 'react';
 import { ApolloProvider } from '@apollo/react-hooks';
 import StatusBarComponent from './components/StatusBarComponent';
 import BottomTabNavigation from './navigation/BottomTabNavigation';
@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AuthContext } from './components/context';
 import client from './apollo';
+import AsyncStorage from '@react-native-community/async-storage';
 
 function App(): React.ReactElement {
   const Stack = createStackNavigator();
@@ -25,6 +26,21 @@ function App(): React.ReactElement {
     }),
     [],
   );
+
+  useLayoutEffect(() => {
+    const getToken = async () => {
+      let token;
+      try {
+        token = await AsyncStorage.getItem('token');
+      } catch (e) {
+        console.error(e);
+      }
+
+      setUserToken(token);
+    };
+
+    getToken();
+  }, [userToken]);
 
   return (
     <ApolloProvider client={client}>
