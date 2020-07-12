@@ -49,6 +49,18 @@ export const BorderButtonStyle = styled.Text`
   overflow: hidden;
 `;
 
+export const SNSButtonStyle = styled.Text`
+  width: 100%;
+  margin-top: 10px;
+  padding: 15px;
+  color: ${props => (props.sns === 'fb' ? `${Color.N0}` : `${Color.N500}`)};
+  background: ${props => (props.sns === 'fb' ? '#3B5998' : '#F8E71C')};
+  border: 1px solid ${props => (props.sns === 'fb' ? '#3B5998' : '#F8E71C')};
+  border-radius: 5px;
+  text-align: center;
+  overflow: hidden;
+`;
+
 export const BorderButtonSmallStyle = styled.Text`
   margin-top: 10px;
   padding: 8px;
