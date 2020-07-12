@@ -82,15 +82,18 @@ function CardListComponent({ project, navigation }) {
     return statusName;
   }, []);
 
-  const goToRoom = useCallback((projectId, projectName) => {
-    console.log('goToRoom 클릭');
-    navigation.navigate('Room', {
-      title: '',
-      projectId,
-      projectName,
-      OwnerId: data.getProjectDetail.Owner_id,
-    });
-  }, []);
+  const goToRoom = useCallback(
+    (projectId, projectName) => {
+      console.log('goToRoom 클릭');
+      navigation.navigate('Room', {
+        title: '',
+        projectId,
+        projectName,
+        OwnerId: data.getProjectDetail.Owner_id,
+      });
+    },
+    [modalVisible],
+  );
 
   const showModalPicker = useCallback(() => {
     setModalVisible(prev => !prev);

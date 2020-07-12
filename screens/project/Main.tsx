@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { View, Text, Button, ScrollView } from 'react-native';
+import { View, Text, Button, ScrollView, ActivityIndicator } from 'react-native';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import { PageWrapStyle } from '../../styles/common';
@@ -33,10 +33,6 @@ const GET_PROJECT = gql`
 function Main({ navigation }): React.ReactElement {
   const { loading, error, data } = useQuery(GET_PROJECT);
 
-  if (data) {
-    console.log('[CardListComponents] data ? ', data);
-  }
-
   if (error) {
     console.log('[CardListComponents] error ? ', error);
   }
@@ -48,7 +44,11 @@ function Main({ navigation }): React.ReactElement {
   return (
     <PageWrapStyle>
       <ScrollView>
-        {loading && <Text>loading...</Text>}
+        {loading && (
+          <View>
+            <ActivityIndicator />
+          </View>
+        )}
         {data &&
           data.getAvailableProjectList.map(project => (
             <CardListComponent key={project} project={project} navigation={navigation} />
