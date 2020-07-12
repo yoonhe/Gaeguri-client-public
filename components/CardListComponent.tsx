@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Text, Modal, View } from 'react-native';
+import { Text, Modal, View, ActivityIndicator } from 'react-native';
 import {
   CardListStyle,
   CardListTitle,
@@ -82,13 +82,12 @@ function CardListComponent({ project, navigation }) {
     return statusName;
   }, []);
 
-  const goToRoom = useCallback((projectId, projectName) => {
+  const goToRoom = useCallback((projectId, projectName, OwnerId) => {
     console.log('goToRoom 클릭');
     navigation.navigate('Room', {
-      title: '',
       projectId,
       projectName,
-      OwnerId: data.getProjectDetail.Owner_id,
+      OwnerId,
     });
   }, []);
 

@@ -45,6 +45,9 @@ export const SEND_MESSAGE = gql`
         Project_id
         Contents
         createdAt
+        user {
+          Username
+        }
       }
     }
   }
