@@ -17,17 +17,10 @@ const authMiddleware = setContext(async (_, { headers }) => {
     headers: {
       ...headers,
       'X-JWT': token || null,
-      authorization: token ? `Bearer ${token}` : '',
     },
   };
 });
 
-// const authMiddleware = new ApolloLink((operation, forward) => {
-//   const token = AsyncStorage.getItem('token');
-//   const authorization = `Bearer ${token}` || null;
-//   operation.setContext({ headers: { 'X-JWT': token || null, authorization } });
-//   return forward(operation);
-// });
 
 const httpLink = new HttpLink({
   uri: 'http://35.193.13.247:4000/graphql',
