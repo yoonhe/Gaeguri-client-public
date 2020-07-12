@@ -55,13 +55,12 @@ projectpositionno{
       }
 */
 
-function UserProjectHistory({ route }): React.ReactElement {
-  //유저 ID 지정
-  // console.log('route.params ??:', route.params);
-  // const userId = route.params !== undefined ? route.params : 9;
+function UserProjectHistory({ userId }): React.ReactElement {
+  //전달받은 유저 ID 확인
+  console.log('전달받은 userId ??:', userId);
 
   const { loading, error, data } = useQuery(GET_MY_PROJECTLIST, {
-    variables: { User_id: 9 },
+    variables: { User_id: userId },
   });
   if (loading) console.log('Loading...');
   if (error) console.log(`Error! ${error.message}`);
@@ -70,14 +69,25 @@ function UserProjectHistory({ route }): React.ReactElement {
   return (
     <View>
       {loading && <Text>loading...</Text>}
-      {data &&
+      {data && data.getMyProjectList.length === 0 ? (
+        <TextContentStyle placeholder={true}>아직 참여한 프로젝트가 없습니다.</TextContentStyle>
+      ) : (
+        data &&
         data.getMyProjectList.map(project => (
           <ProjectHistoryStyle key={project.Project_id}>
             <TextContentStyle>{project.Project_name}</TextContentStyle>
-            {/* <TextDateStyle>{project.projectpositionno.position.Position_name}</TextDateStyle> */}
-            <TextDateStyle>{moment(project.EndAt).format('YYYY-MM-DD')}</TextDateStyle>
+            <TextContentStyle mid={true}>{project.Desc}</TextContentStyle>
+            <TextDateStyle>
+              {project.status === 'await'
+                ? '진행중'
+                : project.status === 'start'
+                ? '모집중'
+                : '종료됨'}
+              {' | '} {moment(project.EndAt).format('YYYY-MM-DD')}
+            </TextDateStyle>
           </ProjectHistoryStyle>
-        ))}
+        ))
+      )}
     </View>
   );
 }

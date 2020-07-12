@@ -1,6 +1,18 @@
 import styled from 'styled-components/native';
 import { Color } from './common';
 
+export const HeaderButtonStyle = styled.Text`
+  width: 60px;
+  height: 36px;
+  padding: 8px;
+  margin-right: 8px;
+  margin-left: 8px;
+  border-radius: 5px;
+  text-align: center;
+  color: ${Color.N0};
+  background: ${Color.G300};
+`;
+
 export const ButtonWrap = styled.View`
   margin-top: -10px;
   margin-right: -10px;

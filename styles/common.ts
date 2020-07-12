@@ -89,8 +89,8 @@ export const TextContentStyle = styled.Text`
   font-size: 16px;
   font-weight: 300;
   line-height: 22px;
-  margin-top: 8px;
-  color: ${Color.N600};
+  margin-top: ${props => (props.mid ? '2px' : '8px')};
+  color: ${props => (props.placeholder ? `${Color.N50}` : `${Color.N600}`)};
 `;
 
 export const TextLinkStyle = styled.Text`
