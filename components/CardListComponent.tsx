@@ -62,11 +62,6 @@ function CardListComponent({ project, navigation }) {
     console.log('[CardListCompoennt Error] ? ', error);
   }
 
-  if (data) {
-    console.log('[get my project] data ? ', data);
-    console.log('[get my project] data position ? ', data.getProjectDetail.projectpositionno);
-  }
-
   const statusFormat = useCallback(() => {
     let statusName;
     switch (project.status) {
