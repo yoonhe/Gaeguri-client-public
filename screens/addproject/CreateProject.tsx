@@ -10,7 +10,6 @@ import { BorderButton } from '../../components/ButtonComponent';
 import FormBoxComponent from '../../components/FormBoxComponent';
 import DateTimePickerComponent from '../../components/DateTimePickerComponent';
 import { PageWrapStyle } from '../../styles/common';
-import { ButtonWrap } from '../../styles/button';
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useFormik } from 'formik';
@@ -172,8 +171,8 @@ function CreateProject({ route, navigation }): React.ReactElement {
   const positionChangeHandler = useCallback(
     (index, text) => {
       // const {text} = e.nativeEvent;
-      console.log('[positionChangeHandler]index ? ', index);
-      console.log('[positionChangeHandler]text ? ', text);
+      // console.log('[positionChangeHandler]index ? ', index);
+      // console.log('[positionChangeHandler]text ? ', text);
       setPositionList(
         produce(draft => {
           draft[index].name = text;

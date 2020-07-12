@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import { Text } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { Text, Modal, View } from 'react-native';
 import {
   CardListStyle,
   CardListTitle,
@@ -15,17 +15,42 @@ import {
 } from '../styles/list';
 import { TextTagListStyle, TextTagItemStyle, TextTagTextStyle } from '../styles/tag';
 import { BorderButton } from './ButtonComponent';
+import PositionPickerModal from './PositionPickerModal';
 import moment from 'moment';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 
-function CardListComponent({ project, goToRoom }) {
-  const deadLine = moment().subtract(12, 'hour');
+function CardListComponent({ project, navigation }) {
+  const [modalVisible, setModalVisible] = useState(false);
+  const deadLine = moment().subtract(24, 'hour');
 
   const GET_PROJECT_ID = gql`
     query GetProjectDetail($Project_id: Int) {
       getProjectDetail(Project_id: $Project_id) {
+        Owner_id
         createdAt
+        projectpositionno {
+          PP_id
+          Position_id
+          Project_id
+          NoOfPosition
+          position {
+            Position_id
+            Position_name
+          }
+          PC {
+            Project_Position_id
+            Sender_id
+            Candidate_id
+            Allowed
+            Owner
+            candidate {
+              User_id
+              Username
+              Email
+            }
+          }
+        }
       }
     }
   `;
@@ -57,6 +82,20 @@ function CardListComponent({ project, goToRoom }) {
     return statusName;
   }, []);
 
+  const goToRoom = useCallback((projectId, projectName) => {
+    console.log('goToRoom 클릭');
+    navigation.navigate('Room', {
+      title: '',
+      projectId,
+      projectName,
+      OwnerId: data.getProjectDetail.Owner_id,
+    });
+  }, []);
+
+  const showModalPicker = useCallback(() => {
+    setModalVisible(prev => !prev);
+  }, []);
+
   return (
     <CardListStyle status={project.status}>
       <CardListTitle status={project.status}>{project.Project_name}</CardListTitle>
@@ -70,7 +109,7 @@ function CardListComponent({ project, goToRoom }) {
       </TextTagListStyle>
       <ButtonAndTextStyle>
         <BorderButton
-          onPress={goToRoom.bind(null, project.Project_id, project.Project_name)}
+          onPress={showModalPicker}
           backgroundColor={project.status === 'End' ? 'disabled' : true}
           disabled={project.status === 'End'}
         >
@@ -94,6 +133,14 @@ function CardListComponent({ project, goToRoom }) {
       </ButtonAndTextStyle>
 
       {data && moment(data.getProjectDetail.createdAt) > deadLine && <NewIcon>NEW</NewIcon>}
+
+      <PositionPickerModal
+        modalVisible={modalVisible}
+        showModalPicker={showModalPicker}
+        positionList={data}
+        goToRoom={goToRoom}
+        project={project}
+      />
     </CardListStyle>
   );
 }

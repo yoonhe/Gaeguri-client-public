@@ -3,76 +3,18 @@ import { View, Text, Button, FlatList, Image, TouchableOpacity, StyleSheet } fro
 import Constants from 'expo-constants';
 import { DividerStyle } from '../../../styles/common';
 import DrawerFooter from './DrawerFooter';
+import { GET_PROJECT_USERS } from './RoomQuries';
+import { useQuery } from '@apollo/react-hooks';
 
-const DATA: IData[] = [
-  {
-    id: 1,
-    name: '조재익',
-    profile: 'https://placeimg.com/140/140/any',
-    position: '백엔드',
-    owner: true,
-  },
-  {
-    id: 2,
-    name: '서나연',
-    profile: 'https://placeimg.com/140/140/any',
-    position: '프론트엔드',
-    owner: false,
-  },
-  {
-    id: 3,
-    name: '윤해은',
-    profile: 'https://placeimg.com/140/140/any',
-    position: '프론트엔드',
-    owner: false,
-  },
-  {
-    id: 4,
-    name: '오코딩',
-    profile: 'https://placeimg.com/140/140/any',
-    position: '백엔드',
-    owner: false,
-  },
-  {
-    id: 5,
-    name: '조코딩',
-    profile: 'https://placeimg.com/140/140/any',
-    position: '프론트엔드',
-    owner: false,
-  },
-  {
-    id: 6,
-    name: '김코딩',
-    profile: 'https://placeimg.com/140/140/any',
-    position: '프론트엔드',
-    owner: false,
-  },
-  {
-    id: 7,
-    name: '윤코딩',
-    profile: 'https://placeimg.com/140/140/any',
-    position: '백엔드',
-    owner: false,
-  },
-];
+function Drawer({ navigation, route }): React.ReactElement {
+  const {
+    data: { getProjectUserDetail },
+    loading,
+    error,
+  } = useQuery(GET_PROJECT_USERS, {
+    variables: { Project_id: route.params.projectId },
+  });
 
-const me = {
-  id: 1,
-};
-
-const owner = {
-  id: 1,
-};
-
-interface IData {
-  id: number;
-  name: string;
-  profile: string;
-  position: string;
-  owner: boolean;
-}
-
-function Drawer({ navigation }): React.ReactElement {
   useLayoutEffect(() => {
     navigation.setOptions({
       title: '프로젝트 서랍',
@@ -84,40 +26,46 @@ function Drawer({ navigation }): React.ReactElement {
     navigation.goBack();
   };
 
-  const onRetreat = useCallback(id => {
-    console.log(id);
-  }, []);
+  // const onRetreat = useCallback(id => {
+  //   console.log(id);
+  // }, []);
 
-  const keyExtractor = (item: IData) => String(item.id);
+  if (loading) {
+    return <Text>...loading</Text>;
+  }
 
-  const renderItem = ({ item }): React.ReactElement => {
-    return (
-      <View style={styles.item}>
-        <Image
-          style={styles.profileMedium}
-          source={
-            item.profile !== ''
-              ? { uri: item.profile }
-              : require('../../../assets/MyProfile/profile_medium.png')
-          }
-        />
-        {item.owner && (
-          <Image style={styles.crown} source={require('../../../assets/Room/crown.png')} />
-        )}
-        <Text
-          style={{
-            fontSize: 12,
-            color: '#2F80ED',
-            display: 'flex',
-            alignItems: 'center',
-            position: 'absolute',
-            left: 60,
-          }}
-        >
-          {item.position}
-        </Text>
-        <Text style={{ fontSize: 16, left: 130, position: 'absolute' }}>{item.name}</Text>
-        {owner.id === me.id && me.id !== item.id && (
+  return (
+    <View>
+      {getProjectUserDetail.map((item, i) => {
+        return (
+          <View style={styles.item} key={i}>
+            <Image
+              style={styles.profileMedium}
+              // source={
+              //   item.profile !== ''
+              //     ? { uri: item.profile }
+              //     : require('../../../assets/MyProfile/profile_medium.png')
+              source={require('../../../assets/MyProfile/profile_medium.png')}
+            />
+            {route.params.OwnerId === item.user.User_id && (
+              <Image style={styles.crown} source={require('../../../assets/Room/crown.png')} />
+            )}
+            <Text
+              style={{
+                fontSize: 12,
+                color: '#2F80ED',
+                display: 'flex',
+                alignItems: 'center',
+                position: 'absolute',
+                left: 60,
+              }}
+            >
+              {item.position.Position_name}
+            </Text>
+            <Text style={{ fontSize: 16, left: 130, position: 'absolute' }}>
+              {item.user.Username}
+            </Text>
+            {/* {owner.id === me.id && me.id !== item.id && (
           <TouchableOpacity
             style={{ position: 'absolute', right: 5 }}
             onPress={() => onRetreat(item.id)}
@@ -127,16 +75,12 @@ function Drawer({ navigation }): React.ReactElement {
               source={require('../../../assets/Room/retreat.png')}
             />
           </TouchableOpacity>
-        )}
-      </View>
-    );
-  };
-
-  return (
-    <View>
-      <FlatList data={DATA} renderItem={renderItem} keyExtractor={keyExtractor} />
+        )} */}
+          </View>
+        );
+      })}
       <DividerStyle />
-      <DrawerFooter navigation={navigation} />
+      <DrawerFooter navigation={navigation} projectId={route.params.projectId} />
     </View>
   );
 }

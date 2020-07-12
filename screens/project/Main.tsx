@@ -6,7 +6,7 @@ import { PageWrapStyle } from '../../styles/common';
 import CardListComponent from '../../components/CardListComponent';
 
 const GET_PROJECT = gql`
-  query GettMyProjectList($User_id: Int!) {
+  query GetAvailableProjectList($User_id: Int!) {
     getAvailableProjectList(User_id: $User_id) {
       Project_id
       Project_name
@@ -43,9 +43,9 @@ function Main({ navigation }): React.ReactElement {
     console.log('[CardListComponents] error ? ', error);
   }
 
-  const goToRoom = useCallback((projectId, projectName) => {
-    navigation.navigate('Room', { title: '', projectId: projectId, projectName: projectName });
-  }, []);
+  // const goToRoom = useCallback((projectId, projectName) => {
+  //   navigation.navigate('Room', { title: '', projectId: projectId, projectName: projectName });
+  // }, []);
 
   return (
     <PageWrapStyle>
@@ -53,7 +53,7 @@ function Main({ navigation }): React.ReactElement {
         {loading && <Text>loading...</Text>}
         {data &&
           data.getAvailableProjectList.map(project => (
-            <CardListComponent key={project} project={project} goToRoom={goToRoom} />
+            <CardListComponent key={project} project={project} navigation={navigation} />
           ))}
       </ScrollView>
     </PageWrapStyle>

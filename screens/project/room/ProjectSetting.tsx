@@ -1,5 +1,5 @@
-import React, { useLayoutEffect, useCallback, useState } from 'react';
-import { View, Text, Button } from 'react-native';
+import React, { useLayoutEffect, useCallback, useState, useEffect } from 'react';
+import { View, Text, Button, Alert } from 'react-native';
 import FormBoxComponent from '../../../components/FormBoxComponent';
 import { useFormik } from 'formik';
 import { PageWrapStyle } from '../../../styles/common';
@@ -32,35 +32,17 @@ const GET_PROJECT = gql`
   }
 `;
 
-function ProjectSetting({ navigation }): React.ReactElement {
+function ProjectSetting({ navigation, route }): React.ReactElement {
   const [updateProject] = useMutation(UPDATE_PROJECT, {
-    refetchQueries: [{ query: GET_PROJECT, variables: { Project_id: 2 } }],
+    refetchQueries: [{ query: GET_PROJECT, variables: { Project_id: route.params.projectId } }],
     // awaitRefetchQueries: true,
   });
 
   const { loading, error, data } = useQuery(GET_PROJECT, {
-    variables: { Project_id: 2 },
+    variables: { Project_id: route.params.projectId },
   });
 
-  console.log('render', data?.getProjectDetail);
-
-  const stateChangeToText = (status: number) => {
-    let statusString: string = '';
-    switch (status) {
-      case 0:
-        statusString = 'await';
-        break;
-      case 1:
-        statusString = 'Start';
-        break;
-      case 2:
-        statusString = 'End';
-        break;
-    }
-    return statusString;
-  };
-
-  const [buttonState, setButtonState] = useState<number>(0);
+  const [buttonState, setButtonState] = useState<string>(data?.getProjectDetail.status);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -69,6 +51,12 @@ function ProjectSetting({ navigation }): React.ReactElement {
       headerRight: () => <Button title='완료' onPress={formik.handleSubmit} />,
     });
   }, [navigation]);
+
+  useEffect(() => {
+    if (data) {
+      setButtonState(data.getProjectDetail.status);
+    }
+  }, [!loading]);
 
   const closeSetting = () => {
     navigation.goBack();
@@ -83,9 +71,9 @@ function ProjectSetting({ navigation }): React.ReactElement {
       updateProject({
         variables: {
           input: {
-            Project_id: 2,
+            Project_id: route.params.projectId,
             Project_name: values.projectName,
-            // Status: stateChangeToText(buttonState),
+            // Status: buttonState,
           },
         },
       });
@@ -93,12 +81,58 @@ function ProjectSetting({ navigation }): React.ReactElement {
   });
 
   const stateArr: string[] = ['모집중', '시작', '종료'];
+  const stateValueArr: string[] = ['await', 'Start', 'End'];
 
   const onClick = useCallback(e => {
+    if (buttonState === 'Start' && e === 'await') {
+      return Alert.alert(
+        '',
+        '프로젝트가 이미 시작되었습니다',
+        [
+          {
+            text: 'OK',
+            style: 'destructive',
+          },
+        ],
+        { cancelable: true },
+      );
+    }
+
+    if (buttonState === 'await' && e === 'End') {
+      return Alert.alert(
+        '',
+        '프로젝트가 시작되지 않았습니다',
+        [
+          {
+            text: 'OK',
+            style: 'destructive',
+          },
+        ],
+        { cancelable: true },
+      );
+    }
+
+    if (buttonState === 'End') {
+      return Alert.alert(
+        '',
+        '프로젝트가 종료되었습니다',
+        [
+          {
+            text: 'OK',
+            style: 'destructive',
+          },
+        ],
+        { cancelable: true },
+      );
+    }
     setButtonState(e);
   }, []);
 
   // 모집중: ‘await’ 시작: ‘Start’ 종료: ‘End’
+  if (loading) {
+    return <Text>loading...</Text>;
+  }
+
   return (
     <PageWrapStyle>
       <FormBoxComponent
@@ -109,13 +143,13 @@ function ProjectSetting({ navigation }): React.ReactElement {
       />
       <FormBoxComponent title='주요스택'>
         <ButtonWrap>
-          {stateArr.map((state, i) => {
+          {stateValueArr.map((state, i) => {
             return (
               <BorderButton
                 key={i}
                 row={true}
-                backgroundColor={buttonState === i}
-                onPress={() => onClick(i)}
+                backgroundColor={buttonState === state}
+                onPress={() => onClick(state)}
               >
                 {stateArr[i]}
               </BorderButton>

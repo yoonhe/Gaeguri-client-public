@@ -83,3 +83,13 @@ export const InputButtonStyle = styled.Text`
   overflow: hidden;
   color: ${props => (props.placeholder ? `#c7c7cd` : '#0b132b')};
 `;
+
+export const PickerButtonStyle = styled.Text`
+  background: #fff;
+  padding: 20px;
+  text-align: center;
+  border: solid #dcdcdc;
+  border-width: 0;
+  ${props => props.index !== 0 && 'border-top-width: 1px;'}
+  ${props => props.disabled && 'opacity:0.3;'}
+`;

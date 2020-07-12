@@ -1,17 +1,45 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { ApolloProvider } from '@apollo/react-hooks';
 import StatusBarComponent from './components/StatusBarComponent';
 import BottomTabNavigation from './navigation/BottomTabNavigation';
+import BeforeLoginNavigation from './navigation/BeforeLoginNavigation';
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { AuthContext } from './components/context';
 import client from './apollo';
 
 function App(): React.ReactElement {
+  const Stack = createStackNavigator();
+  // const [isLoading, setIsLoading] = useState(true);
+  const [userToken, setUserToken] = useState(null);
+
+  const authContext = useMemo(
+    () => ({
+      signIn: token => {
+        console.log('token ? ', token);
+        setUserToken(token);
+      },
+      signOut: () => {
+        setUserToken(null);
+      },
+    }),
+    [],
+  );
+
   return (
     <ApolloProvider client={client}>
       <StatusBarComponent />
-      <NavigationContainer>
-        <BottomTabNavigation />
-      </NavigationContainer>
+      <AuthContext.Provider value={authContext}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            {userToken ? (
+              <Stack.Screen name="Main" component={BottomTabNavigation} />
+            ) : (
+              <Stack.Screen name="Login" component={BeforeLoginNavigation} />
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AuthContext.Provider>
     </ApolloProvider>
   );
 }

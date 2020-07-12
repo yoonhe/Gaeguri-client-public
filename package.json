@@ -30,6 +30,7 @@
     "react-apollo-hooks": "^0.5.0",
     "react-dom": "~16.9.0",
     "react-native": "0.62.2",
+    "react-native-fbsdk": "2.0.0",
     "react-native-formik": "^1.7.8",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-gifted-chat": "^0.16.1",
@@ -53,7 +54,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
-    "@babel/runtime": "^7.6.2",
+    "@babel/runtime": "7.10.4",
     "@react-native-community/eslint-config": "^1.0.0",
     "@types/jest": "^24.0.24",
     "@types/node": "^14.0.12",
@@ -76,6 +77,9 @@
     "tslint-config-prettier": "^1.18.0",
     "tslint-react": "^5.0.0",
     "typescript": "3.9.5"
+  },
+  "resolutions": {
+    "@react-native-community/cli-debugger-ui": "4.7.0"
   },
   "jest": {
     "preset": "react-native",

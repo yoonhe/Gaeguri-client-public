@@ -31,7 +31,6 @@ const authMiddleware = setContext(async (_, { headers }) => {
 
 const httpLink = new HttpLink({
   uri: 'http://35.193.13.247:4000/graphql',
-  credentials: 'include',
 });
 
 const wsLink = new WebSocketLink({

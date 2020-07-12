@@ -1,14 +1,15 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { StackActions, CommonActions } from '@react-navigation/native';
+import React, { useState, useContext } from 'react';
 import { Alert, View } from 'react-native';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { BorderButton } from '../../components/ButtonComponent';
 import FormBoxComponent from '../../components/FormBoxComponent';
-import { PageWrapStyle, PageWrapAlignCenterStyle } from '../../styles/common';
+import { PageWrapAlignCenterStyle } from '../../styles/common';
 import AsyncStorage from '@react-native-community/async-storage';
+import { AuthContext } from '../../components/context';
 
 import { useFormik } from 'formik';
 import { gql } from 'apollo-boost';
+import SNSFacebookLogin from './SNSFacebookLogin';
 
 const LOGIN = gql`
   mutation EmailLogin($Email: String!, $Password: String!) {
@@ -20,9 +21,33 @@ const LOGIN = gql`
   }
 `;
 
+const GET_MYPROFILE = gql`
+  query {
+    GetMyProfile {
+      ok
+      error
+      user {
+        User_id
+        Username
+        Profile_photo_path
+        AboutMe
+        userstack {
+          stack {
+            Stack_id
+            Stack_name
+          }
+        }
+        Email
+      }
+    }
+  }
+`;
+
 function Login({ route, navigation }): React.ReactElement {
   const [value, setValue] = useState('');
   const [EmailLogin, { data, loading, error }] = useMutation(LOGIN);
+  const { signIn } = useContext(AuthContext);
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -57,12 +82,9 @@ function Login({ route, navigation }): React.ReactElement {
         .then(async data => {
           const store = { token: data.data.EmailLogin.token };
           await AsyncStorage.setItem('token', store.token);
-          //console.log('data??????????', await AsyncStorage.getItem('token'));
-          navigation.dispatch(
-            CommonActions.reset({
-              routes: [{ name: '홈' }],
-            }),
-          );
+          signIn(await AsyncStorage.getItem('token'));
+          useQuery(GET_MYPROFILE);
+          // console.log('data??????????', await AsyncStorage.getItem('token'));
         })
         .catch(error => {
           console.log('error', error);
@@ -76,6 +98,7 @@ function Login({ route, navigation }): React.ReactElement {
 
   return (
     <PageWrapAlignCenterStyle>
+      <SNSFacebookLogin navigation={navigation} />
       <View>
         <FormBoxComponent
           title="Email"
