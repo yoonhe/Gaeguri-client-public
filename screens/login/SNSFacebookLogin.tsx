@@ -1,9 +1,10 @@
 import { gql } from 'apollo-boost';
 import React, { useState } from 'react';
 import { View, Alert } from 'react-native';
-import { LoginButton, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
+import { AccessToken, GraphRequest, LoginManager, GraphRequestManager } from 'react-native-fbsdk';
+import { BorderButton } from '../../components/ButtonComponent';
 import { CommonActions } from '@react-navigation/native';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const logCallback = (log, callback) => {
@@ -20,6 +21,29 @@ const FACEBOOKLOGIN = gql`
     }
   }
 `;
+
+const GET_MYPROFILE = gql`
+  query {
+    GetMyProfile {
+      ok
+      error
+      user {
+        User_id
+        Username
+        Profile_photo_path
+        AboutMe
+        userstack {
+          stack {
+            Stack_id
+            Stack_name
+          }
+        }
+        Email
+      }
+    }
+  }
+`;
+
 const TOKEN_EMPTY = 'token has not fetched';
 
 function SNSFacebookLogin({ navigation }): React.ReactElement {
@@ -28,20 +52,19 @@ function SNSFacebookLogin({ navigation }): React.ReactElement {
   const [isLogin, setIsLogin] = useState(false);
   const [token, setToken] = useState(TOKEN_EMPTY);
 
-  const logging = async (error, result) => {
-    logCallback(`Login loading...`, setLoginLoading(true));
-    if (error) {
-      console.log('login has error: ', result.error);
-    } else if (result.isCancelled) {
-      console.log('login is cancelled.');
-    } else {
+  const logging = async () => {
+    const fblogin = await LoginManager.logInWithPermissions(['email']);
+    if (fblogin) {
       const tokenFB = await AccessToken.getCurrentAccessToken();
       if (tokenFB) {
         setToken(tokenFB.accessToken);
         getPublicProfile();
+        useQuery(GET_MYPROFILE);
         logCallback(`Login Finished:${JSON.stringify(tokenFB)}`, setLoginLoading(false));
         logCallback(`navigate Home...`, setIsLogin(true));
       }
+    } else {
+      logCallback('Login fail with error: ', setIsLogin(false));
     }
   };
 
@@ -77,7 +100,7 @@ function SNSFacebookLogin({ navigation }): React.ReactElement {
   };
   return (
     <View>
-      <LoginButton onLoginFinished={logging} />
+      <BorderButton onPress={logging}>페이스북로그인</BorderButton>
     </View>
   );
 }
