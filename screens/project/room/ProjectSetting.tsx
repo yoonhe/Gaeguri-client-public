@@ -33,9 +33,32 @@ const GET_PROJECT = gql`
 `;
 
 function ProjectSetting({ navigation, route }): React.ReactElement {
+  // const [updateProject] = useMutation(UPDATE_PROJECT, {
+  //   refetchQueries: [{ query: GET_PROJECT, variables: { Project_id: route.params.projectId } }],
+  //   // awaitRefetchQueries: true,
+  // });
+
   const [updateProject] = useMutation(UPDATE_PROJECT, {
-    refetchQueries: [{ query: GET_PROJECT, variables: { Project_id: route.params.projectId } }],
-    // awaitRefetchQueries: true,
+    update(cache, { data }) {
+      const { getProjectDetail } = cache.readQuery({
+        query: GET_PROJECT,
+        variables: {
+          Project_id: route.params.projectId,
+        },
+      });
+
+      console.log('getProjectDetail', getProjectDetail);
+
+      console.log('data', data);
+
+      // cache.writeQuery({
+      //   query: GET_PROJECT,
+      //   variables: {
+      //     Project_id: route.params.projectId,
+      //   },
+      //   data: {},
+      // });
+    },
   });
 
   const { loading, error, data } = useQuery(GET_PROJECT, {

@@ -1,13 +1,14 @@
 import React, { useCallback } from 'react';
-import { View, Text, Button, ScrollView } from 'react-native';
+import { View, ActivityIndicator, ScrollView } from 'react-native';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import { PageWrapStyle } from '../../styles/common';
 import CardListComponent from '../../components/CardListComponent';
+import { GET_MYINFO } from './room/RoomQuries';
 
 const GET_PROJECT = gql`
-  query GetAvailableProjectList($User_id: Int!) {
-    getAvailableProjectList(User_id: $User_id) {
+  query GetAvailableProjectList {
+    getAvailableProjectList {
       Project_id
       Project_name
       StartAt
@@ -31,9 +32,7 @@ const GET_PROJECT = gql`
 `;
 
 function Main({ navigation }): React.ReactElement {
-  const { loading, error, data } = useQuery(GET_PROJECT, {
-    variables: { User_id: 0 },
-  });
+  const { loading, error, data } = useQuery(GET_PROJECT);
 
   if (data) {
     console.log('[CardListComponents] data ? ', data);
@@ -43,17 +42,17 @@ function Main({ navigation }): React.ReactElement {
     console.log('[CardListComponents] error ? ', error);
   }
 
-  // const goToRoom = useCallback((projectId, projectName) => {
-  //   navigation.navigate('Room', { title: '', projectId: projectId, projectName: projectName });
-  // }, []);
-
   return (
     <PageWrapStyle>
       <ScrollView>
-        {loading && <Text>loading...</Text>}
+        {loading && (
+          <View>
+            <ActivityIndicator size='small' color='#00ff00' />
+          </View>
+        )}
         {data &&
-          data.getAvailableProjectList.map(project => (
-            <CardListComponent key={project} project={project} navigation={navigation} />
+          data.getAvailableProjectList.map((project, i) => (
+            <CardListComponent key={i} project={project} navigation={navigation} />
           ))}
       </ScrollView>
     </PageWrapStyle>
