@@ -1,11 +1,11 @@
 import { gql } from 'apollo-boost';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Alert } from 'react-native';
 import { AccessToken, GraphRequest, LoginManager, GraphRequestManager } from 'react-native-fbsdk';
 import { BorderButton } from '../../components/ButtonComponent';
-import { CommonActions } from '@react-navigation/native';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import AsyncStorage from '@react-native-community/async-storage';
+import { AuthContext } from '../../components/context';
 
 const logCallback = (log, callback) => {
   console.log(log);
@@ -51,6 +51,7 @@ function SNSFacebookLogin({ navigation }): React.ReactElement {
   const [loginLoading, setLoginLoading] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [token, setToken] = useState(TOKEN_EMPTY);
+  const { signIn } = useContext(AuthContext);
 
   const logging = async () => {
     const fblogin = await LoginManager.logInWithPermissions(['email']);
@@ -84,11 +85,7 @@ function SNSFacebookLogin({ navigation }): React.ReactElement {
           .then(async data => {
             const store = { token: data.data.FacebookLogin.token };
             await AsyncStorage.setItem('token', store.token);
-            navigation.dispatch(
-              CommonActions.reset({
-                routes: [{ name: '홈' }],
-              }),
-            );
+            signIn(await AsyncStorage.getItem('token'));
           })
           .catch(error => {
             Alert.alert('error', error.toString());
@@ -100,7 +97,7 @@ function SNSFacebookLogin({ navigation }): React.ReactElement {
   };
   return (
     <View>
-      <BorderButton onPress={logging}>페이스북로그인</BorderButton>
+      <BorderButton onPress={logging}>Facebook Login</BorderButton>
     </View>
   );
 }
