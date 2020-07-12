@@ -21,3 +21,33 @@ export const GET_MYPROFILE = gql`
     }
   }
 `;
+
+export const UPDATE_MYPROFILE = gql`
+  mutation UpdateMyProfile(
+    $Username: String!
+    $Profile_photo_path: String
+    $AboutMe: String
+    $Stacks: [String]
+  ) {
+    UpdateMyProfile(
+      Username: $Username
+      Profile_photo_path: $Profile_photo_path
+      AboutMe: $AboutMe
+      stacks: $Stacks
+    ) {
+      ok
+      error
+      user {
+        User_id
+        Username
+        Profile_photo_path
+        AboutMe
+        userstacks {
+          stack {
+            Stack_name
+          }
+        }
+      }
+    }
+  }
+`;

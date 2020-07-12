@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import { TextContentStyle, TextDateStyle } from '../styles/common';
 import { ProjectHistoryStyle } from '../styles/list';
 import moment from 'moment';
@@ -57,7 +57,7 @@ projectpositionno{
 
 function UserProjectHistory({ userId }): React.ReactElement {
   //전달받은 유저 ID 확인
-  console.log('전달받은 userId ??:', userId);
+  // console.log('전달받은 userId ??:', userId);
 
   const { loading, error, data } = useQuery(GET_MY_PROJECTLIST, {
     variables: { User_id: userId },
@@ -68,13 +68,17 @@ function UserProjectHistory({ userId }): React.ReactElement {
 
   return (
     <View>
-      {loading && <Text>loading...</Text>}
+      {loading && (
+        <View>
+          <ActivityIndicator />
+        </View>
+      )}
       {data && data.getMyProjectList.length === 0 ? (
         <TextContentStyle placeholder={true}>아직 참여한 프로젝트가 없습니다.</TextContentStyle>
       ) : (
         data &&
-        data.getMyProjectList.map(project => (
-          <ProjectHistoryStyle key={project.Project_id}>
+        data.getMyProjectList.map((project, index) => (
+          <ProjectHistoryStyle key={index}>
             <TextContentStyle>{project.Project_name}</TextContentStyle>
             <TextContentStyle mid={true}>{project.Desc}</TextContentStyle>
             <TextDateStyle>
