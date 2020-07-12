@@ -6,9 +6,19 @@ import EditMyProfile from './EditMyProfile';
 const MyProfileStack = createStackNavigator();
 
 function MyProfileScreen({ navigation, route }): React.ReactElement {
-  if (route.state) {
-    navigation.setOptions({ tabBarVisible: route.state.index > 0 ? false : true });
+  const routeName: string = route.state ? route.state.routes[route.state.index].name : '';
+
+  const tabBarInVisibleRouters: string[] = ['MyProfile', 'EditMyProfile'];
+
+  if (tabBarInVisibleRouters.includes(routeName)) {
+    navigation.setOptions({ tabBarVisible: false });
+  } else {
+    navigation.setOptions({ tabBarVisible: true });
   }
+  // if (route.state) {
+  //   navigation.setOptions({ tabBarVisible: route.state.index > 0 ? false : true });
+  // }
+
   return (
     <MyProfileStack.Navigator initialRouteName="MyProfile">
       <MyProfileStack.Screen name="MyProfile" component={MyProfile} />
