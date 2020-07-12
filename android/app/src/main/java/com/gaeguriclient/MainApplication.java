@@ -10,6 +10,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.facebook.FacebookSdk;
+import com.dooboolab.kakaologins.RNKakaoLoginsPackage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 

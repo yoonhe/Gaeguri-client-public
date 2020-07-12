@@ -10,6 +10,7 @@ import { AuthContext } from '../../components/context';
 import { useFormik } from 'formik';
 import { gql } from 'apollo-boost';
 import SNSFacebookLogin from './SNSFacebookLogin';
+import SNSKakaoLogin from './SNSKakaoLogin';
 
 const LOGIN = gql`
   mutation EmailLogin($Email: String!, $Password: String!) {
@@ -114,7 +115,8 @@ function Login({ route, navigation }): React.ReactElement {
         />
         <BorderButton onPress={formik.handleSubmit}>Login</BorderButton>
       </View>
-      <SNSFacebookLogin navigation={navigation} />
+      <SNSFacebookLogin />
+      <SNSKakaoLogin />
     </PageWrapAlignCenterStyle>
   );
 }
