@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import CreateProjectStack from '../screens/addproject/CreateProjectStack';
-import ShowOffScreen from '../screens/showoff/ShowOff';
+import AsyncStorage from '@react-native-community/async-storage';
 import MyProfileStack from '../screens/myprofile/MyProfileStack'; // 이름수정
+import BeforeLoginNavigation from './BeforeLoginNavigation';
 import ProjectStack from '../screens/project/ProjectStack';
 import HomeScreen from '../screens/home/Home';
-import Login from '../screens/login/Login';
-import SignupStack from '../screens/signup/Signup';
+import { BorderButton } from '../components/ButtonComponent';
 
 //아이콘 찾기 https://oblador.github.io/react-native-vector-icons/
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -17,7 +18,7 @@ function BottomTabNavigation(): React.ReactElement {
 
   return (
     <Tab.Navigator
-      initialRouteName="홈"
+      initialRouteName="로그인"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           const icons = {
@@ -43,9 +44,6 @@ function BottomTabNavigation(): React.ReactElement {
       <Tab.Screen name="프로젝트" component={ProjectStack} />
       <Tab.Screen name="만들기" component={CreateProjectStack} />
       <Tab.Screen name="마이" component={MyProfileStack} />
-      {/* <Tab.Screen name="로그인" component={Login} />
-      <Tab.Screen name="Signup" component={SignupStack} />
-      <Tab.Screen name="자랑하기" component={ShowOffScreen} /> */}
     </Tab.Navigator>
   );
 }
