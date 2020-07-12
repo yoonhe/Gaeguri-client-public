@@ -98,7 +98,6 @@ function Login({ route, navigation }): React.ReactElement {
 
   return (
     <PageWrapAlignCenterStyle>
-      <SNSFacebookLogin navigation={navigation} />
       <View>
         <FormBoxComponent
           title="Email"
@@ -115,6 +114,7 @@ function Login({ route, navigation }): React.ReactElement {
         />
         <BorderButton onPress={formik.handleSubmit}>Login</BorderButton>
       </View>
+      <SNSFacebookLogin navigation={navigation} />
     </PageWrapAlignCenterStyle>
   );
 }

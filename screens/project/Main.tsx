@@ -6,8 +6,8 @@ import { PageWrapStyle } from '../../styles/common';
 import CardListComponent from '../../components/CardListComponent';
 
 const GET_PROJECT = gql`
-  query GetAvailableProjectList($User_id: Int!) {
-    getAvailableProjectList(User_id: $User_id) {
+  query GetAvailableProjectList {
+    getAvailableProjectList {
       Project_id
       Project_name
       StartAt
@@ -31,9 +31,7 @@ const GET_PROJECT = gql`
 `;
 
 function Main({ navigation }): React.ReactElement {
-  const { loading, error, data } = useQuery(GET_PROJECT, {
-    variables: { User_id: 0 },
-  });
+  const { loading, error, data } = useQuery(GET_PROJECT);
 
   if (data) {
     console.log('[CardListComponents] data ? ', data);
