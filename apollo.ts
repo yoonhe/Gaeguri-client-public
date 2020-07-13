@@ -11,6 +11,14 @@ import { setContext } from 'apollo-link-context';
 
 const cache = new InMemoryCache();
 
+const getToken = async () => {
+  const token = await AsyncStorage.getItem('token');
+  if (token) {
+    return token;
+  }
+  return '';
+};
+
 const authMiddleware = setContext(async (_, { headers }) => {
   const token = await AsyncStorage.getItem('token');
   return {
@@ -27,6 +35,9 @@ const httpLink = new HttpLink({
 
 const wsLink = new WebSocketLink({
   options: {
+    connectionParams: async () => ({
+      'X-JWT': await getToken(),
+    }),
     reconnect: true,
   },
   uri: 'ws://35.193.13.247:4000/subscription',
