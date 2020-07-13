@@ -149,12 +149,11 @@ export const HeaderRightOcticons = styled.View`
 
 // 프로필 이미지 : 마이페이지용
 export const ProfileMediumStyle = styled.Image.attrs(props =>
-  props.image ? { source: props.image } : { source: profileImage },
+  props.uri ? { uri: props.uri } : { source: profileImage },
 )`
-  width: 67px;
-  height: 67px;
+  width: 77px;
+  height: 77px;
   border-radius: 34px;
-  margin-right: 12px;
 `;
 
 // 프로필 이미지 :프로필 모달용
