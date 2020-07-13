@@ -20,8 +20,8 @@ function MyProfileScreen({ navigation, route }): React.ReactElement {
   // }
 
   return (
-    <MyProfileStack.Navigator initialRouteName="MyProfile">
-      <MyProfileStack.Screen name="MyProfile" component={MyProfile} />
+    <MyProfileStack.Navigator initialRouteName="마이 페이지">
+      <MyProfileStack.Screen name="마이 페이지" component={MyProfile} />
       <MyProfileStack.Screen name="EditMyProfile" component={EditMyProfile} />
     </MyProfileStack.Navigator>
   );
