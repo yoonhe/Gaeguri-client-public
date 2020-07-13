@@ -13,8 +13,6 @@ import FormBoxComponent from '../../components/FormBoxComponent';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import { CommonActions } from '@react-navigation/native';
-import DropDownPicker from 'react-native-dropdown-picker';
-import Icon from 'react-native-vector-icons/Feather';
 
 //email, password, username, position, stack, about me
 //<Text title="About me" name="aboutme" placeholder="About me" />
