@@ -1,9 +1,14 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useCallback } from 'react';
 import { Alert, View } from 'react-native';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { BorderButton } from '../../components/ButtonComponent';
 import FormBoxComponent from '../../components/FormBoxComponent';
-import { PageWrapAlignCenterStyle } from '../../styles/common';
+import {
+  PageWrapAlignCenterStyle,
+  TextSubTitleStyle,
+  TextLinkStyle,
+  TextLinkStyleFlatColor,
+} from '../../styles/common';
 import AsyncStorage from '@react-native-community/async-storage';
 import { AuthContext } from '../../components/context';
 
@@ -97,6 +102,10 @@ function Login({ route, navigation }): React.ReactElement {
     },
   });
 
+  const gotoSignup = useCallback(() => {
+    navigation.navigate('Signup');
+  }, []);
+
   return (
     <PageWrapAlignCenterStyle>
       <View>
@@ -117,6 +126,12 @@ function Login({ route, navigation }): React.ReactElement {
       </View>
       <SNSFacebookLogin />
       <SNSKakaoLogin />
+      <View>
+        <TextLinkStyleFlatColor>
+          아직 계정이 없으신가요.
+          <TextLinkStyle onPress={gotoSignup}>회원가입</TextLinkStyle>
+        </TextLinkStyleFlatColor>
+      </View>
     </PageWrapAlignCenterStyle>
   );
 }

@@ -1,14 +1,18 @@
 import React, { useState, useCallback } from 'react';
-import { Alert, View } from 'react-native';
-import { PageWrapAlignCenterStyle } from '../../styles/common';
+import { Alert, View, Button, TouchableOpacity } from 'react-native';
+import { PageWrapAlignCenterStyle, ProfileMediumStyle } from '../../styles/common';
 import { BorderButton } from '../../components/ButtonComponent';
 import FormBoxComponent from '../../components/FormBoxComponent';
+import ImagePicker from 'react-native-image-picker';
+
 //email, password, username, position, stack, about me
 //<Text title="About me" name="aboutme" placeholder="About me" />
 
 function SignupPhaseTwo({ navigation, route }): React.ReactElement {
   const [username, setUsername] = useState('');
   const [aboutme, setAboutme] = useState('');
+  const [avatarSource, setAvatarSource] = useState('');
+  const [imgFile, setImgFile] = useState({});
 
   const nextPageButtonHandler = useCallback(() => {
     const data = {
@@ -17,18 +21,58 @@ function SignupPhaseTwo({ navigation, route }): React.ReactElement {
       Username: username,
       AboutMe: aboutme,
     };
-    console.log(data);
+    //console.log('-------------phasw two data?', data);
+    //console.log('-------------phasw two avatartsource', imgFile);
     if (username !== '') {
-      navigation.navigate('SignupPhaseThree', { data });
+      navigation.navigate('SignupPhaseThree', { data, avatarSource, imgFile });
     } else {
       return Alert.alert('이름을 입력하세요', '', [
         { text: 'OK', onPress: () => console.log('OK Pressed') },
       ]);
     }
-  }, [username, aboutme]);
+  }, [username, aboutme, avatarSource, imgFile]);
+
+  const options = {
+    quality: 1.0,
+    maxWidth: 500,
+    maxHeight: 500,
+    title: '프로필 이미지',
+    customButtons: [{ name: 'delete', title: '이미지 삭제하기' }],
+    storageOptions: {
+      skipBackup: true,
+      path: 'images',
+    },
+  };
+
+  const SelectPhotoTapped = useCallback(() => {
+    ImagePicker.showImagePicker(options, response => {
+      //console.log('Response = ', response);
+
+      if (response.didCancel) {
+        //console.log('User cancelled image picker');
+      } else if (response.error) {
+        //console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        setAvatarSource('');
+      } else {
+        const source = { uri: response.uri };
+        // console.log('response.uri ?? ', response.uri);
+        //console.log('avatarSource ?? ', avatarSource);
+        //console.log('source??????', source);
+        setAvatarSource(source);
+        setImgFile({
+          ...response,
+        });
+      }
+    });
+  }, [imgFile, avatarSource]);
+
   return (
     <PageWrapAlignCenterStyle>
       <View>
+        <TouchableOpacity onPress={SelectPhotoTapped}>
+          <ProfileMediumStyle uri={avatarSource} />
+        </TouchableOpacity>
         <FormBoxComponent
           title="Name"
           name="username"
