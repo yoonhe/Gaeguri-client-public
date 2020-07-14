@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Alert } from 'react-native';
-// import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 function DrawerFooter({ navigation, projectId }): React.ReactElement {
   const inviteMember = useCallback(() => {
@@ -12,7 +12,6 @@ function DrawerFooter({ navigation, projectId }): React.ReactElement {
   }, []);
 
   const exitProject = useCallback(() => {
-    console.log('exitProject');
     Alert.alert(
       '프로젝트에서 나가기',
       '프로젝트 방에서 나가게되면 더 이상 참여할 수 없으며 대화내용 및 프로젝트 목록에서 사라집니다.',
@@ -35,19 +34,15 @@ function DrawerFooter({ navigation, projectId }): React.ReactElement {
   return (
     <View>
       <TouchableOpacity style={styles.touchBlock} onPress={inviteMember}>
-        {/* <Ionicons name='md-person-add' size={24} color='black' /> */}
+        <Icon name='person' size={24} color='black' />
         <Text style={styles.text}>멤버 초대하기</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.touchBlock} onPress={projectSettings}>
-        {/* <Ionicons name='ios-settings' size={24} color='black' /> */}
+        <Icon name='build' size={24} color='black' />
         <Text style={styles.text}>프로젝트 설정하기</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.touchBlock} onPress={exitProject}>
-        {/* <MaterialCommunityIcons
-          name="emoticon-sad-outline"
-          size={24}
-          color="black"
-        /> */}
+        <Icon name='clear' size={24} color='black' />
         <Text style={styles.text}>프로젝트 나가기</Text>
       </TouchableOpacity>
     </View>

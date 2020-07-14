@@ -1,10 +1,11 @@
 import React, { useLayoutEffect, useCallback, useRef } from 'react';
-import { View, Text, Button, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Button, FlatList, Image, ActivityIndicator, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 import { DividerStyle } from '../../../styles/common';
 import DrawerFooter from './DrawerFooter';
 import { GET_PROJECT_USERS } from './RoomQuries';
 import { useQuery } from '@apollo/react-hooks';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 function Drawer({ navigation, route }): React.ReactElement {
   const { data, loading, error } = useQuery(GET_PROJECT_USERS, {
@@ -26,9 +27,9 @@ function Drawer({ navigation, route }): React.ReactElement {
   //   console.log(id);
   // }, []);
 
-  if (loading) {
-    return <Text>...loading</Text>;
-  }
+  // if (loading) {
+  //   return <Text>...loading</Text>;
+  // }
 
   if (error) {
     console.log(error);
@@ -36,36 +37,41 @@ function Drawer({ navigation, route }): React.ReactElement {
 
   return (
     <View>
-      {data.getProjectUserDetail.map((item, i) => {
-        return (
-          <View style={styles.item} key={i}>
-            <Image
-              style={styles.profileMedium}
-              // source={
-              //   item.profile !== ''
-              //     ? { uri: item.profile }
-              //     : require('../../../assets/MyProfile/profile_medium.png')
-              source={require('../../../assets/MyProfile/profile_medium.png')}
-            />
-            {route.params.OwnerId === item.user.User_id && (
-              <Image style={styles.crown} source={require('../../../assets/Room/crown.png')} />
-            )}
-            <Text
-              style={{
-                fontSize: 12,
-                color: '#2F80ED',
-                display: 'flex',
-                alignItems: 'center',
-                position: 'absolute',
-                left: 60,
-              }}
-            >
-              {item.position.Position_name}
-            </Text>
-            <Text style={{ fontSize: 16, left: 130, position: 'absolute' }}>
-              {item.user.Username}
-            </Text>
-            {/* {owner.id === me.id && me.id !== item.id && (
+      {loading ? (
+        <View>
+          <ActivityIndicator size='small' color='#00ff00' />
+        </View>
+      ) : (
+        data.getProjectUserDetail.map((item, i) => {
+          return (
+            <View style={styles.item} key={i}>
+              <Image
+                style={styles.profileMedium}
+                // source={
+                //   item.profile !== ''
+                //     ? { uri: item.profile }
+                //     : require('../../../assets/MyProfile/profile_medium.png')
+                source={require('../../../assets/MyProfile/profile_medium.png')}
+              />
+              {route.params.OwnerId === item.user.User_id && (
+                <Image style={styles.crown} source={require('../../../assets/Room/crown.png')} />
+              )}
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: '#2F80ED',
+                  display: 'flex',
+                  alignItems: 'center',
+                  position: 'absolute',
+                  left: 60,
+                }}
+              >
+                {item.position.Position_name}
+              </Text>
+              <Text style={{ fontSize: 16, left: 130, position: 'absolute' }}>
+                {item.user.Username}
+              </Text>
+              {/* {owner.id === me.id && me.id !== item.id && (
           <TouchableOpacity
             style={{ position: 'absolute', right: 5 }}
             onPress={() => onRetreat(item.id)}
@@ -76,9 +82,10 @@ function Drawer({ navigation, route }): React.ReactElement {
             />
           </TouchableOpacity>
         )} */}
-          </View>
-        );
-      })}
+            </View>
+          );
+        })
+      )}
       <DividerStyle />
       <DrawerFooter navigation={navigation} projectId={route.params.projectId} />
     </View>
