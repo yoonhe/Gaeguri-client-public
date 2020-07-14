@@ -1,6 +1,11 @@
 import React from 'react';
 import { Alert, View } from 'react-native';
-import { PageWrapAlignCenterStyle } from '../../styles/common';
+import {
+  PageWrapWhiteStyle,
+  PageWrapAlignCenterStyle,
+  SignupTextStyle,
+  TextSubTitleStyle,
+} from '../../styles/common';
 import { BorderButton } from '../../components/ButtonComponent';
 import FormBoxComponent from '../../components/FormBoxComponent';
 import { useFormik } from 'formik';
@@ -45,6 +50,12 @@ function SignupPhaseOne({ navigation }): React.ReactElement {
   return (
     <PageWrapAlignCenterStyle>
       <View>
+        <SignupTextStyle>안녕하세요, </SignupTextStyle>
+        <SignupTextStyle>개구리에 오신 것을 환영합니다.</SignupTextStyle>
+        <SignupTextStyle></SignupTextStyle>
+        <SignupTextStyle>먼저 사용하실 이메일 주소와 </SignupTextStyle>
+        <SignupTextStyle>비밀번호를 입력해주세요. </SignupTextStyle>
+        <SignupTextStyle></SignupTextStyle>
         <FormBoxComponent
           title="Email"
           name="email"

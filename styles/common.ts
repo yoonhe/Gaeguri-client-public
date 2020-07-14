@@ -165,3 +165,17 @@ export const ProfileSmallStyle = styled.Image.attrs(props =>
   border-radius: 26px;
   margin-right: 12px;
 `;
+
+export const TextLinkStyleFlatColor = styled.Text`
+  font-size: 16px;
+  font-weight: 300;
+  margin-top: 8px;
+  color: ${Color.N400};
+`;
+
+export const SignupTextStyle = styled.Text`
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 300;
+  color: ${Color.N900};
+`;
