@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, Component } from 'react';
 import { Alert, View, Text, NativeModules } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
@@ -13,13 +13,11 @@ import FormBoxComponent from '../../components/FormBoxComponent';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import { CommonActions } from '@react-navigation/native';
-import axios from 'axios';
-import FileUpload from 'react-native-file-upload';
+
 //email, password, username, position, stack, about me
 //<Text title="About me" name="aboutme" placeholder="About me" />
-var RNUploader = NativeModules.RNUploader;
 
-const server = 'http://10.0.2.2:4000';
+const server = 'http://35.193.13.247:4000';
 
 const GET_STACK = gql`
   query {
@@ -73,7 +71,7 @@ function SignupPhaseThree({ navigation, route }): React.ReactElement {
   const [positions, setPositions] = useState<object[]>([]);
   const [stacks, setStacks] = useState<object[]>([]);
   const profile = route.params.imgFile || null;
-  console.log('-----phase three route', route.params);
+  //console.log('-----phase three route', route.params);
 
   useEffect(() => {
     getStacks();
@@ -117,110 +115,66 @@ function SignupPhaseThree({ navigation, route }): React.ReactElement {
     [stacks],
   );
 
-  const nextPageButtonHandler = useCallback(() => {
+  const nextPageButtonHandler = useCallback(async () => {
     const createUserInfo = {
       ...route.params.data,
       stack: stackList,
       Position_id: position,
     };
-    console.log('-------------phasw three data?', route.params.data);
-    console.log('-------------phasw three data?', createUserInfo);
+    //console.log('-------------phasw three data?', route.params.data);
+    //console.log('-------------phasw three data?', createUserInfo);
 
-    createUser({
+    const response = await createUser({
       variables: { ...createUserInfo },
+    });
+    //console.log('-----grapnql res', response);
+
+    const fdFile = {
+      name: profile.fileName, // require, file name
+      uri: 'file://' + profile.path, // require, file absoluete path
+      type: profile.type, // options, if none, will get mimetype from `filepath` extension
+    };
+    const fd = new FormData();
+    // await fd.append('name', 'imgProfile');
+    fd.append('User_id', response.data.EmailSignUp.user.User_id);
+    fd.append('imgProfile', fdFile);
+
+    const config = {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    const url = server + '/upload/profile/' + createUserInfo.Email;
+    console.log('-------fd', fd);
+    console.log('------url', url);
+    //<---------for axios or fetch ---------->
+    fetch(url, {
+      body: fd,
+      method: 'POST',
+      headers: config.headers,
     })
-      .then(async res => {
-        console.log('-----------??????', res.data.EmailSignUp, createUserInfo.Email);
-        console.log('----------- res file', profile);
-        console.log('-----------user_id', res.data.EmailSignUp.user.User_id);
-        if (profile) {
-          const file = {
-            name: 'imgProfile',
-            filename: profile.fileName, // require, file name
-            filepath: 'file://' + profile.path, // require, file absoluete path
-            filetype: profile.type, // options, if none, will get mimetype from `filepath` extension
-          };
-          const fd = new FormData();
-          // await fd.append('name', 'imgProfile');
-          fd.append('User_id', res.data.EmailSignUp.user.User_id);
-          fd.append('files[]', file);
-
-          console.log('------------file??', file);
-          // ]);
-          var obj = {
-            uploadUrl: server,
-            method: 'POST', // default 'POST',support 'POST' and 'PUT'
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'multipart/form-data',
-            },
-            fields: {
-              User_id: res.data.EmailSignUp.user.User_id,
-            },
-            files: [file],
-          };
-
-          console.log('-----------------fd?', obj.files);
-          const config = {
-            headers: {
-              accept: '*/*',
-              'content-type': 'multipart/form-data;',
-            },
-          };
-
-          await axios
-            .post(`${server}/upload/profile/${createUserInfo.Email}`, fd, { headers: obj.headers })
-            .then(res => {
-              Alert.alert('회원가입 완료!', '', [
-                { text: 'OK', onPress: () => console.log('OK Pressed') },
-              ]);
-              // navigation.dispatch(
-              //   CommonActions.reset({
-              //     routes: [{ name: '로그인' }],
-              //   }),
-              // );
-            })
-            .catch(error => {
-              console.log('------phase three error', error);
-              Alert.alert(
-                '회원가입은 완료 됐지만 이미지 업로드에 실패했어요. 로그인 후 프로필사진을 다시 수정해주세요!',
-                '',
-                [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
-              );
-              // navigation.dispatch(
-              //   CommonActions.reset({
-              //     routes: [{ name: '로그인' }],
-              //   }),
-              // );
-            });
-          // fetch(`${server}/upload/profile/${createUserInfo.Email}`, {
-          //   method: 'POST',
-          //   body: fd,
-          //   headers: {
-          //     'content-type': 'multipart/form-data;',
-          //   },
-          // })
-          //   .then(res => {
-          //     console.log('success!!!!!!!!!!');
-          //     console.log(res);
-          //   })
-          //   .catch(error => {
-          //     console.log('eror!!!!!!', error);
-          //   });
-          // axios
-        } else {
-          Alert.alert('회원가입 완료!', '', [
-            { text: 'OK', onPress: () => console.log('OK Pressed') },
-          ]);
-          navigation.dispatch(
-            CommonActions.reset({
-              routes: [{ name: '로그인' }],
-            }),
-          );
-        }
+      .then(res => {
+        console.log('--------res', res);
+        Alert.alert('회원가입 완료!', '', [
+          { text: 'OK', onPress: () => console.log('OK Pressed') },
+        ]);
+        navigation.dispatch(
+          CommonActions.reset({
+            routes: [{ name: '로그인' }],
+          }),
+        );
       })
       .catch(error => {
-        console.log('----------?????error', error);
+        console.log('------phase three error', error);
+        Alert.alert('이미지 업로드에 실패했어요. 로그인 후 프로필사진을 다시 수정해주세요!', '', [
+          { text: 'OK', onPress: () => console.log('OK Pressed') },
+        ]);
+        navigation.dispatch(
+          CommonActions.reset({
+            routes: [{ name: '로그인' }],
+          }),
+        );
       });
   }, [stackList, position, stacks, positions]);
 

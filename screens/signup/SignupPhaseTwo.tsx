@@ -21,8 +21,8 @@ function SignupPhaseTwo({ navigation, route }): React.ReactElement {
       Username: username,
       AboutMe: aboutme,
     };
-    console.log('-------------phasw two data?', data);
-    console.log('-------------phasw two avatartsource', imgFile);
+    //console.log('-------------phasw two data?', data);
+    //console.log('-------------phasw two avatartsource', imgFile);
     if (username !== '') {
       navigation.navigate('SignupPhaseThree', { data, avatarSource, imgFile });
     } else {
@@ -46,12 +46,12 @@ function SignupPhaseTwo({ navigation, route }): React.ReactElement {
 
   const SelectPhotoTapped = useCallback(() => {
     ImagePicker.showImagePicker(options, response => {
-      console.log('Response = ', response);
+      //console.log('Response = ', response);
 
       if (response.didCancel) {
-        console.log('User cancelled image picker');
+        //console.log('User cancelled image picker');
       } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
+        //console.log('ImagePicker Error: ', response.error);
       } else if (response.customButton) {
         setAvatarSource('');
       } else {
@@ -71,7 +71,7 @@ function SignupPhaseTwo({ navigation, route }): React.ReactElement {
     <PageWrapAlignCenterStyle>
       <View>
         <TouchableOpacity onPress={SelectPhotoTapped}>
-          <ProfileMediumStyle image={avatarSource} />
+          <ProfileMediumStyle uri={avatarSource} />
         </TouchableOpacity>
         <FormBoxComponent
           title="Name"
