@@ -6,9 +6,9 @@ export const GET_CHAT = gql`
       ok
       error
       chat {
+        Project_id
         Chat_id
         User_id
-        Project_id
         Contents
         createdAt
         user {
@@ -22,9 +22,9 @@ export const GET_CHAT = gql`
 export const CHAT_SUBSCRIPTION = gql`
   subscription chatSub {
     ChatSub {
+      Project_id
       Chat_id
       User_id
-      Project_id
       Contents
       createdAt
       user {
