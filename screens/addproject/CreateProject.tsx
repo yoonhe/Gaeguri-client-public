@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { StackActions, CommonActions } from '@react-navigation/native';
 import { Alert, View } from 'react-native';
 import { gql } from 'apollo-boost';
@@ -10,14 +10,15 @@ import { BorderButton } from '../../components/ButtonComponent';
 import FormBoxComponent from '../../components/FormBoxComponent';
 import DateTimePickerComponent from '../../components/DateTimePickerComponent';
 import { PageWrapStyle } from '../../styles/common';
+import { GET_MYINFO } from '../project/room/RoomQuries';
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useFormik } from 'formik';
 import moment from 'moment';
 
 const GET_PROJECT = gql`
-  query GettMyProjectList($User_id: Int!) {
-    getAvailableProjectList(User_id: $User_id) {
+  query GettMyProjectList {
+    getAvailableProjectList {
       Project_id
       Project_name
       StartAt
@@ -90,32 +91,9 @@ function CreateProject({ route, navigation }): React.ReactElement {
   const [date, setDate] = useState<Date | null>(null);
   const { position } = route.params;
   const [positionList, setPositionList] = useState([{ name: position, count: 1 }]);
+  const myInfo = useQuery(GET_MYINFO);
 
-  const [createNewProject] = useMutation(CREATE_PROJECT, {
-    update(cache, { data }) {
-      const newProject = data?.createNewProject.newProject;
-      console.log('data ? ', data);
-      console.log('newProject ? ', newProject);
-      const existingProjects = cache.readQuery({
-        query: GET_PROJECT,
-        variables: {
-          User_id: 0,
-        },
-      });
-
-      console.log('existingProjects ? ', existingProjects);
-
-      cache.writeQuery({
-        query: GET_PROJECT,
-        variables: {
-          User_id: 0,
-        },
-        data: {
-          getAvailableProjectList: [newProject, ...existingProjects?.getAvailableProjectList],
-        },
-      });
-    },
-  });
+  const [createNewProject] = useMutation(CREATE_PROJECT);
 
   const formik = useFormik({
     initialValues: {
@@ -147,11 +125,14 @@ function CreateProject({ route, navigation }): React.ReactElement {
 
       let dateFormat = moment(date).format('YYYY-MM-DD');
       console.log(date, projectName, projectDescription, positionList, tagList);
-
+      console.log(
+        'myInfo?.data?.GetMyProfile?.user?.User_id ? ',
+        myInfo?.data?.GetMyProfile?.user?.User_id,
+      );
       createNewProject({
         variables: {
           Project_name: projectName,
-          User_id: 3,
+          User_id: myInfo?.data?.GetMyProfile?.user?.User_id,
           EndAt: dateFormat,
           Desc: projectDescription,
           NoOfPosition: positionList,

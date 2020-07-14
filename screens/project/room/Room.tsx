@@ -2,9 +2,8 @@ import React, { useState, useCallback, useLayoutEffect, useEffect } from 'react'
 import { GiftedChat, Bubble, InputToolbar, Send } from 'react-native-gifted-chat';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { GET_CHAT, CHAT_SUBSCRIPTION, SEND_MESSAGE, GET_MYINFO } from './RoomQuries';
+import { GET_CHAT, CHAT_SUBSCRIPTION, SEND_MESSAGE, GET_MYINFO, GET_PROJECT } from './RoomQuries';
 import { useMutation, useQuery, useSubscription } from '@apollo/react-hooks';
-import client from '../../../apollo';
 
 function Room({ navigation, route }): React.ReactElement {
   const [messageArray, setMessageArray] = useState([]);
@@ -16,6 +15,10 @@ function Room({ navigation, route }): React.ReactElement {
   });
 
   const myInfo = useQuery(GET_MYINFO);
+
+  const projectInfo = useQuery(GET_PROJECT, {
+    variables: { Project_id: route.params.projectId },
+  });
 
   const [updateMessage] = useMutation(SEND_MESSAGE);
 
@@ -32,39 +35,12 @@ function Room({ navigation, route }): React.ReactElement {
         },
       };
 
-      // const { GetChat } = client.readQuery({
-      //   query: GET_CHAT,
-      //   variables: {
-      //     Project_id: route.params.projectId,
-      //   },
-      // });
-
-      // const newChat = chatSub.data.ChatSub;
-
-      // console.log(GetChat);
-      // console.log('newChat', newChat);
-
-      // client.writeQuery({
-      //   query: GET_CHAT,
-      //   variables: {
-      //     Project_id: route.params.projectId,
-      //   },
-      //   data: {
-      //     GetChat: {
-      //       chat: [...GetChat.chat, newChat.chat],
-      //       // __typename: 'Chat',
-      //     },
-      //   },
-      // });
-
       return setMessageArray(GiftedChat.append(messageArray, [obj]));
     }
     if (chatSub.error) {
       console.log(chatSub.error);
     }
   }, [chatSub.data]);
-
-  console.log('GetChat', chatData);
 
   useLayoutEffect(() => {
     if (chatData.data) {
@@ -104,7 +80,7 @@ function Room({ navigation, route }): React.ReactElement {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: route.params.projectName,
+      title: projectInfo?.data?.getProjectDetail?.Project_name,
       headerRight: () => (
         <Icon
           name='more-horiz'
@@ -114,7 +90,7 @@ function Room({ navigation, route }): React.ReactElement {
         />
       ),
     });
-  }, [navigation]);
+  }, [navigation, projectInfo.data]);
 
   const renderBubble = (props: any) => {
     return (
@@ -167,7 +143,7 @@ function Room({ navigation, route }): React.ReactElement {
 
   return (
     <View style={styles.container}>
-      {chatData.loading || myInfo.loading ? (
+      {chatData.loading || myInfo.loading || projectInfo.loading ? (
         <View>
           <ActivityIndicator size='small' color='#00ff00' />
         </View>

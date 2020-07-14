@@ -4,7 +4,6 @@ import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import { PageWrapStyle } from '../../styles/common';
 import CardListComponent from '../../components/CardListComponent';
-import { GET_MYINFO } from './room/RoomQuries';
 
 const GET_PROJECT = gql`
   query GetAvailableProjectList {
@@ -43,7 +42,7 @@ function Main({ navigation }): React.ReactElement {
       <ScrollView>
         {loading && (
           <View>
-            <ActivityIndicator size='small' color='#00ff00' />
+            <ActivityIndicator size="small" color="#00ff00" />
           </View>
         )}
         {data &&
