@@ -80,3 +80,27 @@ export const GET_PROJECT_USERS = gql`
     }
   }
 `;
+
+export const UPDATE_PROJECT = gql`
+  mutation UpdateProjectInfo($input: upProject!) {
+    updateProjectInfo(input: $input) {
+      ok
+      error
+      project {
+        Project_id
+        Project_name
+        status
+      }
+    }
+  }
+`;
+
+export const GET_PROJECT = gql`
+  query GetProjectDetail($Project_id: Int!) {
+    getProjectDetail(Project_id: $Project_id) {
+      Project_id
+      Project_name
+      status
+    }
+  }
+`;
