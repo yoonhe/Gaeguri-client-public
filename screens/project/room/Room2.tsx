@@ -18,6 +18,8 @@ function Room({ navigation, route }): React.ReactElement {
     variables: { Project_id: route.params.projectId },
   });
 
+  console.log('남의 챗도 가져오자! subscribeToMore', subscribeToMore);
+  console.log('result data...?', result.data);
   const mapExistingChat = () => {
     if (result.data) {
       const originData = result.data.GetChat.chat;
@@ -40,7 +42,7 @@ function Room({ navigation, route }): React.ReactElement {
 
   const subToNewChats = () => {
     console.log('실행은 되니?', chatSub.data);
-    if (chatSub.data) {
+    if (chatSub.data || messages[0]) {
       const liveChatSub = chatSub.data.ChatSub;
       console.log('jalkjdfklajldkfjl******', liveChatSub.Chat_id || '', messages[0]);
       if (current === messages[0]._id || messages[0]._id === liveChatSub.Chat_id) {
