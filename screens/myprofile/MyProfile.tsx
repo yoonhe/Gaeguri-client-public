@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import {
   PageWrapWhiteStyle,
@@ -18,10 +18,10 @@ function MyProfile({ navigation }): React.ReactElement {
   //데이터 확인
   const [dataLoading, setDataLoading] = useState(false);
   const [myUsername, setMyUsername] = useState<string>('');
-  const [aboutMe, setAboutMe] = useState<string | null>(null);
+  const [myAboutMe, setMyAboutMe] = useState<string | null>(null);
   const [myStack, setMyStack] = useState<object[] | null>(null);
 
-  const [myUserId, setMyUserId] = useState<string>('');
+  const [myUserId, setMyUserId] = useState(0);
   const [myProfileImage, setMyProfileImage] = useState<string | null>(null);
   const [myEmail, setMyEmail] = useState<string>('');
 
@@ -37,7 +37,7 @@ function MyProfile({ navigation }): React.ReactElement {
       setDataLoading(false);
 
       setMyUsername(data.GetMyProfile.user.Username);
-      setAboutMe(data.GetMyProfile.user.AboutMe);
+      setMyAboutMe(data.GetMyProfile.user.AboutMe);
       setMyStack(data.GetMyProfile.user.userstack);
 
       setMyUserId(data.GetMyProfile.user.User_id);
@@ -56,7 +56,12 @@ function MyProfile({ navigation }): React.ReactElement {
           title="편집"
           onPress={() => {
             /* 넘길 params */
-            navigation.navigate('EditMyProfile');
+            navigation.navigate('프로필 편집', {
+              myUsername: myUsername,
+              myProfileImage: myProfileImage,
+              myAboutMe: myAboutMe,
+              myStack: myStack,
+            });
           }}
         >
           편집
@@ -81,7 +86,7 @@ function MyProfile({ navigation }): React.ReactElement {
 
           <TextSubTitleStyle>짧은소개</TextSubTitleStyle>
           <TextContentStyle>
-            {aboutMe !== null ? aboutMe : '소개글을 작성 해주세요'}
+            {myAboutMe !== null ? myAboutMe : '소개글을 작성 해주세요'}
           </TextContentStyle>
           <TextSubTitleStyle>기술스택</TextSubTitleStyle>
           <TagListStyle>
@@ -106,11 +111,3 @@ function MyProfile({ navigation }): React.ReactElement {
 }
 
 export default MyProfile;
-
-// {
-//   myUsername: myUsername,
-//   myProfileImage: myProfileImage,
-//   aboutMe: aboutMe,
-//   myStack: myStack,
-//   myEmail: myEmail,
-// }

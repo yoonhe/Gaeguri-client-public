@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useLayoutEffect, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, Button, Image, TouchableOpacity } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
+import { View, Text, StyleSheet, Alert, Button, Image, TouchableOpacity } from 'react-native';
 import {
   TextCaptionStyle,
   DividerStyle,
@@ -7,21 +8,82 @@ import {
   PageWrapWhiteStyle,
   ProfileMediumStyle,
 } from '../../styles/common';
+import { HeaderButtonStyle } from '../../styles/button';
+import TagListComponent from '../../components/TagListComponent';
+import FormBoxComponent from '../../components/FormBoxComponent';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import ImagePicker from 'react-native-image-picker';
+import { GET_MYPROFILE } from './ProfileQuries';
+import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useFormik } from 'formik';
+import { gql } from 'apollo-boost';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+//아이콘 찾기 https://oblador.github.io/react-native-vector-icons/
+
+export const UPDATE_MYPROFILE = gql`
+  mutation UpdateMyProfile(
+    $Username: String!
+    $Profile_photo_path: String
+    $AboutMe: String
+    $Stacks: [String]
+  ) {
+    UpdateMyProfile(
+      Username: $Username
+      Profile_photo_path: $Profile_photo_path
+      AboutMe: $AboutMe
+      stacks: $Stacks
+    ) {
+      ok
+      error
+      user {
+        User_id
+        Username
+        Profile_photo_path
+        AboutMe
+        userstacks {
+          stack {
+            Stack_name
+          }
+        }
+      }
+    }
+  }
+`;
 
 function EditMyProfile({ navigation, route }): React.ReactElement {
   // 앞에서 넘겨준 객체 데이터
-  // const { profile, username, introduction, stack, email } = route.prams;
-
-  //편집 데이터 상태 관리
+  const [current_Username, setUsername] = useState<string>(route.params.myUsername);
+  const [current_AboutMe, setAboutMe] = useState<string | null>(route.params.myAboutMe);
   const [avatarSource, setAvatarSource] = useState('');
-  // const [username, setUsername] = useState<string>(route.params.username);
-  // const [introduction, setIntroduction] = useState<string>(route.params.introduction);
-  // const [stack, setStack] = useState<string>(route.params.stack.join());
-  // const [email, setEmail] = useState<string>(route.params.email);
-  console.log('route.prams ??', route.prams);
-  // More info on all the options is below in the API Reference... just some common use cases shown here
+  const data = route.params;
+  console.log('편집 data?? ', data);
+  // console.log('편집 current_AboutMe?? ', current_AboutMe);
+
+  const updateData = async () => {
+    const updateMyProfile = await useMutation(UPDATE_MYPROFILE, {
+      update(cache, { data }) {
+        const currentProfile = cache.readQuery({
+          query: GET_MYPROFILE,
+        });
+        console.log('편집 data?? :', data);
+        console.log('편집 currentProfile?? :', currentProfile);
+
+        const editProfile = data.user;
+        console.log('편집 editProfile?? :', editProfile);
+
+        cache.writeQuery({
+          query: GET_MYPROFILE,
+          data: {
+            GetMyProfile: {
+              user: { editProfile, ...currentProfile },
+            },
+          },
+        });
+      },
+    });
+  };
+  updateData();
+
   const options = {
     quality: 1.0,
     maxWidth: 500,
@@ -47,94 +109,95 @@ function EditMyProfile({ navigation, route }): React.ReactElement {
       } else {
         const source = { uri: response.uri };
         // console.log('response.uri ?? ', response.uri);
-        console.log('avatarSource ?? ', avatarSource);
+        // console.log('avatarSource ?? ', avatarSource);
         setAvatarSource(source);
       }
     });
   };
+  // console.log('avatarSource ?? ', avatarSource);
 
-  //마이 페이지로 업데이트할 데이터 넘겨주기. 아드로이드는 이전 버튼 필요 없음.
-  const gotoMyProfile = useCallback(() => {
-    // console.log('username 1 :', username);
-    navigation.goBack('MyProfile', { userImage: avatarSource });
-  }, []);
+  const formik = useFormik({
+    initialValues: {
+      new_username: current_Username,
+      new_AboutMe: current_AboutMe,
+    },
+    onSubmit(values) {
+      const { new_username, new_AboutMe } = values;
 
-  //헤더에 버튼
+      // if (!new_username) {
+      //   return Alert.alert('유저네임을 입력해주세요', '', [
+      //     { text: 'OK', onPress: () => console.log('OK Pressed') },
+      //   ]);
+      // }
+
+      // if (!new_AboutMe) {
+      //   return Alert.alert('짧은 소개를 입력해주세요', '', [
+      //     { text: 'OK', onPress: () => console.log('OK Pressed') },
+      //   ]);
+      // }
+
+      UpdateMyProfile({
+        variables: {
+          username: new_username,
+          AboutMe: new_AboutMe,
+        },
+      });
+
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 1,
+          routes: [{ name: 'MyProfile' }],
+        }),
+      );
+    },
+  });
+
+  //헤더 버튼
   useLayoutEffect(() => {
-    // console.log('username 2:', username);
     navigation.setOptions({
-      headerRight: () => <Button title="저장" onPress={gotoMyProfile} />,
+      headerRight: () => (
+        <HeaderButtonStyle title="저장" onPress={formik.handleSubmit}>
+          저장
+        </HeaderButtonStyle>
+      ),
     });
   }, [navigation]);
-  console.log('avatarSource ?? ', avatarSource);
+
   return (
     <PageWrapWhiteStyle>
       <KeyboardAwareScrollView>
         <View
           style={{
-            flexDirection: 'row',
             alignItems: 'center',
             marginBottom: 16,
           }}
         >
-          {/* 프로필이미지, 유저네임 */}
-          <ProfileMediumStyle image={avatarSource} />
-          {/* <TouchableOpacity onPress={SelectPhotoTapped}>
-            <View>
-              {avatarSource === '' ? (
-                <Text>Select a Photo</Text>
-              ) : (
-                <ProfileMediumStyle image={avatarSource} />
-              )}
-            </View>
-          </TouchableOpacity> */}
-          <Button title="수정" onPress={SelectPhotoTapped} />
-          {/* </View> */}
-          {/* <TextInput style={styles.input} value={username} onChangeText={setUsername} /> */}
+          <ProfileMediumStyle uri={avatarSource} />
+          <Text onPress={SelectPhotoTapped}>
+            <Icon name="camera" size={30} color="#4F8EF7" />
+          </Text>
+          <FormBoxComponent
+            blurOnSubmit={true}
+            multiline={true}
+            value={formik.values.new_username}
+            onChangeText={formik.handleChange('new_username')}
+          />
         </View>
         <DividerStyle />
-        {/* 짧은소개 */}
-        <TextSubTitleStyle>짧은소개</TextSubTitleStyle>
-        {/* <TextInput
-          style={styles.inputMulti}
-          multiline
-          numberOfLines={8}
-          value={introduction}
-          onChangeText={setIntroduction}
-        /> */}
-        <TextCaptionStyle>000자 까지 작성할 수 있습니다.</TextCaptionStyle>
-        {/* 기술스택 */}
-        <TextSubTitleStyle>기술스택</TextSubTitleStyle>
-        {/* <TextInput style={styles.input} value={stack} onChangeText={setStack} /> */}
-        <TextCaptionStyle>Stack은 콤마로 구분해주세요.</TextCaptionStyle>
-        <TextSubTitleStyle>이메일</TextSubTitleStyle>
-        {/* <TextInput style={styles.input} value={email} onChangeText={setEmail} /> */}
+
+        <FormBoxComponent
+          title="짧은 소개"
+          blurOnSubmit={true}
+          multiline={true}
+          value={formik.values.new_AboutMe}
+          onChangeText={formik.handleChange('new_AboutMe')}
+        />
+        <FormBoxComponent title="주요스택">
+          {/* <TagListComponent tagList={tagList} setTagList={setTagList} produce={produce} /> */}
+        </FormBoxComponent>
       </KeyboardAwareScrollView>
     </PageWrapWhiteStyle>
   );
 }
-
-const styles = StyleSheet.create({
-  avatar: {
-    borderRadius: 75,
-    width: 150,
-    height: 150,
-  },
-  avatarContainer: {
-    borderColor: '#9B9B9B',
-    borderWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  input: {
-    height: 38,
-    padding: 8,
-    borderWidth: 1,
-  },
-  inputMulti: {
-    padding: 8,
-    borderWidth: 1,
-  },
-});
 
 export default EditMyProfile;

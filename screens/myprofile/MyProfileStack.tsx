@@ -8,7 +8,7 @@ const MyProfileStack = createStackNavigator();
 function MyProfileScreen({ navigation, route }): React.ReactElement {
   const routeName: string = route.state ? route.state.routes[route.state.index].name : '';
 
-  const tabBarInVisibleRouters: string[] = ['MyProfile', 'EditMyProfile'];
+  const tabBarInVisibleRouters: string[] = ['MyProfile', '프로필 편집'];
 
   if (tabBarInVisibleRouters.includes(routeName)) {
     navigation.setOptions({ tabBarVisible: false });
@@ -22,7 +22,7 @@ function MyProfileScreen({ navigation, route }): React.ReactElement {
   return (
     <MyProfileStack.Navigator initialRouteName="마이 페이지">
       <MyProfileStack.Screen name="마이 페이지" component={MyProfile} />
-      <MyProfileStack.Screen name="EditMyProfile" component={EditMyProfile} />
+      <MyProfileStack.Screen name="프로필 편집" component={EditMyProfile} />
     </MyProfileStack.Navigator>
   );
 }
