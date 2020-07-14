@@ -93,25 +93,7 @@ function CreateProject({ route, navigation }): React.ReactElement {
   const [positionList, setPositionList] = useState([{ name: position, count: 1 }]);
   const myInfo = useQuery(GET_MYINFO);
 
-  const [createNewProject] = useMutation(CREATE_PROJECT, {
-    update(cache, { data }) {
-      const newProject = data?.createNewProject.newProject;
-      console.log('data ? ', data);
-      console.log('newProject ? ', newProject);
-      const existingProjects = cache.readQuery({
-        query: GET_PROJECT,
-      });
-
-      console.log('existingProjects ? ', existingProjects);
-
-      cache.writeQuery({
-        query: GET_PROJECT,
-        data: {
-          getAvailableProjectList: [newProject, ...existingProjects?.getAvailableProjectList],
-        },
-      });
-    },
-  });
+  const [createNewProject] = useMutation(CREATE_PROJECT);
 
   const formik = useFormik({
     initialValues: {

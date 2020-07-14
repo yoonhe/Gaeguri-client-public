@@ -3,7 +3,7 @@ import { Modal } from 'react-native';
 import { ModalDim, PickerButtonBox, PickerButtonTitle } from '../styles/modal';
 import { BorderButton, PickerButton } from './ButtonComponent';
 import gql from 'graphql-tag';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery, useApolloClient } from '@apollo/react-hooks';
 import { GET_MYINFO } from '../screens/project/room/RoomQuries';
 
 const REQUEST_PARTICIPATE = gql`
@@ -18,34 +18,29 @@ const REQUEST_PARTICIPATE = gql`
 
 function PositionPickerModal({ modalVisible, showModalPicker, positionList, goToRoom, project }) {
   const myInfo = useQuery(GET_MYINFO);
-  const [participateProject, { data, loading, error }] = useMutation(REQUEST_PARTICIPATE);
+  // const [participateProject, { data, loading, error }] = useMutation(REQUEST_PARTICIPATE);
+  const client = useApolloClient();
 
-  const test = async positionInfo => {
-    if (!loading) {
-      try {
-        console.log('=======================================');
-        console.log('positionInfo ? ', positionInfo);
-        console.log('positionInfo.Project_id ? ', positionInfo.Project_id);
-        console.log('positionInfo.Position_id ? ', positionInfo.Position_id);
-
-        const { data } = await participateProject({
-          variables: {
-            User_id: myInfo?.data?.GetMyProfile?.user?.User_id,
-            Project_id: positionInfo?.Project_id,
-            Position_id: positionInfo?.Position_id,
-          },
-        });
-        console.log('data ? ', data);
-        goToRoom(project.Project_id, project.Project_name, project.Owner_id);
-        showModalPicker();
-      } catch (error) {
-        console.log('error ? ', error);
-      }
+  const proejctParticipation = async positionInfo => {
+    try {
+      console.log('positionInfo ? ', positionInfo);
+      console.log('positionInfo?.Project_id ? ', positionInfo?.Project_id);
+      console.log('positionInfo?.Position_id ? ', positionInfo?.Position_id);
+      const result = await client.mutate({
+        mutation: REQUEST_PARTICIPATE,
+        variables: {
+          User_id: myInfo?.data?.GetMyProfile?.user?.User_id,
+          Project_id: positionInfo?.Project_id,
+          Position_id: positionInfo?.Position_id,
+        },
+      });
+      console.log('result ? ', result);
+      goToRoom(project.Project_id, project.Project_name, project.Owner_id);
+      showModalPicker();
+    } catch (e) {
+      console.log(e);
     }
   };
-
-  console.log('positionList?.getProjectDetail ? ', positionList?.getProjectDetail);
-  // console.log('positionInfo.PC ? ', positionInfo.PC);
 
   return (
     <Modal
@@ -61,7 +56,7 @@ function PositionPickerModal({ modalVisible, showModalPicker, positionList, goTo
             <PickerButton
               index={index}
               disabled={positionInfo.NoOfPosition === positionInfo.PC.length}
-              onPress={test.bind(null, positionInfo)}
+              onPress={proejctParticipation.bind(null, positionInfo)}
             >
               {positionInfo.position.Position_name}
             </PickerButton>

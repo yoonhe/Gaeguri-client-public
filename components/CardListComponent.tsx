@@ -82,14 +82,17 @@ function CardListComponent({ project, navigation }) {
     return statusName;
   }, []);
 
-  const goToRoom = useCallback((projectId, projectName, OwnerId) => {
-    console.log('goToRoom 클릭');
-    navigation.navigate('Room', {
-      projectId,
-      projectName,
-      OwnerId,
-    });
-  }, [modalVisible]);
+  const goToRoom = useCallback(
+    (projectId, projectName, OwnerId) => {
+      console.log('goToRoom 클릭');
+      navigation.navigate('Room', {
+        projectId,
+        projectName,
+        OwnerId,
+      });
+    },
+    [modalVisible],
+  );
 
   const showModalPicker = useCallback(() => {
     setModalVisible(prev => !prev);
@@ -133,13 +136,15 @@ function CardListComponent({ project, navigation }) {
 
       {data && moment(data.getProjectDetail.createdAt) > deadLine && <NewIcon>NEW</NewIcon>}
 
-      <PositionPickerModal
-        modalVisible={modalVisible}
-        showModalPicker={showModalPicker}
-        positionList={data}
-        goToRoom={goToRoom}
-        project={project}
-      />
+      {data && (
+        <PositionPickerModal
+          modalVisible={modalVisible}
+          showModalPicker={showModalPicker}
+          positionList={data}
+          goToRoom={goToRoom}
+          project={project}
+        />
+      )}
     </CardListStyle>
   );
 }
