@@ -96,7 +96,7 @@ function ProjectSetting({ navigation, route }): React.ReactElement {
           input: {
             Project_id: route.params.projectId,
             Project_name: values.projectName,
-            // Status: buttonState,
+            Status: buttonState,
           },
         },
       });

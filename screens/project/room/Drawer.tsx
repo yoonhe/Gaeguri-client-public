@@ -7,11 +7,7 @@ import { GET_PROJECT_USERS } from './RoomQuries';
 import { useQuery } from '@apollo/react-hooks';
 
 function Drawer({ navigation, route }): React.ReactElement {
-  const {
-    data: { getProjectUserDetail },
-    loading,
-    error,
-  } = useQuery(GET_PROJECT_USERS, {
+  const { data, loading, error } = useQuery(GET_PROJECT_USERS, {
     variables: { Project_id: route.params.projectId },
   });
 
@@ -34,9 +30,13 @@ function Drawer({ navigation, route }): React.ReactElement {
     return <Text>...loading</Text>;
   }
 
+  if (error) {
+    console.log(error);
+  }
+
   return (
     <View>
-      {getProjectUserDetail.map((item, i) => {
+      {data.getProjectUserDetail.map((item, i) => {
         return (
           <View style={styles.item} key={i}>
             <Image

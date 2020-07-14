@@ -2,7 +2,6 @@ import React, { useState, useCallback, useLayoutEffect, useEffect } from 'react'
 import { GiftedChat, Bubble, InputToolbar, Send } from 'react-native-gifted-chat';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
 import { GET_CHAT, CHAT_SUBSCRIPTION, SEND_MESSAGE, GET_MYINFO } from './RoomQuries';
 import { useMutation, useQuery, useSubscription } from '@apollo/react-hooks';
 import client from '../../../apollo';
@@ -12,75 +11,51 @@ function Room({ navigation, route }): React.ReactElement {
 
   const chatSub = useSubscription(CHAT_SUBSCRIPTION);
 
-  const chetData = useQuery(GET_CHAT, {
+  const chatData = useQuery(GET_CHAT, {
     variables: { Project_id: route.params.projectId },
   });
 
   const myInfo = useQuery(GET_MYINFO);
 
-  const [updateMessage] = useMutation(SEND_MESSAGE, {
-    update(cache, { data }) {
-      const { GetChat } = cache.readQuery({
-        query: GET_CHAT,
-        variables: {
-          Project_id: route.params.projectId,
-        },
-      });
-      const newChat = data.SendChat;
-
-      cache.writeQuery({
-        query: GET_CHAT,
-        variables: {
-          Project_id: route.params.projectId,
-        },
-        data: {
-          GetChat: {
-            chat: [...GetChat.chat, newChat.chat],
-            __typename: 'Chat',
-          },
-        },
-      });
-    },
-  });
+  const [updateMessage] = useMutation(SEND_MESSAGE);
 
   useEffect(() => {
     if (chatSub.data) {
-      const chatData = chatSub.data.ChatSub;
+      const data = chatSub.data.ChatSub;
       const obj = {
-        _id: chatData.Chat_id,
-        text: chatData.Contents,
-        createdAt: chatData.createdAt,
+        _id: data.Chat_id,
+        text: data.Contents,
+        createdAt: data.createdAt,
         user: {
-          _id: chatData.User_id,
-          name: chatData.user.Username,
+          _id: data.User_id,
+          name: data.user.Username,
         },
       };
 
-      const { GetChat } = client.readQuery({
-        query: GET_CHAT,
-        variables: {
-          Project_id: route.params.projectId,
-        },
-      });
+      // const { GetChat } = client.readQuery({
+      //   query: GET_CHAT,
+      //   variables: {
+      //     Project_id: route.params.projectId,
+      //   },
+      // });
 
-      const newChat = chatSub.data.ChatSub;
+      // const newChat = chatSub.data.ChatSub;
 
-      console.log(client);
-      console.log(GetChat);
-      console.log(newChat);
+      // console.log(GetChat);
+      // console.log('newChat', newChat);
 
-      client.writeQuery({
-        query: GET_CHAT,
-        variables: {
-          Project_id: route.params.projectId,
-        },
-        data: {
-          GetChat: {
-            chat: [...GetChat.chat, newChat.chat],
-          },
-          __typename: 'GetChatResponse',
-        },
-      });
+      // client.writeQuery({
+      //   query: GET_CHAT,
+      //   variables: {
+      //     Project_id: route.params.projectId,
+      //   },
+      //   data: {
+      //     GetChat: {
+      //       chat: [...GetChat.chat, newChat.chat],
+      //       // __typename: 'Chat',
+      //     },
+      //   },
+      // });
 
       return setMessageArray(GiftedChat.append(messageArray, [obj]));
     }
@@ -89,9 +64,11 @@ function Room({ navigation, route }): React.ReactElement {
     }
   }, [chatSub.data]);
 
+  console.log('GetChat', chatData);
+
   useLayoutEffect(() => {
-    if (chetData.data) {
-      const originData = chetData.data.GetChat.chat;
+    if (chatData.data) {
+      const originData = chatData.data.GetChat.chat;
       const array = [];
       originData.map(v => {
         const obj = {
@@ -107,7 +84,7 @@ function Room({ navigation, route }): React.ReactElement {
       });
       setMessageArray(array);
     }
-  }, [!chetData.loading]);
+  }, [!chatData.loading]);
 
   const onSend = newMessages => {
     updateMessage({
@@ -129,7 +106,12 @@ function Room({ navigation, route }): React.ReactElement {
     navigation.setOptions({
       title: route.params.projectName,
       headerRight: () => (
-        <Icon name='more' size={24} onPress={onOpenSideBar} style={{ marginHorizontal: 10 }} />
+        <Icon
+          name='more-horiz'
+          size={24}
+          onPress={onOpenSideBar}
+          style={{ marginHorizontal: 10 }}
+        />
       ),
     });
   }, [navigation]);
@@ -185,7 +167,7 @@ function Room({ navigation, route }): React.ReactElement {
 
   return (
     <View style={styles.container}>
-      {chetData.loading ? (
+      {chatData.loading || myInfo.loading ? (
         <View>
           <ActivityIndicator size='small' color='#00ff00' />
         </View>
