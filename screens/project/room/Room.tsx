@@ -7,7 +7,8 @@ import { useMutation, useQuery, useSubscription } from '@apollo/react-hooks';
 
 function Room({ navigation, route }): React.ReactElement {
   const [messageArray, setMessageArray] = useState([]);
-
+  const [current, setCurrent] = useState();
+  const [userId, setUserId] = useState();
   const chatSub = useSubscription(CHAT_SUBSCRIPTION);
 
   const chatData = useQuery(GET_CHAT, {
@@ -15,7 +16,6 @@ function Room({ navigation, route }): React.ReactElement {
   });
 
   const myInfo = useQuery(GET_MYINFO);
-
   const projectInfo = useQuery(GET_PROJECT, {
     variables: { Project_id: route.params.projectId },
   });
@@ -25,17 +25,21 @@ function Room({ navigation, route }): React.ReactElement {
   useEffect(() => {
     if (chatSub.data) {
       const data = chatSub.data.ChatSub;
-      const obj = {
-        _id: data.Chat_id,
-        text: data.Contents,
-        createdAt: data.createdAt,
-        user: {
-          _id: data.User_id,
-          name: data.user.Username,
-        },
-      };
-
-      return setMessageArray(GiftedChat.append(messageArray, [obj]));
+      if (data.User_id !== userId) {
+        if (data.Chat_id !== current && messageArray[0]._id !== data.Chat_id) {
+          const obj = {
+            _id: data.Chat_id,
+            text: data.Contents,
+            createdAt: data.createdAt,
+            user: {
+              _id: data.User_id,
+              name: data.user.Username,
+            },
+          };
+          setMessageArray(GiftedChat.append(messageArray, [obj]));
+          setCurrent(messageArray[0]._id);
+        }
+      }
     }
     if (chatSub.error) {
       console.log(chatSub.error);
@@ -63,6 +67,9 @@ function Room({ navigation, route }): React.ReactElement {
   }, [!chatData.loading]);
 
   const onSend = newMessages => {
+    setUserId(newMessages[0].user._id);
+    setCurrent(newMessages[0]._id);
+    setMessageArray(GiftedChat.append(messageArray, newMessages));
     updateMessage({
       variables: {
         Contents: newMessages[0].text,
@@ -83,7 +90,7 @@ function Room({ navigation, route }): React.ReactElement {
       title: projectInfo?.data?.getProjectDetail?.Project_name,
       headerRight: () => (
         <Icon
-          name='more-horiz'
+          name="more-horiz"
           size={24}
           onPress={onOpenSideBar}
           style={{ marginHorizontal: 10 }}
@@ -92,6 +99,7 @@ function Room({ navigation, route }): React.ReactElement {
     });
   }, [navigation, projectInfo.data]);
 
+  console.log('messageArray[0]', messageArray[0]);
   const renderBubble = (props: any) => {
     return (
       <Bubble
@@ -135,7 +143,7 @@ function Room({ navigation, route }): React.ReactElement {
     return (
       <Send {...props}>
         <View style={{ marginRight: 10, marginBottom: 5 }}>
-          <Icon name='send' size={26} style={{ marginHorizontal: 10 }} />
+          <Icon name="send" size={26} style={{ marginHorizontal: 10 }} />
         </View>
       </Send>
     );
@@ -145,7 +153,7 @@ function Room({ navigation, route }): React.ReactElement {
     <View style={styles.container}>
       {chatData.loading || myInfo.loading || projectInfo.loading ? (
         <View>
-          <ActivityIndicator size='small' color='#00ff00' />
+          <ActivityIndicator size="small" color="#00ff00" />
         </View>
       ) : (
         <GiftedChat
@@ -153,7 +161,7 @@ function Room({ navigation, route }): React.ReactElement {
           onSend={onSend}
           renderUsernameOnMessage={true}
           renderBubble={renderBubble}
-          placeholder='메세지를 입력하세요'
+          placeholder="메세지를 입력하세요"
           renderInputToolbar={renderInputToolbar}
           onPressAvatar={onPressAvatar}
           renderSend={renderSend}
