@@ -207,5 +207,8 @@ export const TextContentStyleThickBlue = styled.Text`
 font-size: 16px;
 font-weight: bold;
 color: ${Color.B400};
+`;
 
+export const ButtonAlignView = styled.View`
+flex-direction : row
 `;

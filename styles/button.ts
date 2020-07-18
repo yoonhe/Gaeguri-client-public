@@ -143,3 +143,15 @@ export const HeaderCloseButtonStyle = styled.Text`
   border: 1px solid ${Color.G300};
   background: ${Color.G300};
 `;
+
+export const BorderButtonSignupStyle = styled.Text`
+  width: 100%;
+  margin-top: 10px;
+  padding: ${props => (props.small ? '10px' : '15px')};
+  color: ${Color.B300};
+  background: ${Color.N0};
+  border: 1px solid ${Color.B300};
+  border-radius: 5px;
+  text-align: center;
+  overflow: hidden;
+`;

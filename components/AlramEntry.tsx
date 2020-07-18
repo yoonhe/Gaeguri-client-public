@@ -7,6 +7,7 @@ import {
   BottomLineStyle,
   TextContentStyleThickGreen,
   TextContentStyleThickBlue,
+  ButtonAlignView,
 } from '../styles/common';
 import { gql } from 'apollo-boost';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
@@ -95,12 +96,14 @@ function AlramEntry({ alram, navigation }): React.ReactElement {
         <TextCaptionStyleTime>
           {alram.createAt.split('T')[0] + ' ' + alram.createAt.split('T')[1].substr(0, 8)}
         </TextCaptionStyleTime>
-        <AcceptButtonStyleBlue title="수락" onPress={acceptInvite}>
-          수락
-        </AcceptButtonStyleBlue>
-        <AcceptButtonStyleYello title="거절" onPress={denyInvite}>
-          거절
-        </AcceptButtonStyleYello>
+        <ButtonAlignView>
+          <AcceptButtonStyleBlue title="수락" onPress={acceptInvite}>
+            수락
+          </AcceptButtonStyleBlue>
+          <AcceptButtonStyleYello title="거절" onPress={denyInvite}>
+            거절
+          </AcceptButtonStyleYello>
+        </ButtonAlignView>
       </BottomLineStyle>
     );
   }
