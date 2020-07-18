@@ -69,14 +69,16 @@ function HomeScreen({ navigation, route }) {
           </View>
         )}
         {data?.getMyProjectListwithStatus?.statusProject[selectedValue]?.length !== 0 ? (
-          data?.getMyProjectListwithStatus?.statusProject[selectedValue]?.map((project, i) => (
-            <CardListComponent
-              key={i}
-              project={project}
-              navigation={navigation}
-              isMyProject={true}
-            />
-          ))
+          data?.getMyProjectListwithStatus?.statusProject[selectedValue]
+            ?.reverse()
+            .map((project, i) => (
+              <CardListComponent
+                key={i}
+                project={project}
+                navigation={navigation}
+                isMyProject={true}
+              />
+            ))
         ) : (
           <Text>데이터가 존재하지 않습니다.</Text>
         )}

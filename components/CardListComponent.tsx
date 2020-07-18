@@ -98,9 +98,6 @@ function CardListComponent({ project, navigation, isMyProject }) {
     setModalVisible(prev => !prev);
   }, []);
 
-  console.log('isMyProject ? ', isMyProject);
-  console.log('navigation ?', navigation?.state?.routeName);
-
   return (
     <CardListStyle status={project.status}>
       <CardListTitle status={project.status}>{project.Project_name}</CardListTitle>
@@ -141,7 +138,7 @@ function CardListComponent({ project, navigation, isMyProject }) {
         </TextWrapStyle>
       </ButtonAndTextStyle>
 
-      {data && moment(data.getProjectDetail.createdAt) > deadLine && <NewIcon>NEW</NewIcon>}
+      {data && moment(data?.getProjectDetail?.createdAt) > deadLine && <NewIcon>NEW</NewIcon>}
 
       {data && (
         <PositionPickerModal
