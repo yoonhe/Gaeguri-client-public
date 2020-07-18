@@ -1,8 +1,13 @@
 import styled from 'styled-components/native';
 import { Color } from './common';
 
+export const HeaderButtonBox = styled.View`
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+`;
 export const HeaderButtonStyle = styled.Text`
-  width: 60px;
+  min-width: 60px;
   height: 36px;
   padding: 8px;
   margin-right: 8px;

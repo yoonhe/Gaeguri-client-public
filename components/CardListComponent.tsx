@@ -20,10 +20,9 @@ import moment from 'moment';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 
-function CardListComponent({ project, navigation }) {
+function CardListComponent({ project, navigation, isMyProject }) {
   const [modalVisible, setModalVisible] = useState(false);
   const deadLine = moment().subtract(24, 'hour');
-
   const GET_PROJECT_ID = gql`
     query GetProjectDetail($Project_id: Int) {
       getProjectDetail(Project_id: $Project_id) {
@@ -65,6 +64,7 @@ function CardListComponent({ project, navigation }) {
 
   const statusFormat = useCallback(() => {
     let statusName;
+
     switch (project.status) {
       case 'await':
         statusName = '모집중';
@@ -80,7 +80,7 @@ function CardListComponent({ project, navigation }) {
     }
 
     return statusName;
-  }, []);
+  }, [project]);
 
   const goToRoom = useCallback(
     (projectId, projectName, OwnerId) => {
@@ -98,6 +98,9 @@ function CardListComponent({ project, navigation }) {
     setModalVisible(prev => !prev);
   }, []);
 
+  console.log('isMyProject ? ', isMyProject);
+  console.log('navigation ?', navigation?.state?.routeName);
+
   return (
     <CardListStyle status={project.status}>
       <CardListTitle status={project.status}>{project.Project_name}</CardListTitle>
@@ -111,11 +114,15 @@ function CardListComponent({ project, navigation }) {
       </TextTagListStyle>
       <ButtonAndTextStyle>
         <BorderButton
-          onPress={showModalPicker}
+          onPress={
+            isMyProject
+              ? goToRoom.bind(null, project.Project_id, project.Project_name, project.Owner_id)
+              : showModalPicker
+          }
           backgroundColor={project.status === 'End' ? 'disabled' : true}
           disabled={project.status === 'End'}
         >
-          참여요청
+          {isMyProject ? '방들어가기' : '참여요청'}
         </BorderButton>
         <TextWrapStyle>
           <StateWrap>

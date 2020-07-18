@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import MyProfileStack from '../screens/myprofile/MyProfileStack'; // 이름수정
 import BeforeLoginNavigation from './BeforeLoginNavigation';
 import ProjectStack from '../screens/project/ProjectStack';
-import HomeScreen from '../screens/home/Home';
+import homeStack from '../screens/home/homeStack';
 import { BorderButton } from '../components/ButtonComponent';
 
 //아이콘 찾기 https://oblador.github.io/react-native-vector-icons/
@@ -40,7 +40,7 @@ function BottomTabNavigation(): React.ReactElement {
         inactiveTintColor: `${Color.N300}`,
       }}
     >
-      <Tab.Screen name="홈" component={HomeScreen} />
+      <Tab.Screen name="홈" component={homeStack} />
       <Tab.Screen name="프로젝트" component={ProjectStack} />
       <Tab.Screen name="만들기" component={CreateProjectStack} />
       <Tab.Screen name="마이" component={MyProfileStack} />
