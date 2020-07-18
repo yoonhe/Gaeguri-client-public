@@ -10,6 +10,7 @@ export const ProjectHistoryStyle = styled.View`
 `;
 
 export const CardListStyle = styled.View`
+  flex: 1;
   position: relative;
   margin-bottom: 10px;
   padding: 20px 30px;

@@ -1,9 +1,10 @@
-import React, { useCallback } from 'react';
-import { View, ActivityIndicator, ScrollView } from 'react-native';
+import React from 'react';
+import { View, ActivityIndicator, ScrollView, Button } from 'react-native';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import { PageWrapStyle } from '../../styles/common';
 import CardListComponent from '../../components/CardListComponent';
+import { BorderButton } from '../../components/ButtonComponent';
 
 const GET_PROJECT = gql`
   query GetAvailableProjectList {
@@ -31,7 +32,9 @@ const GET_PROJECT = gql`
 `;
 
 function Main({ navigation }): React.ReactElement {
-  const { loading, error, data } = useQuery(GET_PROJECT);
+  const { loading, error, data } = useQuery(GET_PROJECT, {
+    pollInterval: 200,
+  });
 
   if (error) {
     console.log('[CardListComponents] error ? ', error);
@@ -39,7 +42,7 @@ function Main({ navigation }): React.ReactElement {
 
   return (
     <PageWrapStyle>
-      <ScrollView>
+      <ScrollView style={{ flex: 1 }}>
         {loading && (
           <View>
             <ActivityIndicator size="small" color="#00ff00" />

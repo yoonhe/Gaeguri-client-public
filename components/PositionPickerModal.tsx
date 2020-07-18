@@ -5,6 +5,7 @@ import { BorderButton, PickerButton } from './ButtonComponent';
 import gql from 'graphql-tag';
 import { useMutation, useQuery, useApolloClient } from '@apollo/react-hooks';
 import { GET_MYINFO } from '../screens/project/room/RoomQuries';
+import client from '../apollo';
 
 const REQUEST_PARTICIPATE = gql`
   mutation ParticipateProject($input: PP_User) {
@@ -18,28 +19,28 @@ const REQUEST_PARTICIPATE = gql`
 
 function PositionPickerModal({ modalVisible, showModalPicker, positionList, goToRoom, project }) {
   const myInfo = useQuery(GET_MYINFO);
-  // const [participateProject, { data, loading, error }] = useMutation(REQUEST_PARTICIPATE);
-  const client = useApolloClient();
+  // const client = useApolloClient();
+  const [participateProject, { data, error }] = useMutation(REQUEST_PARTICIPATE);
 
-  const proejctParticipation = async positionInfo => {
-    try {
-      console.log('positionInfo ? ', positionInfo);
-      console.log('positionInfo?.Project_id ? ', positionInfo?.Project_id);
-      console.log('positionInfo?.Position_id ? ', positionInfo?.Position_id);
-      const result = await client.mutate({
-        mutation: REQUEST_PARTICIPATE,
-        variables: {
+  const proejctParticipation = positionInfo => {
+    participateProject({
+      variables: {
+        input: {
           User_id: myInfo?.data?.GetMyProfile?.user?.User_id,
           Project_id: positionInfo?.Project_id,
           Position_id: positionInfo?.Position_id,
         },
-      });
-      console.log('result ? ', result);
-      goToRoom(project.Project_id, project.Project_name, project.Owner_id);
-      showModalPicker();
-    } catch (e) {
-      console.log(e);
+      },
+    });
+    if (data) {
+      console.log('data ? ', data);
     }
+    if (error) {
+      return console.error('error ? ', error);
+    }
+
+    goToRoom(project.Project_id, project.Project_name, project.Owner_id);
+    showModalPicker();
   };
 
   return (
