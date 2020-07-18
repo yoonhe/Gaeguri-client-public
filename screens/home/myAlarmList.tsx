@@ -2,9 +2,9 @@ import React, { useState, useContext, useCallback, useEffect, useLayoutEffect } 
 import { View, ActivityIndicator, Button } from 'react-native';
 import { PageWrapAlignCenterStyle, PageWrapStyle } from '../../styles/common';
 import { gql } from 'apollo-boost';
-import { useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient, useQuery } from '@apollo/react-hooks';
 import AlramEntry from '../../components/AlramEntry';
-import { HeaderButtonStyle } from '../../styles/button';
+import { HeaderCloseButtonStyle, BorderButtonSmallStyle } from '../../styles/button';
 
 const GET_ALRAMLIST = gql`
   query {
@@ -15,8 +15,8 @@ const GET_ALRAMLIST = gql`
       newMember {
         type
         Project_id
-        Project_Name
-        Postion_id
+        Project_name
+        Position_id
         Position_name
         User_id
         Email
@@ -26,8 +26,8 @@ const GET_ALRAMLIST = gql`
       newInvitation {
         type
         Project_id
-        Project_Name
-        Postion_id
+        Project_name
+        Position_id
         Position_name
         User_id
         Email
@@ -41,24 +41,42 @@ const GET_ALRAMLIST = gql`
 function MyAlramList({ route, navigation }): React.ReactElement {
   const client = useApolloClient();
   const [alrams, setAlrams] = useState<object[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  console.log('route--------', route);
-  console.log('navigation----------', navigation);
+  //const [loading, setLoading] = useState(true);
+  const { data, loading } = useQuery(GET_ALRAMLIST, { pollInterval: 200 });
+  console.log('loading----------', loading);
   console.log('alramlist', alrams);
 
   useEffect(() => {
     getAlramList();
+  }, [data, loading]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: '알람 리스트',
+      headerRight: () => (
+        <HeaderCloseButtonStyle title="닫기" onPress={closeDrawer}>
+          닫기
+        </HeaderCloseButtonStyle>
+      ),
+    });
   }, []);
 
+  const closeDrawer = () => {
+    navigation.navigate('홈');
+  };
+
   const getAlramList = async () => {
-    const {
-      data: {
-        myAlramList: { newMember, newInvitation },
-      },
-    } = await client.query({
-      query: GET_ALRAMLIST,
-    });
-    //console.log(data);
+    // const {
+    //   data: {
+    //     myAlramList: { newMember, newInvitation },
+    //   },
+    //   errors,
+    // } = await client.query({
+    //   query: GET_ALRAMLIST,
+    // });
+    const newMember = data?.myAlramList?.newMember;
+    const newInvitation = data?.myAlramList?.newInvitation;
+
     const allList = [...newMember, ...newInvitation];
     allList.sort((a, b) => {
       return a.createAt > b.createAt ? -1 : a.createAt < b.createAt ? 1 : 0;
@@ -66,7 +84,6 @@ function MyAlramList({ route, navigation }): React.ReactElement {
     console.log('allList=================', allList);
 
     setAlrams([...allList]);
-    setLoading(false);
   };
 
   return (
@@ -78,8 +95,8 @@ function MyAlramList({ route, navigation }): React.ReactElement {
           </View>
         ) : (
           <View>
-            {alrams.map(alram => {
-              return <AlramEntry alram={alram} navigation={navigation} />;
+            {alrams.map((alram, i) => {
+              return <AlramEntry key={i} alram={alram} navigation={navigation} />;
             })}
           </View>
         )}
