@@ -5,6 +5,7 @@ import { gql } from 'apollo-boost';
 import { useApolloClient, useQuery } from '@apollo/react-hooks';
 import AlramEntry from '../../components/AlramEntry';
 import { HeaderCloseButtonStyle, BorderButtonSmallStyle } from '../../styles/button';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const GET_ALRAMLIST = gql`
   query {
@@ -62,7 +63,7 @@ function MyAlramList({ route, navigation }): React.ReactElement {
   }, []);
 
   const closeDrawer = () => {
-    navigation.navigate('홈');
+    navigation.navigate('home');
   };
 
   const getAlramList = async () => {
@@ -88,7 +89,7 @@ function MyAlramList({ route, navigation }): React.ReactElement {
 
   return (
     <PageWrapStyle>
-      <View>
+      <KeyboardAwareScrollView>
         {loading ? (
           <View>
             <ActivityIndicator size="small" color="#00ff00" />
@@ -100,7 +101,7 @@ function MyAlramList({ route, navigation }): React.ReactElement {
             })}
           </View>
         )}
-      </View>
+      </KeyboardAwareScrollView>
     </PageWrapStyle>
   );
 }

@@ -5,10 +5,12 @@ import {
   PageWrapAlignCenterStyle,
   SignupTextStyle,
   TextSubTitleStyle,
+  TextLinkStyleFlatColor,
 } from '../../styles/common';
 import { BorderButton } from '../../components/ButtonComponent';
 import FormBoxComponent from '../../components/FormBoxComponent';
 import { useFormik } from 'formik';
+import { BorderButtonSignupStyle } from '../../styles/button';
 //email, password, username, position, stack, about me
 
 function SignupPhaseOne({ navigation }): React.ReactElement {
@@ -52,10 +54,12 @@ function SignupPhaseOne({ navigation }): React.ReactElement {
       <View>
         <SignupTextStyle>안녕하세요, </SignupTextStyle>
         <SignupTextStyle>개구리에 오신 것을 환영합니다.</SignupTextStyle>
-        <SignupTextStyle></SignupTextStyle>
+        <TextLinkStyleFlatColor></TextLinkStyleFlatColor>
         <SignupTextStyle>먼저 사용하실 이메일 주소와 </SignupTextStyle>
         <SignupTextStyle>비밀번호를 입력해주세요. </SignupTextStyle>
-        <SignupTextStyle></SignupTextStyle>
+        <TextLinkStyleFlatColor></TextLinkStyleFlatColor>
+      </View>
+      <View>
         <FormBoxComponent
           title="Email"
           name="email"
@@ -69,7 +73,7 @@ function SignupPhaseOne({ navigation }): React.ReactElement {
           placeholder="Password"
           onChangeText={formik.handleChange('password')}
         />
-        <BorderButton onPress={formik.handleSubmit}>Next</BorderButton>
+        <BorderButtonSignupStyle onPress={formik.handleSubmit}>Next</BorderButtonSignupStyle>
       </View>
     </PageWrapAlignCenterStyle>
   );

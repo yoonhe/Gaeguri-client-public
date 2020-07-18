@@ -13,6 +13,7 @@ import FormBoxComponent from '../../components/FormBoxComponent';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import { CommonActions } from '@react-navigation/native';
+import { BorderButtonSignupStyle } from '../../styles/button';
 
 //email, password, username, position, stack, about me
 //<Text title="About me" name="aboutme" placeholder="About me" />
@@ -83,7 +84,7 @@ function SignupPhaseThree({ navigation, route }): React.ReactElement {
     } = await client.query({
       query: GET_STACK,
     });
-    setStacks(stackAll);
+    setStacks(stackAll.slice(0, 30));
   };
   const getPositions = async () => {
     const {
@@ -205,7 +206,7 @@ function SignupPhaseThree({ navigation, route }): React.ReactElement {
             </TagItemStyle>
           ))}
       </TagListStyle>
-      <BorderButton onPress={nextPageButtonHandler}>Done</BorderButton>
+      <BorderButtonSignupStyle onPress={nextPageButtonHandler}>Done</BorderButtonSignupStyle>
     </PageWrapWhiteStyle>
   );
 }

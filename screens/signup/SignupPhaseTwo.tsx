@@ -4,6 +4,7 @@ import { PageWrapAlignCenterStyle, ProfileMediumStyle } from '../../styles/commo
 import { BorderButton } from '../../components/ButtonComponent';
 import FormBoxComponent from '../../components/FormBoxComponent';
 import ImagePicker from 'react-native-image-picker';
+import { BorderButtonSignupStyle } from '../../styles/button';
 
 //email, password, username, position, stack, about me
 //<Text title="About me" name="aboutme" placeholder="About me" />
@@ -87,7 +88,7 @@ function SignupPhaseTwo({ navigation, route }): React.ReactElement {
           numberOfLines={10}
           onChangeText={text => setAboutme(text)}
         />
-        <BorderButton onPress={nextPageButtonHandler}>Next</BorderButton>
+        <BorderButtonSignupStyle onPress={nextPageButtonHandler}>Next</BorderButtonSignupStyle>
       </View>
     </PageWrapAlignCenterStyle>
   );
