@@ -27,11 +27,17 @@ function HomeScreen({ navigation }) {
     await AsyncStorage.removeItem('token');
     signOut();
   }, []);
+  const alramdrawer = useCallback(() => {
+    //console.log('navigation. navigate', navigation.navigate());
+    navigation.navigate('MyAlramList');
+  }, []);
+  //console.log(navigation);
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Home Screen</Text>
       <BorderButton onPress={logoutButtonHandler}>로그아웃</BorderButton>
+      <BorderButton onPress={alramdrawer}>알람리스트</BorderButton>
     </View>
   );
 }

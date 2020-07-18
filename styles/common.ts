@@ -179,3 +179,33 @@ export const SignupTextStyle = styled.Text`
   font-weight: 300;
   color: ${Color.N900};
 `;
+
+export const TextContentStyleThick = styled.Text`
+font-size: 16px;
+font-weight: bold;
+color: ${Color.N600};
+`;
+
+export const TextCaptionStyleTime = styled.Text`
+  font-size: 12px;
+  font-weight: 300;
+  padding: 4px 0;
+  color: ${Color.N400};
+`;
+export const BottomLineStyle = styled.View`
+  borderBottomWidth: 1px;
+  borderBottomColor: ${Color.G300}
+`;
+
+export const TextContentStyleThickGreen = styled.Text`
+font-size: 16px;
+font-weight: bold;
+color: ${Color.G500};
+`;
+
+export const TextContentStyleThickBlue = styled.Text`
+font-size: 16px;
+font-weight: bold;
+color: ${Color.B400};
+
+`;
