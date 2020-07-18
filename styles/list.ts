@@ -44,10 +44,15 @@ export const TextWrapStyle = styled.View`
 
 export const TextListStyle = styled.View`
   flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  width: 150px;
+  margin-top: 5px;
 `;
 
 export const TextListItemWrapStyle = styled.View`
   flex-direction: row;
+  margin-top: 2px;
 
   ${props => props.index !== 0 && 'margin-left:5px;'}
 `;

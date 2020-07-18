@@ -53,7 +53,7 @@ function PositionPickerModal({ modalVisible, showModalPicker, positionList, goTo
       <ModalDim>
         <PickerButtonBox>
           <PickerButtonTitle>참여할 포지션을 선택해주세요</PickerButtonTitle>
-          {positionList?.getProjectDetail.projectpositionno.map((positionInfo, index) => (
+          {positionList?.getProjectDetail?.projectpositionno?.map((positionInfo, index) => (
             <PickerButton
               index={index}
               disabled={positionInfo.NoOfPosition === positionInfo.PC.length}

@@ -143,7 +143,7 @@ function CreateProject({ route, navigation }): React.ReactElement {
       navigation.dispatch(
         CommonActions.reset({
           index: 1,
-          routes: [{ name: '프로젝트' }],
+          routes: [{ name: '홈' }],
         }),
       );
     },
