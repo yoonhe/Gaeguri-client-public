@@ -105,3 +105,41 @@ export const PickerButtonStyle = styled.Text`
   ${props => props.index !== 0 && 'border-top-width: 1px;'}
   ${props => props.disabled && 'opacity:0.3;'}
 `;
+
+export const AcceptButtonStyleBlue = styled.Text`
+width: 60px;
+height: 36px;
+  padding: 8px;
+  margin: 8px;
+  border-radius: 5px;
+  text-align: center;
+  color: ${Color.T500};
+  border: 1px solid ${Color.T500};
+  background: ${Color.N0};
+`;
+
+
+export const AcceptButtonStyleYello = styled.Text`
+width: 60px;
+height: 36px;
+  padding: 8px;
+  margin: 8px;
+  border-radius: 5px;
+  text-align: center;
+  color: ${Color.Y200};
+  border: 1px solid ${Color.Y200};
+  background: ${Color.N0};
+`;
+
+export const HeaderCloseButtonStyle = styled.Text`
+  width: 60px;
+  height: 36px;
+  padding: 8px;
+  margin-right: 20px;
+  margin-left: 8px;
+  border-radius: 5px;
+  text-align: center;
+  color: ${Color.N0};
+  border: 1px solid ${Color.G300};
+  background: ${Color.G300};
+`;

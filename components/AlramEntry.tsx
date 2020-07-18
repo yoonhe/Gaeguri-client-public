@@ -1,9 +1,7 @@
-import { View } from 'react-native';
-
-import React, { useState, useCallback } from 'react';
+import { View, Button } from 'react-native';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   TextContentStyle,
-  TextCaptionStyle,
   TextContentStyleThick,
   TextCaptionStyleTime,
   BottomLineStyle,
@@ -11,25 +9,58 @@ import {
   TextContentStyleThickBlue,
 } from '../styles/common';
 import { gql } from 'apollo-boost';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useApolloClient } from '@apollo/react-hooks';
+import { AcceptButtonStyleBlue, AcceptButtonStyleYello } from '../styles/button';
 
-const PROJECT_INFO = gql`
-  query getProjectDetail($Project_id: Int) {
-    getProjectDetail(Project_id: $Project_id) {
-      Project_id
-      Project_name
+const INVITE_ACCEPT = gql`
+  mutation participateProjectWithPUBSUB($Project_id: Int, $Position_id: Int) {
+    participateProjectWithPUBSUB(input: { Project_id: $Project_id, Position_id: $Position_id }) {
+      path
+      error
+      ok
     }
   }
 `;
+//User_id: myInfo?.data?.GetMyProfile?.user?.User_id,
+//Project_id: positionInfo?.Project_id,
+//Position_id: positionInfo?.Position_id,
+
+const INVITE_DENY = gql`
+  mutation leaveProject($Project_id: Int, $Position_id: Int) {
+    leaveProject(input: { Project_id: $Project_id, Position_id: $Position_id }) {
+      path
+      message
+    }
+  }
+`;
+
 function AlramEntry({ alram, navigation }): React.ReactElement {
-  const prjInfo = useQuery(PROJECT_INFO, {
-    variables: { Project_id: alram.Project_id },
-  });
-  if (prjInfo.data)
-    console.log(
-      '-------project detail data usequery',
-      prjInfo?.data?.getProjectDetail?.Project_name,
-    );
+  const client = useApolloClient();
+  const { Project_id, Position_id } = alram;
+
+  const acceptInvite = useCallback(async () => {
+    //console.log(Project_id, Position_id);
+    await client.mutate({
+      mutation: INVITE_ACCEPT,
+      variables: {
+        Project_id: Project_id,
+        Position_id: Position_id,
+      },
+    });
+  }, [alram]);
+
+  const denyInvite = useCallback(async () => {
+    //console.log(Project_id, Position_id);
+    //console.log('deny press??');
+    await client.mutate({
+      mutation: INVITE_DENY,
+      variables: {
+        Project_id: Project_id,
+        Position_id: Position_id,
+      },
+    });
+    //console.log(result.data.leaveProject);
+  }, [alram]);
 
   if (alram.type === 'NewMember') {
     return (
@@ -37,10 +68,8 @@ function AlramEntry({ alram, navigation }): React.ReactElement {
         <TextContentStyle>
           <TextContentStyleThick>[참여]</TextContentStyleThick>
           {' ' + alram.Username} 님이{' '}
-          <TextContentStyleThickBlue>
-            '{alram.Project_Name || prjInfo?.data?.getProjectDetail?.Project_name}'
-          </TextContentStyleThickBlue>{' '}
-          에 <TextContentStyleThickGreen> '{alram.Position_name}'</TextContentStyleThickGreen>{' '}
+          <TextContentStyleThickBlue>'{alram.Project_name}'</TextContentStyleThickBlue> 에{' '}
+          <TextContentStyleThickGreen> '{alram.Position_name}'</TextContentStyleThickGreen>{' '}
           포지션으로 참여하였습니다.
         </TextContentStyle>
         <TextCaptionStyleTime>
@@ -51,38 +80,29 @@ function AlramEntry({ alram, navigation }): React.ReactElement {
     );
   }
   if (alram.type === 'New Invitation') {
+    // if (alram.Allowed === 'Wait') {
+    // server update 후 추가 예정
+    // }
     return (
       <BottomLineStyle>
         <TextContentStyle>
           <TextContentStyleThick>[초대]</TextContentStyleThick>
           {' ' + alram.Username} 님이{' '}
-          <TextContentStyleThickBlue>
-            '{alram.Project_Name || prjInfo?.data?.getProjectDetail?.Project_name}'
-          </TextContentStyleThickBlue>{' '}
-          에 <TextContentStyleThickGreen> '{alram.Position_name}'</TextContentStyleThickGreen>{' '}
+          <TextContentStyleThickBlue>'{alram.Project_name}'</TextContentStyleThickBlue> 에{' '}
+          <TextContentStyleThickGreen> '{alram.Position_name}'</TextContentStyleThickGreen>{' '}
           포지션으로 초대하였습니다.
         </TextContentStyle>
         <TextCaptionStyleTime>
           {alram.createAt.split('T')[0] + ' ' + alram.createAt.split('T')[1].substr(0, 8)}
         </TextCaptionStyleTime>
+        <AcceptButtonStyleBlue title="수락" onPress={acceptInvite}>
+          수락
+        </AcceptButtonStyleBlue>
+        <AcceptButtonStyleYello title="거절" onPress={denyInvite}>
+          거절
+        </AcceptButtonStyleYello>
       </BottomLineStyle>
     );
   }
 }
 export default AlramEntry;
-
-//alram data
-//{"Email": null,
-// "Position_name": "front",
-// "Postion_id": null,
-// "Project_Name": null,
-// "Project_id": 51,
-//  "User_id": 25,
-//  "Username": "윤해은",
-//   "__typename": "alram",
-//    "createAt": "2020-07-18T00:06:56.730Z",
-//    "type": "NewMember"}
-
-// Username 님이 Project_Name 에 Position_name으로 참여하였습니다.  --createAt
-// Username 님이 Project_Name 에 Postion_name으로 초대하였습니다. --creaetAt
-// 수락, 무시
