@@ -52,3 +52,25 @@ export const UPDATE_MYPROFILE = gql`
     }
   }
 `;
+
+export const GET_USERPROFILE = gql`
+  query getYourProfile($User_id: Int!) {
+    GetYourProfile(User_id: $User_id) {
+      ok
+      error
+      user {
+        User_id
+        Username
+        Profile_photo_path
+        AboutMe
+        userstack {
+          stack {
+            Stack_id
+            Stack_name
+          }
+        }
+        Email
+      }
+    }
+  }
+`;

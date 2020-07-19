@@ -1,5 +1,5 @@
-import React, { useLayoutEffect, useState } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import React, { useLayoutEffect, useState, useEffect, useCallback } from 'react';
+import { View, ActivityIndicator, Button, Text } from 'react-native';
 import {
   PageWrapWhiteStyle,
   TextContentStyle,
@@ -11,42 +11,40 @@ import {
 import { TagListStyle, TagItemStyle, TagTextStyle } from '../../styles/tag';
 import { HeaderButtonStyle } from '../../styles/button';
 import UserProjectHistory from '../../components/UserProjectHistory';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useApolloClient } from '@apollo/react-hooks';
 import { GET_MYPROFILE } from './ProfileQuries';
 
 function MyProfile({ navigation }): React.ReactElement {
   //데이터 확인
-  const [dataLoading, setDataLoading] = useState(false);
+  const client = useApolloClient();
+  const [dataLoading, setDataLoading] = useState(true);
   const [myUsername, setMyUsername] = useState<string>('');
   const [myAboutMe, setMyAboutMe] = useState<string | null>(null);
   const [myStack, setMyStack] = useState<object[] | null>(null);
-
-  const [myUserId, setMyUserId] = useState(0);
   const [myProfileImage, setMyProfileImage] = useState<string | null>(null);
-  const [myEmail, setMyEmail] = useState<string>('');
+  const [myEmail, setMyEmail] = useState('');
 
-  const fetchData = async () => {
-    const { loading, error, data } = await useQuery(GET_MYPROFILE);
-    if (error) console.log('프로필 error?? :', error.message);
-    if (loading) {
-      console.log('프로필 Loading...');
-      setDataLoading(true);
-    }
-    if (data) {
-      console.log('프로필 data?? :', data.GetMyProfile.user);
-      setDataLoading(false);
+  useEffect(() => {
+    getUserData();
+    console.log('프로필 myStack?? :', myStack);
+  }, []);
 
-      setMyUsername(data.GetMyProfile.user.Username);
-      setMyAboutMe(data.GetMyProfile.user.AboutMe);
-      setMyStack(data.GetMyProfile.user.userstack);
-
-      setMyUserId(data.GetMyProfile.user.User_id);
-      setMyProfileImage(data.GetMyProfile.user.Profile_photo_path);
-      setMyEmail(data.GetMyProfile.user.Email);
-    }
+  const getUserData = async () => {
+    const {
+      data: {
+        GetMyProfile: { user },
+      },
+    } = await client.query({
+      query: GET_MYPROFILE,
+    });
+    console.log('프로필 data?? :', user);
+    setMyUsername(user.Username);
+    setMyAboutMe(user.AboutMe);
+    setMyStack(user.userstack);
+    setMyProfileImage(user.Profile_photo_path);
+    setMyEmail(user.Email);
+    setDataLoading(false);
   };
-  fetchData();
-  // console.log('myUsername data?? :', myUsername);
 
   //헤더에 버튼 넣기
   useLayoutEffect(() => {
@@ -55,12 +53,11 @@ function MyProfile({ navigation }): React.ReactElement {
         <HeaderButtonStyle
           title="편집"
           onPress={() => {
-            /* 넘길 params */
             navigation.navigate('프로필 편집', {
-              myUsername: myUsername,
-              myProfileImage: myProfileImage,
-              myAboutMe: myAboutMe,
-              myStack: myStack,
+              current_Username: myUsername,
+              current_ProfileImage: myProfileImage,
+              current_AboutMe: myAboutMe,
+              current_Stack: myStack,
             });
           }}
         >
@@ -68,7 +65,7 @@ function MyProfile({ navigation }): React.ReactElement {
         </HeaderButtonStyle>
       ),
     });
-  }, []);
+  }, [navigation, myUsername, myProfileImage, myAboutMe, myStack]);
 
   return (
     <PageWrapWhiteStyle>
@@ -85,9 +82,14 @@ function MyProfile({ navigation }): React.ReactElement {
           <DividerStyle />
 
           <TextSubTitleStyle>짧은소개</TextSubTitleStyle>
-          <TextContentStyle>
-            {myAboutMe !== null ? myAboutMe : '소개글을 작성 해주세요'}
-          </TextContentStyle>
+          <Text>
+            {myAboutMe !== null ? (
+              <TextContentStyle>myAboutMe</TextContentStyle>
+            ) : (
+              <TextContentStyle placeholder={true}>소개글을 작성 해주세요</TextContentStyle>
+            )}
+          </Text>
+
           <TextSubTitleStyle>기술스택</TextSubTitleStyle>
           <TagListStyle>
             {myStack === null ? (
@@ -101,11 +103,17 @@ function MyProfile({ navigation }): React.ReactElement {
             )}
           </TagListStyle>
           <TextSubTitleStyle>프로젝트 히스토리</TextSubTitleStyle>
-          {/* <UserProjectHistory userId={myUserId} /> */}
+          {/* 프로젝트 히스토리: 토큰으로 인증 */}
+          <UserProjectHistory />
           <TextSubTitleStyle>이메일</TextSubTitleStyle>
           <TextContentStyle>{myEmail}</TextContentStyle>
         </View>
       )}
+      {/* 유저리스트 */}
+      {/* <View>
+        <DividerStyle />
+        <Text onPress={() => navigation.navigate('유저 프로필')}>유저리스트 > </Text>
+      </View> */}
     </PageWrapWhiteStyle>
   );
 }
