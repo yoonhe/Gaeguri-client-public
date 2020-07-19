@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { TextContentStyle, TextDateStyle } from '../styles/common';
 import { ProjectHistoryStyle } from '../styles/list';
@@ -7,11 +7,9 @@ import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 
 const GET_MY_PROJECTLIST = gql`
-  query GetMyProjectList($User_id: Int!) {
-    getMyProjectList(User_id: $User_id) {
-      Project_id
+  query GetMyProjectList {
+    getMyProjectList {
       Project_name
-      StartAt
       EndAt
       Desc
       status
@@ -20,64 +18,40 @@ const GET_MY_PROJECTLIST = gql`
           Stack_name
         }
       }
-      projectpositionno {
-        position {
-          Position_id
-          Position_name
-        }
-        PC {
-          Candidate_id
-          candidate {
-            User_id
-            Username
-            Email
-          }
-        }
-      }
     }
   }
 `;
 
-/*
-projectpositionno{
-      Position_id
-      NoOfPosition
-      position{
-        Position_name
-      }
-      PC{
-        Candidate_id <- 여기 유저아이디 = 내 유저아이디면 .. 내포지션인데 ...
-        candidate{
-          User_id
-          Username
-          Email
-        }
-      }
-*/
-
-function UserProjectHistory({ userId }): React.ReactElement {
+function UserProjectHistory(): React.ReactElement {
   //전달받은 유저 ID 확인
   // console.log('전달받은 userId ??:', userId);
+  const [projectList, setProjectList] = useState<object[]>([]);
+  const [dataLoading, setDataLoading] = useState(false);
 
-  const { loading, error, data } = useQuery(GET_MY_PROJECTLIST, {
-    variables: { User_id: userId },
-  });
-  if (loading) console.log('Loading...');
-  if (error) console.log(`Error! ${error.message}`);
-  if (data) console.log('[data.getMyProjectList] 확인??:', data.getMyProjectList);
+  useEffect(() => {
+    getHistory();
+  }, []);
+
+  const getHistory = async () => {
+    const { loading, error, data } = await useQuery(GET_MY_PROJECTLIST);
+    if (error) console.log('프로젝트 히스토리 Error!', error.message);
+    if (loading) {
+      console.log('프로젝트 히스토리Loading...');
+      setDataLoading(true);
+    }
+    if (data) {
+      console.log('프로젝트 히스토리 getMyProjectList??:', data.getMyProjectList);
+      setProjectList(data.getMyProjectList);
+    }
+  };
 
   return (
     <View>
-      {loading && (
-        <View>
-          <ActivityIndicator />
-        </View>
-      )}
-      {data && data.getMyProjectList.length === 0 ? (
+      {dataLoading && <TextContentStyle placeholder={true}>loading...</TextContentStyle>}
+      {projectList.length === 0 ? (
         <TextContentStyle placeholder={true}>아직 참여한 프로젝트가 없습니다.</TextContentStyle>
       ) : (
-        data &&
-        data.getMyProjectList.map((project, index) => (
+        projectList.map((project, index) => (
           <ProjectHistoryStyle key={index}>
             <TextContentStyle>{project.Project_name}</TextContentStyle>
             <TextContentStyle mid={true}>{project.Desc}</TextContentStyle>
@@ -87,7 +61,7 @@ function UserProjectHistory({ userId }): React.ReactElement {
                 : project.status === 'start'
                 ? '모집중'
                 : '종료됨'}
-              {' | '} {moment(project.EndAt).format('YYYY-MM-DD')}
+              {moment(project.EndAt).format('YYYY-MM-DD')}
             </TextDateStyle>
           </ProjectHistoryStyle>
         ))
