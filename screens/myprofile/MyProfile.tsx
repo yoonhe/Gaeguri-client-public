@@ -76,7 +76,7 @@ function MyProfile({ navigation }): React.ReactElement {
       ) : (
         <View>
           <View style={{ alignItems: 'center', marginBottom: 16 }}>
-            <ProfileMediumStyle uri={false} />
+            <ProfileMediumStyle uri={myProfileImage} />
             <TextTitleStyle>{myUsername}</TextTitleStyle>
           </View>
           <DividerStyle />
@@ -84,7 +84,7 @@ function MyProfile({ navigation }): React.ReactElement {
           <TextSubTitleStyle>짧은소개</TextSubTitleStyle>
           <Text>
             {myAboutMe !== null ? (
-              <TextContentStyle>myAboutMe</TextContentStyle>
+              <TextContentStyle>{myAboutMe}</TextContentStyle>
             ) : (
               <TextContentStyle placeholder={true}>소개글을 작성 해주세요</TextContentStyle>
             )}
