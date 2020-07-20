@@ -16,7 +16,10 @@ export const TagItemStyle = styled.View`
   position: relative;
   flex-direction: row;
   margin: 5px;
-  padding: 10px 0 10px 10px;
+  ${props => {
+    console.log('props.closeButton ? ', props.closeButton);
+    return props.closeButton ? 'padding: 20px 0 10px 10px;' : 'padding: 0;';
+  }}
   border: 1px solid #5dd7b9;
   border-radius: 15px;
   background: ${Color.N0};
@@ -68,15 +71,13 @@ export const TagSignupItemStyle = styled.View`
   position: relative;
   flex-direction: row;
   margin: 5px;
-  padding: 10px 0 10px 10px;
+  padding: 10px 15px;
   border: 1px solid #5dd7b9;
   border-radius: 15px;
-  background: ${props => (props.selected === false ? Color.N0: Color.G300)};
+  background: ${props => (props.selected === false ? Color.N0 : Color.G300)};
   overflow: hidden;
 `;
 
 export const TagTextSignupStyle = styled.Text`
-  margin-right: 30px;
-  align-items: flex-start;
-  color: ${props => (props.selected === false ? Color.G300:Color.N0)};
+  color: ${props => (props.selected === false ? Color.G300 : Color.N0)};
 `;
