@@ -7,7 +7,13 @@ import {
   TextSubTitleStyle,
   PageWrapWhiteStyle,
 } from '../../styles/common';
-import { TagListStyle, TagItemStyle, TagTextStyle } from '../../styles/tag';
+import {
+  TagListStyle,
+  TagItemStyle,
+  TagTextStyle,
+  TagSignupItemStyle,
+  TagTextSignupStyle,
+} from '../../styles/tag';
 import { BorderButton } from '../../components/ButtonComponent';
 import FormBoxComponent from '../../components/FormBoxComponent';
 import gql from 'graphql-tag';
@@ -97,23 +103,24 @@ function SignupPhaseThree({ navigation, route }): React.ReactElement {
 
   const stackHandler = useCallback(
     newStack => {
+      //console.log('selected newStack-------?', newStack);
+      //console.log('stackList--------?', stackList);
       //console.log('------------stack value', e._dispatchInstances.memoizedProps.children);
       if (stackList.indexOf(newStack) === -1) {
-        let newStacks = stackList.slice();
-        newStacks.push(newStack);
-        setStackList(newStacks);
+        setStackList([...stackList, newStack]);
         //console.log('newstacklist==============', stackList);
       } else {
         let rmIndex = stackList.indexOf(newStack);
         //console.log(rmIndex, newStack);
         let rmStacks = stackList.slice();
         rmStacks.splice(rmIndex, 1);
+        //console.log(rmStacks);
 
-        setStackList(rmStacks);
+        setStackList([...rmStacks]);
         //console.log('rmStacks==============', stackList);
       }
     },
-    [stacks],
+    [stacks, stackList, position, positions],
   );
 
   const nextPageButtonHandler = useCallback(async () => {
@@ -156,7 +163,7 @@ function SignupPhaseThree({ navigation, route }): React.ReactElement {
       headers: config.headers,
     })
       .then(res => {
-        console.log('--------res', res);
+        //console.log('-----------??????', res);
         Alert.alert('회원가입 완료!', '', [
           { text: 'OK', onPress: () => console.log('OK Pressed') },
         ]);
@@ -197,13 +204,16 @@ function SignupPhaseThree({ navigation, route }): React.ReactElement {
       <TagListStyle>
         {stacks &&
           stacks.map((stack, index) => (
-            <TagItemStyle key={index}>
-              <TagTextStyle>
-                <Text onPress={e => stackHandler(e._dispatchInstances.memoizedProps.children)}>
-                  {stack.Stack_name}
-                </Text>
-              </TagTextStyle>
-            </TagItemStyle>
+            <TagSignupItemStyle
+              key={index}
+              selected={stackList.indexOf(stack.Stack_name) === -1 ? false : true}
+            >
+              <TagTextSignupStyle
+                selected={stackList.indexOf(stack.Stack_name) === -1 ? false : true}
+              >
+                <Text onPress={e => stackHandler(stack.Stack_name)}>{stack.Stack_name}</Text>
+              </TagTextSignupStyle>
+            </TagSignupItemStyle>
           ))}
       </TagListStyle>
       <BorderButtonSignupStyle onPress={nextPageButtonHandler}>Done</BorderButtonSignupStyle>

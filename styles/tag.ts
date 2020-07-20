@@ -63,3 +63,20 @@ export const StackStyle = styled.Text`
   text-align: center;
   margin: 0 6px 6px 0;
 `;
+
+export const TagSignupItemStyle = styled.View`
+  position: relative;
+  flex-direction: row;
+  margin: 5px;
+  padding: 10px 0 10px 10px;
+  border: 1px solid #5dd7b9;
+  border-radius: 15px;
+  background: ${props => (props.selected === false ? Color.N0: Color.G300)};
+  overflow: hidden;
+`;
+
+export const TagTextSignupStyle = styled.Text`
+  margin-right: 30px;
+  align-items: flex-start;
+  color: ${props => (props.selected === false ? Color.G300:Color.N0)};
+`;
