@@ -1,11 +1,12 @@
 import React, { useState, useCallback, useEffect, Component } from 'react';
-import { Alert, View, Text, NativeModules } from 'react-native';
+import { Alert, View, Text, NativeModules, ScrollView } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
 import {
   PageWrapAlignCenterStyle,
   TextSubTitleStyle,
   PageWrapWhiteStyle,
+  PageWrapStyle,
 } from '../../styles/common';
 import {
   TagListStyle,
@@ -187,37 +188,43 @@ function SignupPhaseThree({ navigation, route }): React.ReactElement {
   }, [stackList, position, stacks, positions]);
 
   return (
-    <PageWrapWhiteStyle>
-      <TextSubTitleStyle>포지션을 선택해주세요. </TextSubTitleStyle>
-      <Picker mode="dropdown" selectedValue={position} onValueChange={value => setPosition(value)}>
-        {positions &&
-          ['포지션을 입력하세요'].concat(positions).map((s, i) => {
-            if (i === 0) {
-              return <Picker.Item key={i} value={s} label={s} />;
-            } else {
-              return <Picker.Item key={i} value={s.Position_id} label={s.Position_name} />;
-            }
-          })}
-      </Picker>
+    <PageWrapStyle>
+      <ScrollView>
+        <TextSubTitleStyle>포지션을 선택해주세요. </TextSubTitleStyle>
+        <Picker
+          mode="dropdown"
+          selectedValue={position}
+          onValueChange={value => setPosition(value)}
+        >
+          {positions &&
+            ['포지션을 입력하세요'].concat(positions).map((s, i) => {
+              if (i === 0) {
+                return <Picker.Item key={i} value={s} label={s} />;
+              } else {
+                return <Picker.Item key={i} value={s.Position_id} label={s.Position_name} />;
+              }
+            })}
+        </Picker>
 
-      <TextSubTitleStyle>기술스택을 선택해주세요.</TextSubTitleStyle>
-      <TagListStyle>
-        {stacks &&
-          stacks.map((stack, index) => (
-            <TagSignupItemStyle
-              key={index}
-              selected={stackList.indexOf(stack.Stack_name) === -1 ? false : true}
-            >
-              <TagTextSignupStyle
+        <TextSubTitleStyle>기술스택을 선택해주세요.</TextSubTitleStyle>
+        <TagListStyle>
+          {stacks &&
+            stacks.map((stack, index) => (
+              <TagSignupItemStyle
+                key={index}
                 selected={stackList.indexOf(stack.Stack_name) === -1 ? false : true}
               >
-                <Text onPress={e => stackHandler(stack.Stack_name)}>{stack.Stack_name}</Text>
-              </TagTextSignupStyle>
-            </TagSignupItemStyle>
-          ))}
-      </TagListStyle>
+                <TagTextSignupStyle
+                  selected={stackList.indexOf(stack.Stack_name) === -1 ? false : true}
+                >
+                  <Text onPress={e => stackHandler(stack.Stack_name)}>{stack.Stack_name}</Text>
+                </TagTextSignupStyle>
+              </TagSignupItemStyle>
+            ))}
+        </TagListStyle>
+      </ScrollView>
       <BorderButtonSignupStyle onPress={nextPageButtonHandler}>Done</BorderButtonSignupStyle>
-    </PageWrapWhiteStyle>
+    </PageWrapStyle>
   );
 }
 
