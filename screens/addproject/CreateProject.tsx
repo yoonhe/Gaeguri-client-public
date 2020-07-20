@@ -15,6 +15,7 @@ import { GET_MYINFO } from '../project/room/RoomQuries';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useFormik } from 'formik';
 import moment from 'moment';
+import { GET_PROJECT_STATUS_FILTER } from '../project/ProjectQuries';
 
 const GET_PROJECT = gql`
   query GettMyProjectList {
@@ -93,7 +94,30 @@ function CreateProject({ route, navigation }): React.ReactElement {
   const [positionList, setPositionList] = useState([{ name: position, count: 1 }]);
   const myInfo = useQuery(GET_MYINFO);
 
-  const [createNewProject] = useMutation(CREATE_PROJECT);
+  const [createNewProject] = useMutation(CREATE_PROJECT, {
+    update(cache, { data }) {
+      /* test 1 */
+      const newProject = data?.createNewProject?.newProject;
+      let existingProejects = cache.readQuery({
+        query: GET_PROJECT_STATUS_FILTER,
+      });
+      let project = existingProejects.getMyProjectListwithStatus.statusProject;
+
+      console.log('===========================');
+      console.log('[전] existingProejects ? ', existingProejects);
+      console.log('newProject ? ', newProject);
+      console.log('[전] project.onGoing ? ', project.onGoing);
+      project.onGoing = [newProject, ...project.onGoing];
+      console.log('[후] project.onGoing ? ', project.onGoing);
+
+      cache.writeQuery({
+        query: GET_PROJECT_STATUS_FILTER,
+        data: {
+          getMyProjectListwithStatus: existingProejects?.getMyProjectListwithStatus,
+        },
+      });
+    },
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -124,11 +148,7 @@ function CreateProject({ route, navigation }): React.ReactElement {
       }
 
       let dateFormat = moment(date).format('YYYY-MM-DD');
-      console.log(date, projectName, projectDescription, positionList, tagList);
-      console.log(
-        'myInfo?.data?.GetMyProfile?.user?.User_id ? ',
-        myInfo?.data?.GetMyProfile?.user?.User_id,
-      );
+
       createNewProject({
         variables: {
           Project_name: projectName,
@@ -146,14 +166,13 @@ function CreateProject({ route, navigation }): React.ReactElement {
           routes: [{ name: '홈' }],
         }),
       );
+
+      navigation.navigate('홈');
     },
   });
 
   const positionChangeHandler = useCallback(
     (index, text) => {
-      // const {text} = e.nativeEvent;
-      // console.log('[positionChangeHandler]index ? ', index);
-      // console.log('[positionChangeHandler]text ? ', text);
       setPositionList(
         produce(draft => {
           draft[index].name = text;
