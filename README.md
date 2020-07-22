@@ -36,7 +36,7 @@ Project is created with:
 
 ## Features
 
-Home-Fitness Challengers can:
+Gaeguri App can:
 
 - 로그인, 소셜로그인
 - 회원가입
