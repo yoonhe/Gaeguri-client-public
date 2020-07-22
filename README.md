@@ -49,7 +49,29 @@ Gaeguri App can:
 - 내 프로필 관리
 
 ## Usage
-(... 준비중 ...)
+
+- 회원가입
+<img src="https://user-images.githubusercontent.com/35520893/88159155-e5e5ac00-cc47-11ea-932f-190fdd8602ea.gif" width ="240px"/>
+
+- 이메일 로그인
+<img src="https://user-images.githubusercontent.com/35520893/88158128-9b176480-cc46-11ea-8fbe-8bcbe258d16a.gif" width ="240px"/>
+
+- 알림 확인 후 프로젝트방 진입
+<img src="https://user-images.githubusercontent.com/35520893/88159374-2d6c3800-cc48-11ea-88c3-ed38d4b8ba25.gif" width ="240px"/>
+
+
+- 프로젝트 설정하기
+<img src="https://user-images.githubusercontent.com/35520893/88156220-17f50f00-cc44-11ea-9c2e-655b54b20921.gif" width ="240px"/>
+
+- 프로젝트 만들기
+<img src="https://user-images.githubusercontent.com/35520893/88156228-1aefff80-cc44-11ea-855e-9a324c792d10.gif" width ="240px"/>
+
+- 프로젝트 참여하기
+<img src="https://user-images.githubusercontent.com/35520893/88158138-9e125500-cc46-11ea-8617-e187f2812941.gif" width ="240px"/>
+
+- 프로필 편집하기 
+<img src="https://user-images.githubusercontent.com/35520893/88156202-10356a80-cc44-11ea-974e-5c48b81e9363.gif" width ="240px"/>
+
 
 ## Things Todo
 - 유저 초대기능
@@ -61,6 +83,3 @@ Gaeguri App can:
   - 개발자 상단 노출, 혹은 기업, 개인이 개발자 모집 글 상단 노출, 결제 시스템 
   - 현황판 노출하기(우리 서비스가 이렇게 핫하다 를 어필) : 누적 완료 프로젝트 OO건. ex) 지식인 : 오늘의 질문과 답변, 누적 답변 수 000건 노출 중 - N
 
-
-## Thanks to
-- 
