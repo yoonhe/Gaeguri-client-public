@@ -26,6 +26,7 @@ Project is created with:
 
 - react: 16.11.0
 - react-native: 0.62.2
+- apollo : 2.6
 - immer: 7.0.3
 - moment: 2.27.0
 - styled-components: 5.1.1
